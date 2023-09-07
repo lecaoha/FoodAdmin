@@ -1,0 +1,6 @@
+{
+    "require": {
+        "lcobucci/clock": "2.1.0",
+        "kreait/firebase-php": "^5.26"
+    }
+}
