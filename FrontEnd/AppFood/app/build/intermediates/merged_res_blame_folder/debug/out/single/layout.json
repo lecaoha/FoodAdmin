@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.myappfood.appfood.app-mergeDebugResources-67:/layout/activity_lognin.xml",
+        "source": "com.myappfood.appfood.app-main-70:/layout/activity_lognin.xml"
+    },
+    {
+        "merged": "com.myappfood.appfood.app-mergeDebugResources-67:/layout/activity_signup.xml",
+        "source": "com.myappfood.appfood.app-main-70:/layout/activity_signup.xml"
+    },
+    {
+        "merged": "com.myappfood.appfood.app-mergeDebugResources-67:/layout/activity_main.xml",
+        "source": "com.myappfood.appfood.app-main-70:/layout/activity_main.xml"
+    }
+]
