@@ -22,10 +22,9 @@
         </ul>
       </li>
 
-     
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+      <li >
+        <a href="./page_order.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#"></use></svg>
           Orders
         </a>
       </li>
