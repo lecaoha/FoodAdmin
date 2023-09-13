@@ -13,9 +13,23 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body">  
+                    <h3>Tổng Tài Khoản: 
+                        <?php
+                            include('dbcon.php');
+                            $ref_table = "User";
+                            $totalnum = 0; // Khởi tạo biến đếm
+                            $fetchdata = $database->getReference($ref_table)->getValue();
 
-                        </h3>
+                            foreach ($fetchdata as $key => $row) {
+                                // Kiểm tra nếu isStaff là false
+                                if ($row['isStaff'] === 'true') {
+                                    $totalnum++; // Tăng biến đếm khi tìm thấy tài khoản không phải nhân viên
+                                }
+                            }
+
+                            echo $totalnum;
+                        ?>
                         </h3>
                     </div>
                 </div>
