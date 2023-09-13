@@ -16,7 +16,7 @@
                     <div class="card-header">
                         <h4>
                         Thêm Nhân Viên
-                            <a href="page_employee.php" class = "btn btn-danger float-end">Trở lại</a>
+
                         </h4>
                     </div>
                     <div class="card-body">

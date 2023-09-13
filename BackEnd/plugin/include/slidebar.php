@@ -18,20 +18,13 @@
           Tài Khoản
         </a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="accountDropdown">
-<<<<<<< Updated upstream
-          <li><a class="dropdown-item" href="./page_users.php">Khách Hàng</a></li>
-          <li><a class="dropdown-item" href="#">Nhân Viên</a></li>
-=======
-        <li><a class="dropdown-item" href="./page_users.php">Khách hàng</a></li>
-          <li><a class="dropdown-item" href="./page_employee.php">Nhân Viên</a></li>
->>>>>>> Stashed changes
+
         </ul>
       </li>
 
-     
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+      <li >
+        <a href="./page_order.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#"></use></svg>
           Orders
         </a>
       </li>
