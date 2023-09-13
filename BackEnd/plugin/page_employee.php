@@ -14,13 +14,7 @@
             <div class="col-md-6 mb-3">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h3>Tổng Tài Khoản: 
-                        <?php
-                                include('dbcon.php');
-                                $ref_table = "User";
-                                $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-                                echo $totalnum;
-                            ?>
+
                         </h3>
                         </h3>
                     </div>

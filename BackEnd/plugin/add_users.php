@@ -15,14 +15,14 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>
-                        Thêm Nhân Viên
-
+                        Thêm Khách hàng
+                            <a href="page_users.php" class = "btn btn-danger float-end">Trở lại</a>
                         </h4>
                     </div>
                     <div class="card-body">
 
                     <!-- <form action="code_employee.php" method="POST"> -->
-                    <form method="POST" action="code_employee.php">
+                    <form method="POST" action="code_users.php">
 
                                     <div class="form-group mb-3">
                                         <label for="">Số điện thoại</label>
