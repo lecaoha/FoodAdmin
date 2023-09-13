@@ -18,7 +18,7 @@
           Tài Khoản
         </a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="accountDropdown">
-          <li><a class="dropdown-item" href="#">Nhân Viên</a></li>
+          <li><a class="dropdown-item" href="./page_employee.php">Nhân Viên</a></li>
         </ul>
       </li>
 
