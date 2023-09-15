@@ -5,7 +5,12 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
 ?>
 
 <div class="container">
-    <div class="row justify-content-center">
+<div class="sidebar">
+    <!-- Nội dung của sidebar -->
+    <?php include('include/slidebar.php'); ?>
+</div>
+<div class="content">
+        <div class="row justify-content-center">
         <div class="col-md-12"> <!-- This is a full-width column -->
             <div class="card">
                 <div class="card-header">

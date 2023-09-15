@@ -1,3 +1,10 @@
+<style>
+  .nav-link.active {
+  background-color: #007bff; /* Màu xanh mặc định */
+  color: #fff; /* Màu văn bản trắng */
+}
+</style>
+
 <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280dp;">
     <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
@@ -5,9 +12,9 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="index.php" class="nav-link active" aria-current="page">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="index.php"></use></svg>
+      <li >
+        <a href="./index.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#"></use></svg>
           Sản Phẩm
         </a>
       </li>
@@ -27,13 +34,13 @@
       <li >
         <a href="./page_order.php" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#"></use></svg>
-          Orders
+          Đơn hàng
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="./page_sale.php" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-          Products
+          Doanh thu
         </a>
       </li>
       <li>
@@ -58,5 +65,32 @@
       </ul>
     </div>
   </div>
+<script>
+  // Lấy tất cả các mục nav-link
+const navLinks = document.querySelectorAll('.nav-link');
 
+// Lặp qua từng mục và thêm sự kiện click
+navLinks.forEach(navLink => {
+  navLink.addEventListener('click', function () {
+    // Loại bỏ lớp active từ tất cả các mục nav-link
+    navLinks.forEach(link => link.classList.remove('active'));
+    
+    // Thêm lớp active cho mục đã chọn
+    this.classList.add('active');
+    
+    // Lưu trạng thái đã chọn vào sessionStorage
+    sessionStorage.setItem('selectedNavItem', this.getAttribute('href'));
+  });
+});
+
+// Kiểm tra nếu có trạng thái đã chọn trong sessionStorage và áp dụng nó
+const selectedNavItem = sessionStorage.getItem('selectedNavItem');
+if (selectedNavItem) {
+  const selectedLink = document.querySelector(`a[href="${selectedNavItem}"]`);
+  if (selectedLink) {
+    selectedLink.classList.add('active');
+  }
+}
+
+</script>
   
