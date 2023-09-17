@@ -86,8 +86,9 @@
                                                     <a href="edit.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
                                                 </td>
                                                 <td>
-                                                    <form action="code.php" method="POST">
-                                                        <button type="submit" name="delete_btn" value="<?=$key?>"class="btn btn-danger btn-sm">Xoá</button>
+                                                    <button onclick="confirmDelete('<?=$key;?>')" class="btn btn-danger btn-sm">Xoá</button>
+                                                    <form name="delete_form_<?=$key;?>" action="code.php" method="POST" style="display: none;">
+                                                        <input type="hidden" name="delete_btn" value="<?=$key;?>">
                                                     </form>
                                                 </td>
                                                 <td>
@@ -119,6 +120,16 @@
         </div> 
     </div>   
 </div>
+
+<script>
+    // JavaScript code to show a confirmation dialog
+    function confirmDelete(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa ?")) {
+            // If the user confirms, submit the form with the delete button
+            document.querySelector(`form[name='delete_form_${id}']`).submit();
+        }
+    }
+</script>
 
 <?php
     include('include/footer.php');

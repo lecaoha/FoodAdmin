@@ -53,37 +53,41 @@ if(isset($_POST['update_data']))
 }
 
 
+session_start(); // Start the PHP session
 
-
-if(isset($_POST['save_data']))
-{
+if (isset($_POST['save_data'])) {
     $menuId = $_POST['menuId'];
     $name = $_POST['name'];
     $image = $_POST['image'];
-   
-    $postData = [
-        'name'=> $name,
-        'image'=> $image,
-       
 
-    ];
-
+    // Check if the MenuId already exists in the Category table
     $ref_table = "Category";
-    $postRef = $database->getReference($ref_table)->getChild($menuId)->set($postData);
+    $checkRef = $database->getReference($ref_table)->getChild($menuId)->getSnapshot();
 
-    if($postRef)
-    {
-        $_SESSION['status'] = "Data Insert Successfully";
-        header("Location: index.php");
-    }
-    else
-    {
-        {
-            $_SESSION['status'] = "Data Not Insert";
-            header("Location: index.php");
+    if ($checkRef->exists()) {
+        // If the MenuId already exists, set an error message in the session
+        $_SESSION['status'] = "MenuId $menuId đã tồn tại.";
+        header("Location: add-contact.php?status=" . urlencode($_SESSION['status']));
+    } else {
+        // If the MenuId doesn't exist, insert the data
+        $postData = [
+            'name' => $name,
+            'image' => $image,
+        ];
+
+        $postRef = $database->getReference($ref_table)->getChild($menuId)->set($postData);
+
+        if ($postRef) {
+            $_SESSION['status'] = "Data Inserted Successfully";
+        } else {
+            $_SESSION['status'] = "Data Not Inserted";
         }
+        header("Location: index.php?status=" . urlencode($_SESSION['status']));
+
     }
+    exit(); // Terminate the script
 }
+
 
 // if(isset($_POST['save_product']))
 // {

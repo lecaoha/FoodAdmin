@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
     include('include/head.php');
 
 ?>
@@ -117,7 +119,7 @@
                                                 <td>
                                                 <form action="see.php?id=<?php echo urlencode($selectedMenuId); ?>" method="post">
                                                     <input type="hidden" name="delete_key" value="<?=$key;?>">
-                                                    <button type="submit" class="btn btn-danger btn-sm" name="delete_product">Xoá</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm" name="delete_product" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Xoá</button>
                                                 </form>                                       
                                                    </td>
                                             
