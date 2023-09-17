@@ -46,6 +46,7 @@ if (!empty($fetchdata)) {
         border: 2px solid #ccc;
         padding: 10px;
         display: flex;
+        border-radius: 10px;
         flex-direction: column;
         align-items: center;
         flex: 1;
@@ -59,8 +60,8 @@ if (!empty($fetchdata)) {
 
     .layout img {
         margin-bottom: 10px; /* Khoảng cách giữa ảnh và dòng văn bản */
-        width: 100px;
-        height: auto;
+        width: 70px;
+        height: 70px;
     }
 
     /* Áp dụng khoảng cách giữa các dòng văn bản */
@@ -68,6 +69,8 @@ if (!empty($fetchdata)) {
         margin: 5px 0; /* Khoảng cách 5px trên và dưới mỗi dòng văn bản */
     }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
 <div class="container">
     <div class="sidebar">
         <!-- Nội dung của sidebar -->
@@ -133,7 +136,49 @@ if (!empty($fetchdata)) {
                 </div>
             </div>
         </div>
+
+        <canvas id="revenueChart" width="400" height="150"></canvas>
+
     </div>
 </div>
+<script>
+  // Get the canvas element
+  var ctx = document.getElementById('revenueChart').getContext('2d');
+
+  // Define the data for the chart
+  var data = {
+    labels: ["Tổng doanh thu", "Lợi nhuận"],
+    datasets: [
+      {
+        label: "Số lượng ($)",
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
+        borderWidth: 1,
+        data: [<?php echo $totalSum; ?>, <?php echo $profit; ?>],
+      },
+    ],
+  };
+
+  // Define chart options
+  var options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, index, values) {
+            return '$' + value;
+          },
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options,
+  });
+</script>
 
 <?php include('include/footer.php'); ?>
