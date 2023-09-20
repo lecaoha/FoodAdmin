@@ -4,9 +4,8 @@ public class User {
     private String Name;
     private String Password;
     private String Phone;
-    private String password;
     private String IsStaff;
-    private String homeAddress;
+    private String Admin;
 
     public User(){
 
@@ -16,6 +15,8 @@ public class User {
         Name = name;
         Password = password;
         IsStaff ="false";
+        Admin ="false";
+
     }
 
     public String getIsStaff() {
@@ -50,11 +51,11 @@ public class User {
         Password = password;
     }
 
-    public String getHomeAddress() {
-        return homeAddress;
+    public String getAdmin() {
+        return Admin;
     }
 
-    public void setHomeAddress(String homeAddress) {
-        this.homeAddress = homeAddress;
+    public void setAdmin(String admin) {
+        Admin = admin;
     }
 }

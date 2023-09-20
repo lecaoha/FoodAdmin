@@ -1,4 +1,4 @@
-package com.myappfood.appfood.ViewHolder;
+package com.myappfood.appfood;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.myappfood.appfood.Common.Common;
 import com.myappfood.appfood.Model.User;
-import com.myappfood.appfood.R;
 
 public class Signup extends AppCompatActivity {
     EditText editPhone,editPass,editName;
@@ -37,12 +36,12 @@ public class Signup extends AppCompatActivity {
         btnSignup=(Button) findViewById(R.id.btnSignup);
         backLogin = findViewById(R.id.backLogin);
 
-//        backLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(Signup.this,Signin.class));
-//            }
-//        });
+        backLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Signup.this,Signin.class));
+            }
+        });
 
         //init firecase
         FirebaseDatabase database= FirebaseDatabase.getInstance("https://appfood-9abc2-default-rtdb.asia-southeast1.firebasedatabase.app");

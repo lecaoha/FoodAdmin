@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".Signup">
+    tools:context=".Signin">
 
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Đăng Ký"
+        android:text="Đăng Nhập"
         android:textColor="#FDFF95"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -72,8 +72,8 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
-        android:text="Tên Đăng Nhập"
+        android:layout_marginTop="30dp"
+        android:text="Mật Khẩu"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -91,81 +91,56 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <EditText
-            android:id="@+id/editName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:hint="Nhập Tên"
-            android:backgroundTint="#00000000"
-            android:inputType="text"
-            android:paddingStart="10dp"
-            android:text="" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
-        android:text="Mật Khẩu"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView1" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-        <EditText
             android:id="@+id/editPass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:hint="Nhập Mật Khẩu"
+            android:hint="Nhập mật khẩu"
             android:backgroundTint="#00000000"
             android:inputType="textPassword"
             android:paddingStart="10dp"
             android:text="" />
     </androidx.cardview.widget.CardView>
 
-
     <info.hoang8f.widget.FButton
-        android:id="@+id/btnSignup"
+        android:id="@+id/btnSignin"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#4A4DDF"
         android:shadowColor="@color/black"
-        android:text="Đăng Ký"
+        android:text="Đăng nhập"
         android:textColor="@color/white"
         app:cornerRadius="10dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView1"
+        app:layout_constraintStart_toStartOf="@+id/cardView1"
+        app:layout_constraintTop_toBottomOf="@+id/cardView1"
         app:shadowEnabled="true"
         app:shadowHeight="6dp" />
 
     <TextView
-        android:id="@+id/backLogin"
+        android:id="@+id/creatTk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Quay Lại Đăng Nhập"
+        android:text="Tạo tài khoản mới"
         android:textColor="#E43131"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnSignup"
-        app:layout_constraintStart_toStartOf="@+id/btnSignup"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignup" />
+        app:layout_constraintEnd_toEndOf="@+id/btnSignin"
+        app:layout_constraintStart_toStartOf="@+id/btnSignin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
 
-
+    <TextView
+        android:id="@+id/quenMk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu"
+        android:textColor="#E43131"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/creatTk"
+        app:layout_constraintStart_toStartOf="@+id/creatTk"
+        app:layout_constraintTop_toBottomOf="@+id/creatTk" />
 </androidx.constraintlayout.widget.ConstraintLayout>
