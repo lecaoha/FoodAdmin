@@ -46,6 +46,12 @@
           Doanh thu
         </a>
       </li>
+      <li>
+        <a href="product_reviews.php" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+          Đánh giá
+        </a>
+      </li>
     </ul>
     <hr>
     <div class="dropdown">
