@@ -14,7 +14,6 @@
 <body>
 <div class="container">
     <div class="sidebar">
-        <!-- Nội dung của sidebar -->
         <?php include('include/slidebar.php'); ?>
     </div>
     <div class="content">
