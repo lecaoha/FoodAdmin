@@ -75,7 +75,7 @@
                                                     <td><?php echo $i++; ?></td>
                                                     <td><?=$key;?></td>
                                                     <td><?=$row['name'];?></td>
-                                                    <td><?=$row['password'];?></td>
+                                                    <td>********</td>                                                  
                                                     <td>false</td> <!-- Hiển thị "false" -->
                                                     <td>
                                                         <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
