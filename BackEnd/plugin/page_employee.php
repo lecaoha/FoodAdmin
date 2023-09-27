@@ -60,6 +60,7 @@
                                     <th>Tên</th>
                                     <th>Mật Khẩu</th>
                                     <th>Nhân Viên</th>
+                                    <th>Admin</th>
                                     <th>Sửa</th>
                                     <th>Xoá</th>
 
@@ -86,8 +87,8 @@
                                                     <td><?php echo $i++; ?></td>
                                                     <td><?=$key;?></td>
                                                     <td><?=$row['name'];?></td>
-                                                    <td><?=$row['password'];?></td>
-                                                    <td>true</td> <!-- Hiển thị "true" -->
+                                                    <td>********</td>                                                    <td>true</td> <!-- Hiển thị "true" -->
+                                                    <td><?=$row['admin'];?></td>
                                                     <td>
                                                         <input type="hidden" name="id" value="<?= $key; ?>">
                                                         <a href="edit_employee.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
