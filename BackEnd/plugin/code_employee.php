@@ -11,12 +11,14 @@ if (isset($_POST['update_employee'])) {
     
     // Other form data
     $isStaff = $_POST['isStaff'];
+    $admin = $_POST['admin'];
     $name = $_POST['name'];
     $password = $_POST['password'];
 
     // Construct the update data array
     $updateData = [
         'isStaff' => $isStaff,
+        'admin' => $admin,
         'name' => $name,
         'password' => $password,
     ];

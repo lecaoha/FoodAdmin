@@ -5,11 +5,16 @@ $id = isset($_GET['id']) ? $_GET['id'] : '';
 ?>
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12"> <!-- This is a full-width column -->
+<div class="sidebar">
+    <!-- Nội dung của sidebar -->
+    <?php include('include/slidebar.php'); ?>   
+</div>
+<div class="content">
+        <div class="row">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h4>Cập nhật Nhân Viên <a href="page_employee.php" class="btn btn-danger float-end">Trở lại</a></h4>
+                    <h4 class="mb-0">Cập nhật Nhân Viên <a href="page_users.php" class="btn btn-danger float-end">Trở lại</a></h4>
                 </div>
                 <div class="card-body">
                     <?php
@@ -20,30 +25,32 @@ $id = isset($_GET['id']) ? $_GET['id'] : '';
                     ?>
 
                     <form action="code_employee.php" method="POST">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="validationCustom01" class="form-label">Số điện thoại</label>
-                                <input type="text" name="phonenumber" value="<?= $id; ?>" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="validationCustom02" class="form-label">Tên</label>
-                                <input type="text" name="name" value="<?=$editdata["name"];?>">
-                            </div>
-                        </div> <!-- End of the first row -->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="validationCustom01" class="form-label">Mật khẩu</label>
-                                <input type="text" name="password" value="<?=$editdata["password"];?>">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="validationCustom01" class="form-label">Nhân viên</label>
-                                <select name="isStaff">
-                                    <option value="true" <?php if ($editdata["isStaff"] === "true") echo "selected"; ?>>Yes</option>
-                                    <option value="false" <?php if ($editdata["isStaff"] === "false") echo "selected"; ?>>No</option>
-                                </select>
-                            </div>
-                        </div> <!-- End of the second row -->
-                        
+                        <div class="mb-3">
+                            <label for="phonenumber" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phonenumber" name="phonenumber" value="<?= $id; ?>" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="name" name="name" value="<?= $editdata["name"]; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="text" class="form-control" id="password" name="password" value="<?= $editdata["password"]; ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nhân viên</label>
+                            <select class="form-select" name="isStaff">
+                                <option value="true" <?php if ($editdata["isStaff"] === "true") echo "selected"; ?>>Yes</option>
+                                <option value="false" <?php if ($editdata["isStaff"] === "false") echo "selected"; ?>>No</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Admin</label>
+                            <select class="form-select" name="admin">
+                                <option value="true" <?php if ($editdata["admin"] === "true") echo "selected"; ?>>Yes</option>
+                                <option value="false" <?php if ($editdata["admin"] === "false") echo "selected"; ?>>No</option>
+                            </select>
+                        </div>
                         <button type="submit" name="update_employee" class="btn btn-primary">Cập Nhật</button>
                     </form>
                 </div>
