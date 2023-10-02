@@ -19,6 +19,8 @@ foreach ($fetchdata as $userId => $user) {
         echo "Admin Status: " . $user['admin'] . "<br>";
 
         if ($user['password'] == $password && $user['admin'] == 'true') {
+            $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
+
             $isAdmin = true;
             break;
         }
