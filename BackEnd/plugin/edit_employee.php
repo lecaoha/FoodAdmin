@@ -14,7 +14,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : '';
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="mb-0">Cập nhật Nhân Viên <a href="page_users.php" class="btn btn-danger float-end">Trở lại</a></h4>
+                    <h4 class="mb-0">Cập nhật Nhân Viên <a href="page_employee.php" class="btn btn-danger float-end">Trở lại</a></h4>
                 </div>
                 <div class="card-body">
                     <?php
@@ -35,7 +35,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : '';
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="text" class="form-control" id="password" name="password" value="<?= $editdata["password"]; ?>">
+                            <input type="text" class="form-control" id="password" name="password" value="********">
+                            <!-- <input type="text" class="form-control" id="password" name="password" value="<?= $editdata["password"]; ?>"> -->
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nhân viên</label>
