@@ -18,7 +18,7 @@
       <li >
         <a href="index.php" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#"></use></svg>
-          Sản Phẩm
+          Danh Mục
         </a>
       </li>
       
