@@ -45,7 +45,7 @@
                 </a>
 
                 <div class="d-lg-none">
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Reservation</button>
+                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Cart</button>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
