@@ -2,8 +2,59 @@
     include('include/head.php');
 
 ?>
+<style>
+   .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .layout {
+        border: 2px solid #ccc;
+        padding: 10px;
+        display: flex;
+        border-radius: 10px;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        margin-right: 10px;
+        background-color: #33FFFF;
+    }
+
+    .layout:last-child {
+        margin-right: 0;
+    }
+
+    .layout img {
+        margin-bottom: 2px; /* Khoảng cách giữa ảnh và dòng văn bản */
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Áp dụng khoảng cách giữa các dòng văn bản */
+    .layout p {
+        margin: 2px 0; /* Khoảng cách 5px trên và dưới mỗi dòng văn bản */
+    }
 
 
+.form-group {
+        padding-bottom: 10px;
+    }
+
+    .form-control {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        width: 50%;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+</style>
 <div class="container">
 <div class="sidebar">
     <!-- Nội dung của sidebar -->
@@ -22,11 +73,16 @@
                                 echo $totalnum;
                             ?>
                         </h3>
+                        
                     </div>
                 </div>
             </div>
+        
 
             <div class="col-md-12">
+            <div class="form-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm">
+    </div>
                 <?php
                     if(isset($_SESSION['status']))
                     {
@@ -121,6 +177,31 @@
     </div>   
 </div>
 
+<script>
+    // Function to perform search and filter products
+    function searchProducts() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toLowerCase();
+        table = document.querySelector('.table');
+        tr = table.getElementsByTagName('tr');
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName('td')[1]; // Change index to the appropriate column
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    }
+
+    // Add an event listener to trigger the search when the user types
+    document.getElementById('searchInput').addEventListener('keyup', searchProducts);
+</script>
 <script>
     // JavaScript code to show a confirmation dialog
     function confirmDelete(id) {

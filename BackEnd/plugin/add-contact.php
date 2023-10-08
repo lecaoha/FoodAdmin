@@ -26,10 +26,7 @@ include('include/head.php');
                         }
                         ?>
                         <form action="code.php" method="POST">
-                            <div class="form-group mb-3">
-                                <label for="">MenuId</label>
-                                <input type="number" name="menuId" class="form-control">
-                            </div>
+                            <!-- Loại bỏ trường nhập menuId -->
                             <div class="form-group mb-3">
                                 <label for="">Name</label>
                                 <input type="text" name="name" class="form-control">
