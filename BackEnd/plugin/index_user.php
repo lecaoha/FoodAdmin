@@ -11,7 +11,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>FastFood</title>
+
+        <title>Fast Food</title>
 
 
         <!-- CSS FILES -->    
@@ -242,11 +243,6 @@
                 
             </div>
         </div>
-
-        <!-- JAVASCRIPT FILES
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/custom.js"></script> -->
 
     </body>
 </html>
