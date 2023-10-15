@@ -53,6 +53,17 @@
         outline: 0;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
+    .total-category {
+    background-color: #007bff; /* Màu xanh */
+    color: #fff; /* Màu văn bản trắng */
+    padding: 10px; /* Khoảng cách đệm */
+    border-radius: 5px; /* Góc bo tròn */
+    }
+    .right{
+        float: right;
+        width: 80px;
+        background-color: #33FFFF;
+    }
 
 </style>
 <div class="container">
@@ -64,24 +75,32 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <div class="card mb-4">
-                    <div class="card-body">
-                        <h3>Tổng Danh Mục: 
-                        <?php
-                                include('dbcon.php');
-                                $ref_table = "Category";
-                                $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-                                echo $totalnum;
-                            ?>
+                <div class="card-body total-category">
+                        <h3 >Tổng Danh Mục 
+                        
                         </h3>
                         
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6 mb-3">
+    <div class="card mb-4 right">
+        <div class="card-body total">
+            <?php
+                include('dbcon.php');
+                $ref_table = "Category";
+                $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                echo '<div class="text-end"><span>'.$totalnum.'</span></div>';
+            ?>
+        </div>
+    </div>
+</div>
         
 
             <div class="col-md-12">
             <div class="form-group">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm">
+        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm danh mục">
     </div>
                 <?php
                     if(isset($_SESSION['status']))
@@ -103,9 +122,9 @@
                             <thead>
                                 <tr>
                                     <th>S1.no</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Menu Id</th>
+                                    <th>Tên</th>
+                                    <th>Ảnh</th>
+                                    <!-- <th>Menu Id</th> -->
                                     <th>Sửa</th>
                                     <th>Xoá</th>
                                     <th>Xem</th>
@@ -136,7 +155,7 @@
                                                     }
                                                     ?>
                                                 </td>
-                                                <td><?=$key;?></td>
+                                                <!-- <td><?=$key;?></td> -->
 
                                                 <td>
                                                     <a href="edit.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>

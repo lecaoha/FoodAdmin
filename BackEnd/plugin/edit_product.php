@@ -28,13 +28,26 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
                         <input type="hidden" name="id" value="<?=$id;?>">
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="validationCustom01" class="form-label">Tên Danh Mục</label>
+                                <label for="validationCustom01" class="form-label">Tên Sản Phẩm</label>
                                 <input type="text" name="name" value="<?=$editdata["name"];?>" class="form-control" id="validationCustom01">
                             </div>
                             <div class="col-md-4">
-                                <label for="validationCustom01" class="form-label">Menu Id</label>
-                                <input type="text" name="menuId" value="<?=$editdata["menuId"];?>" class="form-control" id="validationCustom01">
-                            </div>
+        <label for="validationCustom01" class="form-label">Danh Mục</label>
+        <select id="menuSelect" class="form-control" name="menuId">
+            <option value="" selected disabled>Chọn danh mục</option>
+            <?php
+            // Kết nối Firebase và truy vấn danh sách category
+            include('dbcon.php');
+            $ref_table = 'Category';
+            $categories = $database->getReference($ref_table)->getValue();
+
+            foreach ($categories as $key => $category) {
+                $selected = ($key == $editdata["menuId"]) ? 'selected' : '';
+                echo '<option value="' . $key . '" ' . $selected . '>' . $category['name'] . '</option>';
+            }
+            ?>
+        </select>
+    </div>
                             <div class="col-md-4">
                                 <label for="validationCustom02" class="form-label">Price</label>
                                 <input type="number" name="price" value="<?=$editdata["price"];?>" class="form-control" id="validationCustom02">
@@ -77,6 +90,25 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
     </div>
 </div>
 
+<script>
+    // Lắng nghe sự kiện thay đổi giá trị của dropdown
+    document.getElementById('menuSelect').addEventListener('change', function () {
+        var selectedOption = this.options[this.selectedIndex];
+        var selectedMenuName = selectedOption.value;
+
+        // Lặp qua danh sách danh mục để tìm `menuId` tương ứng với tên được chọn
+        var categories = <?php echo json_encode($categories); ?>;
+        var selectedMenuId = null;
+        for (var $key in categories) {
+            if (categories[key].name === selectedMenuName) {
+                selectedMenuId = key;
+                break;
+            }
+        }
+
+        document.querySelector('input[name="menuId"]').value = selectedMenuId;
+    });
+</script>
 <?php
 include('include/footer.php');
 ?>

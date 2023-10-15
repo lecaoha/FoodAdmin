@@ -40,6 +40,10 @@
                                         <label for="">Nhân Viên</label>
                                         <input type="text" name="isStaff" class="form-contol">
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="">Admin</label>
+                                        <input type="text" name="admin" class="form-contol">
+                                    </div>
                                     
                                     <div class="form-group mb-3">
                                         <button type="submit" name="save_user" class="btn btn-primary">Lưu</button>
