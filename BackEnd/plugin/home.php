@@ -106,6 +106,7 @@ if (!empty($fetchdata)) {
     .layout:nth-child(4) { /* Thay đổi màu cho hình ảnh 4 */
         background-color: #FF33FF; /* Màu nền cho hình ảnh 4 */
     }
+   
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
@@ -167,11 +168,9 @@ if (!empty($fetchdata)) {
         
         <div class="content">
         <div class="row">
-
+        
             <div class="col-md-12">
-            <div class="form-group">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm">
-    </div>
+            
                 <?php
                     if(isset($_SESSION['status']))
                     {
@@ -179,160 +178,230 @@ if (!empty($fetchdata)) {
                         unset($_SESSION['status']);
                     }
                 ?>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h4>
-                        Sản Phẩm 
-                        <?php
-                            $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
-
-                            if (isset($_GET['id'])) {
-                                $selectedMenuId = $_GET['id'];
-                            }
-                        ?>
-                            
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <td>
-                            <a href="add-product.php?menuId=<?php echo urlencode($selectedMenuId); ?>" class="btn btn-primary">Thêm sản phẩm</a>
-                        </td>                        
-                    </div>
+                        Đơn Hàng Chờ Xác Nhận
                         </h4>
                     </div>
                     <div class="card-body">
-                   
+                    <?php
+                    if (!empty($fetchdata)) {
+                    ?>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Số điện thoại</th>
+                    <th>Tên</th>
+                    <th>Trạng thái</th>
+                    <th>Địa chỉ</th>
+                    <th>Bình luận</th>
+                    <th>Tổng</th>
+                    <th>Sửa</th>
+                    <th>Xoá</th>
+                    <th>Xem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include('dbcon.php');
+                $ref_table = 'Requests';
+                $fetchdata = $database->getReference($ref_table)->getValue();
+                $ordersFound = false;
+                if (!empty($fetchdata)) {
+                    foreach ($fetchdata as $key => $row) {
+                        if ($row['status'] == 0) { // Only display orders with status 0 (Chờ xác nhận)
+
+                        ?>
+                        <tr>
+                            <td><?= $key; ?></td>
+                            <td><?= $row['phone']; ?></td>
+                            <td><?= $row['name']; ?></td>
+                            <td>
+                                <select class="form-select" onchange="changeStatus(this, '<?= $key ?>')">
+                                    <option value="0" <?= ($row['status'] == 0) ? 'selected' : ''; ?>>Chờ xác nhận</option>
+                                    <option value="1" <?= ($row['status'] == 1) ? 'selected' : ''; ?>>Đang giao</option>
+                                    <option value="2" <?= ($row['status'] == 2) ? 'selected' : ''; ?>>Giao thành công</option>
+                                    <option value="3" <?= ($row['status'] == 3) ? 'selected' : ''; ?>>Đơn hàng bị hủy</option>
+                                </select>
+                            </td>
+                            <td><?= $row['address']; ?></td>
+                            <td><?= $row['comment']; ?></td>
+                            <td><?= $row['total']; ?></td>
+
+                            <td>
+                                <a href="edit_order.php?id=<?= $key; ?>" class="btn btn-primary btn-sm">Sửa</a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="deleteOrder('<?= $key ?>')">Xoá</button>
+                            </td>
+                            <td>
+                                <a href="see_order.php?id=<?= $key; ?>" class="btn btn-info btn-sm">Xem</a>
+                            </td>                        
+                            
+                        </tr>
+                        
+                <?php
+                $ordersFound = true;
+                    }
+                }
+            }
+                if (!$ordersFound) { // Check the flag to display the message
+                    ?>
+                    <tr>
+                        <td colspan="10"><h5>Không có đơn hàng nào chờ xác nhận</h5></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+            
+        </table>
+        <?php
+                    } else {
+                        // Display a message when there are no orders
+                        echo "<p>Không có đơn hàng nào.</p>";
+                    }
+                    ?>
+    </div>
+</div>
+              
+                </div>
+
+            </div>
+
+       
+        </div>  
+        <div class="content">
+        <div class="card">
+                    <div class="card-header">
+                    <?php
+                            include('dbcon.php');
+                            $ref_table = "User";
+                            $totalnum = 0; // Khởi tạo biến đếm
+                            $fetchdata = $database->getReference($ref_table)->getValue();
+
+                            foreach ($fetchdata as $key => $row) {
+                                // Kiểm tra nếu isStaff là false
+                                if ($row['isStaff'] === 'false') {
+                                    $totalnum++; // Tăng biến đếm khi tìm thấy tài khoản không phải nhân viên
+                                }
+                            }
+
+                        ?>
+                        <h4>
+                        Tài khoản Mới 
+                            <a href="add_users.php" class = "btn btn-primary float-end">Thêm</a>
+                        </h4>
+                    </div>
+                    <div class="card-body">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>S1.no</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Menu Id</th>
-                                    <th>discount</th>
-                                    <th>description</th>
+                                    <th>Số Điện Thoại</th>
+                                    <th>Tên</th>
+                                    <th>Mật Khẩu</th>
+                                    <th>Nhân Viên</th>
                                     <th>Sửa</th>
                                     <th>Xoá</th>
-
-
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                            <?php
-                                include('dbcon.php');
-                                if (isset($_POST['delete_product'])) {
-                                    $deleteKey = $_POST['delete_key'];
-
-                                    // Thực hiện việc xoá sản phẩm dựa trên khóa
-                                    $ref_table = 'Foods';
-                                    $database->getReference($ref_table)->getChild($deleteKey)->remove();
-
-                                    // Refresh trang để cập nhật danh sách sản phẩm
-                                    header("Location: see.php?id=" . urlencode($selectedMenuId));
-                                    exit();
-                                }
-                            ?>
                                 <?php
-                                    include('dbcon.php');
-                                    $ref_table ='Foods';
-                                    $fetchdata = $database->getReference($ref_table)->getValue();
-
-
-                                    $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
-
-                                    if (isset($_GET['id'])) {
-                                        $selectedMenuId = $_GET['id'];
-                                    }
-
-
-                                    if($fetchdata>0)
+                                    if($totalnum > 0) // Kiểm tra nếu có tài khoản không phải nhân viên
                                     {
                                         $i=0;
                                         foreach ($fetchdata as $key => $row) {
-                                       
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $i++; ?></td>
-                                                <td><?=$row['name'];?></td>
-                                                <td>
-                                                    <?php
-                                                    if (!empty($row['image'])) {
-                                                        echo '<img src="' . $row['image'] . '" alt="Category Image" style="max-width: 100px; max-height: 100px;">';
-                                                    } else {
-                                                        echo 'No Image';
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><?=$row['price'];?></td>
-
-                                                <td><?=$row['menuId'];?></td>
-                                                <td><?=$row['discount'];?></td>
-                                                <td><?=$row['description'];?></td>
-
-                                                <td>
-                                                    <a href="edit_product.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
-                                                </td>                                           
-                                                <td>
-                                                <form action="see.php?id=<?php echo urlencode($selectedMenuId); ?>" method="post">
-                                                    <input type="hidden" name="delete_key" value="<?=$key;?>">
-                                                    <button type="submit" class="btn btn-danger btn-sm" name="delete_product" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Xoá</button>
-                                                </form>                                       
-                                                   </td>
-                                            
-                                            </tr>
-                                            <?php
-                                            }                                       
-
-                                    }else{
+                                            // Kiểm tra nếu isStaff là false
+                                            if ($row['isStaff'] === 'false') {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i++; ?></td>
+                                                    <td><?=$key;?></td>
+                                                    <td><?=$row['name'];?></td>
+                                                    <td>********</td>                                                  
+                                                    <td>false</td> <!-- Hiển thị "false" -->
+                                                    <td>
+                                                        <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                    </td>
+                                                    <td>
+                                                        <form action="code_users.php" method="POST">
+                                                            <button type="submit" name="delete_btn" value="<?=$key?>" class="btn btn-danger btn-sm">Xoá</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                        }
+                                    } else {
                                         ?>
-                                            <tr>
-                                                <td colspan="7" >No Record Found</td>
-                                            </tr>
+                                        <tr>
+                                            <td colspan="5" >Không có tài khoản Khách Hàng</td>
+                                        </tr>
                                         <?php
                                     }
                                 ?>
-                                <tr>
-                                    <td></td>
-                                </tr>
                             </tbody>
-                            </table>
-                        </div>
-
+                        </table>
                     </div>
                 </div>
-
-            </div>
-        </div>  
-
-
+        </div>
     </div>
 </div>
-<script>
-    // Function to perform search and filter products
-    function searchProducts() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById('searchInput');
-        filter = input.value.toLowerCase();
-        table = document.querySelector('.table');
-        tr = table.getElementsByTagName('tr');
 
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName('td')[1]; // Change index to the appropriate column
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    tr[i].style.display = '';
-                } else {
-                    tr[i].style.display = 'none';
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function changeStatus(selectElement, orderId) {
+    const newStatus = selectElement.value;
+    
+    // Gửi yêu cầu cập nhật trạng thái đến máy chủ bằng AJAX.
+    $.ajax({
+        url: 'code_order.php', // Đặt tên tệp xử lý AJAX tại đây
+        type: 'POST',
+        data: { orderId: orderId, newStatus: newStatus },
+        success: function(response) {
+            // Xử lý kết quả trả về từ máy chủ (nếu cần).
+            // Ví dụ: có thể hiển thị thông báo thành công
+            alert(response);
+        }
+    });
+}
+function changeStatus(selectElement, orderId) {
+    const newStatus = selectElement.value;
+    
+    // Gửi yêu cầu cập nhật trạng thái đến máy chủ bằng AJAX.
+    $.ajax({
+        url: 'code_order.php', // Đặt tên tệp xử lý AJAX tại đây
+        type: 'POST',
+        data: { orderId: orderId, newStatus: newStatus },
+        success: function(response) {
+            // Xử lý kết quả trả về từ máy chủ (nếu cần).
+            // Ví dụ: có thể hiển thị thông báo thành công
+            alert(response);
+            
+            // Reset the page after confirming the order
+            location.reload(); // This line will refresh the page
+        }
+    });
+}
+
+function deleteOrder(orderId) {
+        if (confirm("Bạn có chắc chắn muốn xoá đơn hàng này không?")) {
+            $.ajax({
+                url: 'delete_order.php',
+                type: 'POST',
+                data: { delete_order_id: orderId },
+                success: function(response) {
+                    alert(response);
+                    // Tải lại trang để cập nhật danh sách đơn hàng
+                    location.reload();
                 }
-            }
+            });
         }
     }
-
-    // Add an event listener to trigger the search when the user types
-    document.getElementById('searchInput').addEventListener('keyup', searchProducts);
 </script>
+
 <script>
   // Get the canvas element
   var ctx = document.getElementById('revenueChart').getContext('2d');

@@ -66,11 +66,13 @@ if(isset($_POST['save_user']))
     $isStaff = $_POST['isStaff'];
     $name = $_POST['name'];
     $password = $_POST['password'];
+    $admin = $_POST['admin'];
    
     $postData = [
         'isStaff' => $isStaff,
         'name' => $name,
-        'password' => $password
+        'password' => $password,
+        'admin' => $admin
        
 
     ];
