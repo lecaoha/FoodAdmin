@@ -268,89 +268,122 @@ if (!empty($fetchdata)) {
               
                 </div>
 
-            </div>
+            </div> 
 
-       
-        </div>  
-        <div class="content">
-        <div class="card">
-                    <div class="card-header">
-                    <?php
-                            include('dbcon.php');
-                            $ref_table = "User";
-                            $totalnum = 0; // Khởi tạo biến đếm
-                            $fetchdata = $database->getReference($ref_table)->getValue();
+            <?php
+ $week1Revenue = 0;
+ $week2Revenue = 0;
+ $week3Revenue = 0;
+ $week4Revenue = 0;
+ $month1Revenue = 0;
+ $month2Revenue = 0;
+ $month3Revenue = 0;
+ $month4Revenue = 0;
+ $yearRevenue = 0;
+ 
+ // Lấy dữ liệu đơn hàng từ cơ sở dữ liệu hoặc dự liệu JSON của bạn
+ include('dbcon.php');
+ $ref_table = 'Requests';
+ $fetchdata = $database->getReference($ref_table)->getValue();
+ 
+ // Lấy ngày hiện tại
+ $currentDate = date('Y-m-d');
+ 
+ if (!empty($fetchdata)) {
+     foreach ($fetchdata as $key => $row) {
+         if ($row['status'] == 2) { // Đã giao thành công
+ 
+             // Tính tổng doanh thu theo tuần
+             $orderDate = $row['order_date'];
+             $orderDate = date('Y-m-d', strtotime($orderDate));
+             $orderWeek = date('W', strtotime($orderDate));
+             $currentWeek = date('W', strtotime($currentDate));
+ 
+             if ($orderWeek == $currentWeek) {
+                 $week1Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 1) {
+                 $week2Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 2) {
+                 $week3Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 3) {
+                 $week4Revenue += str_replace(['$', ','], '', $row['total']);
+             }
+ 
+             // Tính tổng doanh thu theo tháng
+             $orderMonth = date('n', strtotime($orderDate));
+             $currentMonth = date('n', strtotime($currentDate));
+ 
+             if ($orderMonth == $currentMonth) {
+                 $month1Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 1) {
+                 $month2Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 2) {
+                 $month3Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 3) {
+                 $month4Revenue += str_replace(['$', ','], '', $row['total']);
+             }
+ 
+             // Tính tổng doanh thu theo năm
+             $orderYear = date('Y', strtotime($orderDate));
+             $currentYear = date('Y', strtotime($currentDate));
+ 
+             if ($orderYear == $currentYear) {
+                 $yearRevenue += str_replace(['$', ','], '', $row['total']);
+             }
+         }
+     }
+ }
+            ?>
+            <canvas id="revenueChart" width="400" height="200"></canvas>
 
-                            foreach ($fetchdata as $key => $row) {
-                                // Kiểm tra nếu isStaff là false
-                                if ($row['isStaff'] === 'false') {
-                                    $totalnum++; // Tăng biến đếm khi tìm thấy tài khoản không phải nhân viên
-                                }
-                            }
 
-                        ?>
-                        <h4>
-                        Tài khoản Mới 
-                            <a href="add_users.php" class = "btn btn-primary float-end">Thêm</a>
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>S1.no</th>
-                                    <th>Số Điện Thoại</th>
-                                    <th>Tên</th>
-                                    <th>Mật Khẩu</th>
-                                    <th>Nhân Viên</th>
-                                    <th>Sửa</th>
-                                    <th>Xoá</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    if($totalnum > 0) // Kiểm tra nếu có tài khoản không phải nhân viên
-                                    {
-                                        $i=0;
-                                        foreach ($fetchdata as $key => $row) {
-                                            // Kiểm tra nếu isStaff là false
-                                            if ($row['isStaff'] === 'false') {
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $i++; ?></td>
-                                                    <td><?=$key;?></td>
-                                                    <td><?=$row['name'];?></td>
-                                                    <td>********</td>                                                  
-                                                    <td>false</td> <!-- Hiển thị "false" -->
-                                                    <td>
-                                                        <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
-                                                    </td>
-                                                    <td>
-                                                        <form action="code_users.php" method="POST">
-                                                            <button type="submit" name="delete_btn" value="<?=$key?>" class="btn btn-danger btn-sm">Xoá</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                        }
-                                    } else {
-                                        ?>
-                                        <tr>
-                                            <td colspan="5" >Không có tài khoản Khách Hàng</td>
-                                        </tr>
-                                        <?php
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-        </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+
+
+<script>
+  // Get the canvas element
+  var ctx = document.getElementById('revenueChart').getContext('2d');
+
+  // Define the data for the chart
+  var data = {
+    labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Năm 2023"],
+    datasets: [
+      {
+        label: "Số lượng ($)",
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
+        borderWidth: 1,
+        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>, <?= $month1Revenue; ?>, <?= $month2Revenue; ?>, <?= $month3Revenue; ?>, <?= $month4Revenue; ?>, <?= $yearRevenue; ?>],
+      },
+    ],
+  };
+
+  // Define chart options
+  var options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, index, values) {
+            return '$' + value;
+          },
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  var revenueChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options,
+  });
+</script>
 <script>
     function changeStatus(selectElement, orderId) {
     const newStatus = selectElement.value;
