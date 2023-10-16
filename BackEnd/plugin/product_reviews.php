@@ -11,7 +11,13 @@
             text-align: center;
             margin: 20px;
         }
-
+        .total-category {
+    background-color: #007bff; /* Màu xanh */
+    color: #fff; /* Màu văn bản trắng */
+    padding: 10px; /* Khoảng cách đệm */
+    border-radius: 5px; /* Góc bo tròn */
+    }
+    
         h1 {
             color: #333;
         }
@@ -109,7 +115,7 @@
         .back-button:hover {
             background-color: #45a049;
         }
-
+        
     </style>
 </head>
 <body>
@@ -129,7 +135,14 @@
     $food_data = $food_ref->getValue();
     ?>
 
-    <h2>Đánh Giá Sản Phẩm</h2>
+        <div class="col-md-6 mb-3">
+                <div class="card mb-4">
+                <div class="card-body total-category">
+                    <h3>Đánh Giá Sản Phẩm</h3>
+
+                    </div>
+                </div>
+            </div>
     <label for="ratingFilter">Chọn số sao:</label>
     <select id="ratingFilter">
         <option value="0">Tất cả</option>

@@ -47,12 +47,12 @@ ob_start();
                             <thead>
                                 <tr>
                                     <th>S1.no</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Menu Id</th>
-                                    <th>discount</th>
-                                    <th>description</th>
+                                    <th>Tên</th>
+                                    <th>Ảnh</th>
+                                    <th>Giá</th>
+                                    <th>Danh mục</th>
+                                    <th>Giảm giá</th>
+                                    <th>Mô tả</th>
                                     <th>Sửa</th>
                                     <th>Xoá</th>
 
@@ -109,7 +109,25 @@ ob_start();
                                                 </td>
                                                 <td><?=$row['price'];?></td>
 
-                                                <td><?=$row['menuId'];?></td>
+                                                <td>
+    <?php
+    if (!empty($row['menuId'])) {
+        // Tìm tên danh mục tương ứng với menuId
+        $menuId = $row['menuId'];
+        $ref_table = 'Category';
+        $categories = $database->getReference($ref_table)->getValue();
+        
+        if (isset($categories[$menuId])) {
+            $menuName = $categories[$menuId]['name'];
+            echo $menuName;
+        } else {
+            echo 'Unknown Category';
+        }
+    } else {
+        echo 'N/A';
+    }
+    ?>
+</td>
                                                 <td><?=$row['discount'];?></td>
                                                 <td><?=$row['description'];?></td>
 

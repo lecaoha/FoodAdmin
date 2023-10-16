@@ -37,6 +37,12 @@ if (!empty($fetchdata)) {
 }
 ?>
 <style>
+    .total-category {
+    background-color: #007bff; /* Màu xanh */
+    color: #fff; /* Màu văn bản trắng */
+    padding: 10px; /* Khoảng cách đệm */
+    border-radius: 5px; /* Góc bo tròn */
+    }
     .row {
         display: flex;
         justify-content: space-between;
@@ -80,7 +86,7 @@ if (!empty($fetchdata)) {
         <div class="row">
             <div class="col-md-6 mb-3">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body total-category">
                         <h3>Thống kê doanh thu</h3>
                     </div>
                 </div>

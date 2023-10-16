@@ -16,22 +16,26 @@ session_start();
 
     <div class="wrapper">
         <form action="logincode.php" method="POST">
-            <h1>Login</h1>
+            <h1>Đăng Nhập</h1>
             <div class="input-box">
-                <input name="phonenumber" type="text" placeholder="PhoneNumber"
+                <input name="phonenumber" type="text" placeholder="Số điện thoại"
                 required>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input name="password" type="password" placeholder="Password"
+                <input name="password" type="password" placeholder="Mật khẩu"
                 required>
                 <i class='bx bxs-lock-alt'></i>
             </div>
+
             <div class="remember-forgot">
-                <label><input type="checkbox">Remember me</label>
+                <label><input type="checkbox">Ghi nhớ</label>
             </div>
             <button type="submit" name="login_now_btn" class="btn">Login</button>
-            
+        </form>
+        <div class="register-link">
+            <p>Tôi chưa có tài khoản? <a href="register.php">Đăng kí ngay</a></p>
+        </div>
 
     </div>
   </body>

@@ -106,6 +106,7 @@ if (!empty($fetchdata)) {
     .layout:nth-child(4) { /* Thay đổi màu cho hình ảnh 4 */
         background-color: #FF33FF; /* Màu nền cho hình ảnh 4 */
     }
+   
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
@@ -167,11 +168,9 @@ if (!empty($fetchdata)) {
         
         <div class="content">
         <div class="row">
-
+        
             <div class="col-md-12">
-            <div class="form-group">
-        <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm">
-    </div>
+            
                 <?php
                     if(isset($_SESSION['status']))
                     {
@@ -179,160 +178,263 @@ if (!empty($fetchdata)) {
                         unset($_SESSION['status']);
                     }
                 ?>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h4>
-                        Sản Phẩm 
-                        <?php
-                            $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
-
-                            if (isset($_GET['id'])) {
-                                $selectedMenuId = $_GET['id'];
-                            }
-                        ?>
-                            
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <td>
-                            <a href="add-product.php?menuId=<?php echo urlencode($selectedMenuId); ?>" class="btn btn-primary">Thêm sản phẩm</a>
-                        </td>                        
-                    </div>
+                        Đơn Hàng Chờ Xác Nhận
                         </h4>
                     </div>
                     <div class="card-body">
-                   
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>S1.no</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Menu Id</th>
-                                    <th>discount</th>
-                                    <th>description</th>
-                                    <th>Sửa</th>
-                                    <th>Xoá</th>
+                    <?php
+                    if (!empty($fetchdata)) {
+                    ?>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Số điện thoại</th>
+                    <th>Tên</th>
+                    <th>Trạng thái</th>
+                    <th>Địa chỉ</th>
+                    <th>Bình luận</th>
+                    <th>Tổng</th>
+                    <th>Sửa</th>
+                    <th>Xoá</th>
+                    <th>Xem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include('dbcon.php');
+                $ref_table = 'Requests';
+                $fetchdata = $database->getReference($ref_table)->getValue();
+                $ordersFound = false;
+                if (!empty($fetchdata)) {
+                    foreach ($fetchdata as $key => $row) {
+                        if ($row['status'] == 0) { // Only display orders with status 0 (Chờ xác nhận)
 
+                        ?>
+                        <tr>
+                            <td><?= $key; ?></td>
+                            <td><?= $row['phone']; ?></td>
+                            <td><?= $row['name']; ?></td>
+                            <td>
+                                <select class="form-select" onchange="changeStatus(this, '<?= $key ?>')">
+                                    <option value="0" <?= ($row['status'] == 0) ? 'selected' : ''; ?>>Chờ xác nhận</option>
+                                    <option value="1" <?= ($row['status'] == 1) ? 'selected' : ''; ?>>Đang giao</option>
+                                    <option value="2" <?= ($row['status'] == 2) ? 'selected' : ''; ?>>Giao thành công</option>
+                                    <option value="3" <?= ($row['status'] == 3) ? 'selected' : ''; ?>>Đơn hàng bị hủy</option>
+                                </select>
+                            </td>
+                            <td><?= $row['address']; ?></td>
+                            <td><?= $row['comment']; ?></td>
+                            <td><?= $row['total']; ?></td>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            <?php
-                                include('dbcon.php');
-                                if (isset($_POST['delete_product'])) {
-                                    $deleteKey = $_POST['delete_key'];
-
-                                    // Thực hiện việc xoá sản phẩm dựa trên khóa
-                                    $ref_table = 'Foods';
-                                    $database->getReference($ref_table)->getChild($deleteKey)->remove();
-
-                                    // Refresh trang để cập nhật danh sách sản phẩm
-                                    header("Location: see.php?id=" . urlencode($selectedMenuId));
-                                    exit();
-                                }
-                            ?>
-                                <?php
-                                    include('dbcon.php');
-                                    $ref_table ='Foods';
-                                    $fetchdata = $database->getReference($ref_table)->getValue();
-
-
-                                    $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
-
-                                    if (isset($_GET['id'])) {
-                                        $selectedMenuId = $_GET['id'];
-                                    }
-
-
-                                    if($fetchdata>0)
-                                    {
-                                        $i=0;
-                                        foreach ($fetchdata as $key => $row) {
-                                       
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $i++; ?></td>
-                                                <td><?=$row['name'];?></td>
-                                                <td>
-                                                    <?php
-                                                    if (!empty($row['image'])) {
-                                                        echo '<img src="' . $row['image'] . '" alt="Category Image" style="max-width: 100px; max-height: 100px;">';
-                                                    } else {
-                                                        echo 'No Image';
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><?=$row['price'];?></td>
-
-                                                <td><?=$row['menuId'];?></td>
-                                                <td><?=$row['discount'];?></td>
-                                                <td><?=$row['description'];?></td>
-
-                                                <td>
-                                                    <a href="edit_product.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
-                                                </td>                                           
-                                                <td>
-                                                <form action="see.php?id=<?php echo urlencode($selectedMenuId); ?>" method="post">
-                                                    <input type="hidden" name="delete_key" value="<?=$key;?>">
-                                                    <button type="submit" class="btn btn-danger btn-sm" name="delete_product" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Xoá</button>
-                                                </form>                                       
-                                                   </td>
-                                            
-                                            </tr>
-                                            <?php
-                                            }                                       
-
-                                    }else{
-                                        ?>
-                                            <tr>
-                                                <td colspan="7" >No Record Found</td>
-                                            </tr>
-                                        <?php
-                                    }
-                                ?>
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                            </table>
-                        </div>
-
-                    </div>
+                            <td>
+                                <a href="edit_order.php?id=<?= $key; ?>" class="btn btn-primary btn-sm">Sửa</a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="deleteOrder('<?= $key ?>')">Xoá</button>
+                            </td>
+                            <td>
+                                <a href="see_order.php?id=<?= $key; ?>" class="btn btn-info btn-sm">Xem</a>
+                            </td>                        
+                            
+                        </tr>
+                        
+                <?php
+                $ordersFound = true;
+                    }
+                }
+            }
+                if (!$ordersFound) { // Check the flag to display the message
+                    ?>
+                    <tr>
+                        <td colspan="10"><h5>Không có đơn hàng nào chờ xác nhận</h5></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+            
+        </table>
+        <?php
+                    } else {
+                        // Display a message when there are no orders
+                        echo "<p>Không có đơn hàng nào.</p>";
+                    }
+                    ?>
+    </div>
+</div>
+              
                 </div>
 
-            </div>
-        </div>  
+            </div> 
+
+            <?php
+ $week1Revenue = 0;
+ $week2Revenue = 0;
+ $week3Revenue = 0;
+ $week4Revenue = 0;
+ $month1Revenue = 0;
+ $month2Revenue = 0;
+ $month3Revenue = 0;
+ $month4Revenue = 0;
+ $yearRevenue = 0;
+ 
+ // Lấy dữ liệu đơn hàng từ cơ sở dữ liệu hoặc dự liệu JSON của bạn
+ include('dbcon.php');
+ $ref_table = 'Requests';
+ $fetchdata = $database->getReference($ref_table)->getValue();
+ 
+ // Lấy ngày hiện tại
+ $currentDate = date('Y-m-d');
+ 
+ if (!empty($fetchdata)) {
+     foreach ($fetchdata as $key => $row) {
+         if ($row['status'] == 2) { // Đã giao thành công
+ 
+             // Tính tổng doanh thu theo tuần
+             $orderDate = $row['order_date'];
+             $orderDate = date('Y-m-d', strtotime($orderDate));
+             $orderWeek = date('W', strtotime($orderDate));
+             $currentWeek = date('W', strtotime($currentDate));
+ 
+             if ($orderWeek == $currentWeek) {
+                 $week1Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 1) {
+                 $week2Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 2) {
+                 $week3Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderWeek == $currentWeek - 3) {
+                 $week4Revenue += str_replace(['$', ','], '', $row['total']);
+             }
+ 
+             // Tính tổng doanh thu theo tháng
+             $orderMonth = date('n', strtotime($orderDate));
+             $currentMonth = date('n', strtotime($currentDate));
+ 
+             if ($orderMonth == $currentMonth) {
+                 $month1Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 1) {
+                 $month2Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 2) {
+                 $month3Revenue += str_replace(['$', ','], '', $row['total']);
+             } elseif ($orderMonth == $currentMonth - 3) {
+                 $month4Revenue += str_replace(['$', ','], '', $row['total']);
+             }
+ 
+             // Tính tổng doanh thu theo năm
+             $orderYear = date('Y', strtotime($orderDate));
+             $currentYear = date('Y', strtotime($currentDate));
+ 
+             if ($orderYear == $currentYear) {
+                 $yearRevenue += str_replace(['$', ','], '', $row['total']);
+             }
+         }
+     }
+ }
+            ?>
+            <canvas id="revenueChart" width="400" height="200"></canvas>
 
 
     </div>
 </div>
-<script>
-    // Function to perform search and filter products
-    function searchProducts() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById('searchInput');
-        filter = input.value.toLowerCase();
-        table = document.querySelector('.table');
-        tr = table.getElementsByTagName('tr');
 
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName('td')[1]; // Change index to the appropriate column
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    tr[i].style.display = '';
-                } else {
-                    tr[i].style.display = 'none';
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+
+
+<script>
+  // Get the canvas element
+  var ctx = document.getElementById('revenueChart').getContext('2d');
+
+  // Define the data for the chart
+  var data = {
+    labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Năm 2023"],
+    datasets: [
+      {
+        label: "Số lượng ($)",
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
+        borderWidth: 1,
+        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>, <?= $month1Revenue; ?>, <?= $month2Revenue; ?>, <?= $month3Revenue; ?>, <?= $month4Revenue; ?>, <?= $yearRevenue; ?>],
+      },
+    ],
+  };
+
+  // Define chart options
+  var options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, index, values) {
+            return '$' + value;
+          },
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  var revenueChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options,
+  });
+</script>
+<script>
+    function changeStatus(selectElement, orderId) {
+    const newStatus = selectElement.value;
+    
+    // Gửi yêu cầu cập nhật trạng thái đến máy chủ bằng AJAX.
+    $.ajax({
+        url: 'code_order.php', // Đặt tên tệp xử lý AJAX tại đây
+        type: 'POST',
+        data: { orderId: orderId, newStatus: newStatus },
+        success: function(response) {
+            // Xử lý kết quả trả về từ máy chủ (nếu cần).
+            // Ví dụ: có thể hiển thị thông báo thành công
+            alert(response);
+        }
+    });
+}
+function changeStatus(selectElement, orderId) {
+    const newStatus = selectElement.value;
+    
+    // Gửi yêu cầu cập nhật trạng thái đến máy chủ bằng AJAX.
+    $.ajax({
+        url: 'code_order.php', // Đặt tên tệp xử lý AJAX tại đây
+        type: 'POST',
+        data: { orderId: orderId, newStatus: newStatus },
+        success: function(response) {
+            // Xử lý kết quả trả về từ máy chủ (nếu cần).
+            // Ví dụ: có thể hiển thị thông báo thành công
+            alert(response);
+            
+            // Reset the page after confirming the order
+            location.reload(); // This line will refresh the page
+        }
+    });
+}
+
+function deleteOrder(orderId) {
+        if (confirm("Bạn có chắc chắn muốn xoá đơn hàng này không?")) {
+            $.ajax({
+                url: 'delete_order.php',
+                type: 'POST',
+                data: { delete_order_id: orderId },
+                success: function(response) {
+                    alert(response);
+                    // Tải lại trang để cập nhật danh sách đơn hàng
+                    location.reload();
                 }
-            }
+            });
         }
     }
-
-    // Add an event listener to trigger the search when the user types
-    document.getElementById('searchInput').addEventListener('keyup', searchProducts);
 </script>
+
 <script>
   // Get the canvas element
   var ctx = document.getElementById('revenueChart').getContext('2d');
