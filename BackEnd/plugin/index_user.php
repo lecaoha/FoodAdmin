@@ -58,11 +58,8 @@
                 </a>
 
                 <div class="d-lg-none">
-<<<<<<< Updated upstream
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Cart</button>
-=======
+
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
->>>>>>> Stashed changes
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -90,11 +87,7 @@
                 </div>
 
                 <div class="d-none d-lg-block">
-<<<<<<< Updated upstream
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Cart</button>
-=======
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
->>>>>>> Stashed changes
                 </div>
 
             </div>
