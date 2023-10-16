@@ -12,10 +12,12 @@
         <meta name="author" content="">
 
 
-        <title>Fast Food</title>
+        <title>Đồ ăn vặt</title>
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-        <!-- CSS FILES -->    
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.5.2/js/bootstrap.min.js"></script>
+        
         <link rel="preconnect" href="https://fonts.googleapis.com">
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +30,17 @@
         <link href="./css/bootstrap-icons.css" rel="stylesheet">
 
         <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
+
+        <style>
+            .hero {
+                background-image: url("img/slide/bg.jpg");
+                background-size: 100% auto;
+                background-position: center; 
+                color: white;
+                height: 300px;
+                padding-top: 0px !important;
+            }
+        </style>    
         
 
     </head>
@@ -41,17 +54,21 @@
                 </button>
                 
                 <a class="navbar-brand" href="index_user.php">
-                    FastFood
+                    Đồ ăn vặt
                 </a>
 
                 <div class="d-lg-none">
+<<<<<<< Updated upstream
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Cart</button>
+=======
+                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
+>>>>>>> Stashed changes
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="index_user.php">Home</a>
+                            <a class="nav-link active" href="index_user.php">Trang chủ</a>
                         </li>
 
                         <li class="nav-item">
@@ -59,33 +76,103 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Menu</a>
+                            <a class="nav-link" href="#">Thực đơn</a>
                         </li>
 
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">Our Updates</a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="#">Liên hệ</a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="d-none d-lg-block">
+<<<<<<< Updated upstream
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Cart</button>
+=======
+                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
+>>>>>>> Stashed changes
                 </div>
 
             </div>
         </nav>
 
         <main>
+
+        <section class="hero">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-12 m-auto">
+                            <div class="hero-text">
+                                <h1 class="text-white mb-lg-5 mb-3">Đồ ăn vặt</h1>
+                                <div class="c-reviews my-3 d-flex flex-wrap align-items-center">
+                                    <div class="d-flex flex-wrap align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-12">
+                            <div id="carouselExampleCaptions" class="carousel carousel-fade hero-carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="carousel-image-wrap">
+                                            <img src="img/slide/anh1.jpg" class="img-fluid carousel-image" alt="">
+                                        </div>
+                                        <div class="carousel-caption">
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="carousel-image-wrap">
+                                            <img src="img/slide/anh2.jpg" class="img-fluid carousel-image" alt="">
+                                        </div>
+                                        <div class="carousel-caption">
+                                            <div class="d-flex align-items-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="carousel-image-wrap">
+                                            <img src="img/slide/anh3.jpg" class="img-fluid carousel-image" alt="">
+                                        </div>
+                                        <div class="carousel-caption">
+                                            <div class="d-flex align-items-center">
+                                            </div>
+                                            <div class="d-flex flex-wrap align-items-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="overlay"></div>
+
+            </section>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var carousel = document.getElementById("carouselExampleCaptions");
+                    var myCarousel = new bootstrap.Carousel(carousel, {
+                        interval: 3000, // Đặt khoảng thời gian (milliseconds) giữa các lần chuyển đổi ảnh
+                        wrap: true, // Tự động quay lại ảnh đầu tiên sau khi đã duyệt hết tất cả ảnh
+                    });
+                });
+            </script>
+
+
         <section class="menu section-padding">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Special Menus</h2>
+                            <h2 class="text-center mb-lg-5 mb-4">Thực đơn đặc biệt</h2>
                         </div>
                         <?php
                             include('dbcon.php');
@@ -102,7 +189,7 @@
                                 <div class="menu-image-wrap">
                                     <img src=<?=  $food['image'] ?> class="img-fluid menu-image" alt="">
 
-                                    <span class="menu-tag bg-warning">FastFood</span>
+                                    <span class="menu-tag bg-warning">Đồ ăn vặt</span>
                                 </div>
 
                                 <div class="menu-info d-flex flex-wrap align-items-center">
@@ -129,29 +216,29 @@
                 <div class="row">
 
                     <div class="col-12">
-                        <h4 class="text-white mb-4 me-5">FastFood</h4>
+                        <h4 class="text-white mb-4 me-5">Đồ ăn vặt</h4>
                     </div>
 
                     <div class="col-lg-4 col-md-7 col-xs-12 tooplate-mt30">
-                        <h6 class="text-white mb-lg-4 mb-3">Location</h6>
+                        <h6 class="text-white mb-lg-4 mb-3">Địa chỉ</h6>
 
-                        <p>22 Nguyen Chi Thanh, P7, Tuy Hoa</p>
+                        <p>22 Nguyễn Chí Thanh, Phường 7, TP.Tuy Hòa, Phú Yên</p>
 
-                        <a href="https://maps.app.goo.gl/gCz8XXTbhB3wNTJT7" class="custom-btn btn btn-dark mt-2">Directions</a>
+                        <a href="https://maps.app.goo.gl/gCz8XXTbhB3wNTJT7" class="custom-btn btn btn-dark mt-2">Maps</a>
                     </div>
 
                     <div class="col-lg-4 col-md-5 col-xs-12 tooplate-mt30">
-                        <h6 class="text-white mb-lg-4 mb-3">Opening Hours</h6>
+                        <h6 class="text-white mb-lg-4 mb-3">Giờ mở cửa</h6>
 
-                        <p class="mb-2">Monday - Sunday</p>
+                        <p class="mb-2">Thứ 2 - Chủ nhật</p>
 
-                        <p>08:00 AM - 10:00 PM</p>
+                        <p>08:00 - 22:30</p>
 
-                        <p>Tel: 085-898-3931  <a href="tel: 0858983931" class="tel-link"></a></p>
+                        <p>Số điện thoại: 085-898-3931  <a href="tel: 0858983931" class="tel-link"></a></p>
                     </div>
 
                     <div class="col-lg-4 col-md-6 col-xs-12 tooplate-mt30">
-                        <h6 class="text-white mb-lg-4 mb-3">Social</h6>
+                        <h6 class="text-white mb-lg-4 mb-3">Liên hệ</h6>
 
                         <ul class="social-icon">
                         <li><a href="https://www.facebook.com/huynhtanhung0510/" target="_blank" class="social-icon-link"><i class="fab fa-facebook"></i></a></li>
@@ -169,7 +256,7 @@
         </footer>
 
         <!-- Modal -->
-        <div class="modal fade" id="BookingModal" tabindex="-1" aria-labelledby="BookingModal" aria-hidden="true">
+        <!-- <div class="modal fade" id="BookingModal" tabindex="-1" aria-labelledby="BookingModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -242,7 +329,7 @@
                 </div>
                 
             </div>
-        </div>
+        </div> -->
 
     </body>
 </html>
