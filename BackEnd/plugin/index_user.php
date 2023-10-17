@@ -23,6 +23,7 @@ $loggedInUserName = $_SESSION['name'];
 
 
         <title>Đồ ăn vặt</title>
+        
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -51,11 +52,6 @@ $loggedInUserName = $_SESSION['name'];
                 height: 300px;
                 padding-top: 0px !important;
             }
-            
-            .profile {
-        margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
-        vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
-    }
         </style>    
         
 
@@ -105,9 +101,6 @@ $loggedInUserName = $_SESSION['name'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-                <a href="profile.php" class="profile">
-        <p><i class="fas fa-user-circle"></i> <?= $loggedInUserName; ?></p>
-        </a>
 
             </div>
         </nav>
