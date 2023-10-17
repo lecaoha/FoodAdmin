@@ -35,8 +35,7 @@ if (isset($_POST['login_now_btn'])) {
         header("Location: home.php");
         exit();
     } elseif (!$isAdmin && !$isStaff) {
-        $_SESSION['name'] = $user['name']; // name là thông tin bạn muốn lưu
-        $_SESSION['phonenumber'] = $userId; // phonenumber là số điện thoại của người dùng
+        // Redirect to the user panel
         header("Location: index_user.php");
         exit();
     } 

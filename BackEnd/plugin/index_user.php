@@ -41,6 +41,7 @@ $loggedInUserName = $_SESSION['name'];
         <link href="./css/bootstrap-icons.css" rel="stylesheet">
 
         <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
         <style>
             .hero {
@@ -51,10 +52,6 @@ $loggedInUserName = $_SESSION['name'];
                 height: 300px;
                 padding-top: 0px !important;
             }
-            .profile {
-        margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
-        vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
-    }
         </style>    
         
 
@@ -104,9 +101,6 @@ $loggedInUserName = $_SESSION['name'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-                <a href="profile.php" class="profile">
-                    <p><i class="fas fa-user-circle"></i> <?= $loggedInUserName; ?></p>
-                </a>
 
             </div>
         </nav>
