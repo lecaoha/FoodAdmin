@@ -9,6 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="92a88aad-41b3-45fa-82ba-f1bfa55f3153" name="Changes" comment="">
 <<<<<<< Updated upstream
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/myappfood/appfood/Cart.java" afterDir="false" />
@@ -29,6 +30,9 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/show_comment_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/show_comment_layout.xml" afterDir="false" />
 >>>>>>> Stashed changes
     </list>
+=======
+    <list default="true" id="92a88aad-41b3-45fa-82ba-f1bfa55f3153" name="Changes" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
