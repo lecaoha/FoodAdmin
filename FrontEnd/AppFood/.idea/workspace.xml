@@ -10,21 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92a88aad-41b3-45fa-82ba-f1bfa55f3153" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.4/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../BackEnd/plugin/index_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../BackEnd/plugin/index_user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../BackEnd/plugin/logincode.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../BackEnd/plugin/logincode.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-R58TA07STEL-RZALs5._adb-tls-connect._tcp]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -108,19 +102,6 @@
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="AppFood" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="AppFood" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
       </method>
     </configuration>
   </component>
