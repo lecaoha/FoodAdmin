@@ -302,33 +302,56 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Danh mục sản phẩm</h2>
+                            <h2 class="text-center mb-lg-5 mb-4">Sản phẩm</h2>
                         </div>
+                        
+                        
                         <?php
-                            include('dbcon.php');
-                            $ref_table = "Category";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                                    include('dbcon.php');
+                                    $ref_table ='Foods';
+                                    $fetchdata = $database->getReference($ref_table)->getValue();
 
-                            // Lấy danh sách sản phẩm
-                            $categories = $database->getReference($ref_table)->getValue();
-                            
-                        ?>
-                        <?php foreach($categories as $key=>$category): ?>
-                            <a href="see_user.php?id=<?=$key;?>"  class="col-lg-2 col-md-4 col-12">
+
+                                    $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
+
+                                    if (isset($_GET['id'])) {
+                                        $selectedMenuId = $_GET['id'];
+                                    }
+
+
+                                    if($fetchdata>0)
+                                    {
+                                        $i=0;
+                                        foreach ($fetchdata as $key => $row) {
+
+                                            if ($row['menuId'] == $selectedMenuId) {
+                                            ?>
+
+                                            <div  class="col-lg-2 col-md-4 col-12">
                                 <div class="menu-thumb" data-menu-id="<?= $key; ?>">
                                     <div class="menu-image-wrap">
-                                        <img src=<?=  $category['image'] ?> class="img-fluid menu-image" alt="">
+                                        <img src=<?=  $row['image'] ?> class="img-fluid menu-image" alt="">
 
                                     </div>
 
                                     <div class="menu-info d-flex flex-wrap align-items-center">
-                                        <h4 class="mb-0 category"><?=  $category['name'] ?></h4>
+                                        <h4 class="mb-0 category"><?=  $row['name'] ?></h4>
                         
                                     </div>
                                 </div>
-                            </a>
-                        <?php endforeach; ?>
+                            </div>
+                                            <?php
+                                            }
+                                        }
 
+                                    }else{
+                                        ?>
+                                            <tr>
+                                                <td colspan="7" >No Record Found</td>
+                                            </tr>
+                                        <?php
+                                    }
+                                ?>
                     </div>
                 </div>
             </section>
