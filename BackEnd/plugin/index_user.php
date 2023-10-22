@@ -10,6 +10,10 @@ if (!isset($_SESSION['name'])) {
 
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
 $loggedInUserName = $_SESSION['name'];
+$loggedInUserPhone = $_SESSION['phonenumber'];
+$loggedInId = $_SESSION['user_id'];
+
+
 ?>
 
 <!doctype html>
@@ -56,112 +60,6 @@ $loggedInUserName = $_SESSION['name'];
                 padding-top: 0px !important;
             }
 
-            .search-bar {
-                display: flex;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-
-            #product-search {
-                flex: 1;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            #search-button {
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                padding: 10px 20px;
-                cursor: pointer;
-                margin-left: 10px;
-            }
-
-            #search-button:hover {
-                background-color: #0056b3;
-            }
-
-            .menu-thumb {
-                text-align: center;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                margin: 5px;
-                transition: transform 0.3s;
-            }
-
-
-            .menu-thumb:hover {
-                transform: scale(0.9); /* Thu nhỏ 90% khi di chuột qua */
-            }
-
-            .menu-image {
-                max-width: 100%;
-                height: auto;
-            }
-
-            .menu-info {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 10px;
-            }
-
-            h4 {
-                font-size: 14px; /* Điều chỉnh kích thước phông chữ cho tiêu đề */
-                margin-bottom: 10px;
-            }
-
-            .price-tag {
-                background-color: #fff;
-                border-radius: 5px;
-                padding: 5px 10px;
-                font-size: 12px; /* Điều chỉnh kích thước phông chữ cho giá */
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                margin-top: 10px;
-            }
-
-            .menu-thumb.special {
-                text-align: center;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                margin: 10px;
-                transition: transform 0.3s; /* Hiệu ứng thu nhỏ */
-                max-width: 100%; /* Điều chỉnh kích thước danh mục sản phẩm */
-            }
-
-            .menu-thumb.special:hover {
-                transform: scale(1.1); /* Phóng to 110% khi di chuột qua */
-            }
-
-            .menu-image.special {
-                max-width: 100%;
-                height: auto;
-            }
-
-            .menu-info.special {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 10px;
-            }
-
-            h4.special {
-                font-size: 18px; /* Tăng kích thước phông chữ cho tiêu đề */
-                margin-bottom: 10px;
-            }
-
-            .price-tag.special {
-                background-color: #fff;
-                border-radius: 5px;
-                padding: 8px 12px; /* Tăng kích thước padding */
-                font-size: 16px; /* Tăng kích thước phông chữ cho giá */
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                margin-top: 10px;
-            }
         </style>    
         
 
@@ -235,7 +133,14 @@ $loggedInUserName = $_SESSION['name'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-
+                <a href="profile.php" class="profile">
+                <?php
+                    include('dbcon.php');
+                    $ref_table = "User";
+                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+                    ?>
+        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
+        </a>
             </div>
         </nav>
 
