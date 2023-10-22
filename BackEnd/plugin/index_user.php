@@ -10,6 +10,10 @@ if (!isset($_SESSION['name'])) {
 
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
 $loggedInUserName = $_SESSION['name'];
+$loggedInUserPhone = $_SESSION['phonenumber'];
+$loggedInId = $_SESSION['user_id'];
+
+
 ?>
 
 <!doctype html>
@@ -52,6 +56,10 @@ $loggedInUserName = $_SESSION['name'];
                 height: 300px;
                 padding-top: 0px !important;
             }
+            .profile {
+        margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
+        vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
+    }
         </style>    
         
 
@@ -101,7 +109,14 @@ $loggedInUserName = $_SESSION['name'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-
+                <a href="profile.php" class="profile">
+                <?php
+                    include('dbcon.php');
+                    $ref_table = "User";
+                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+                    ?>
+        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
+        </a>
             </div>
         </nav>
 

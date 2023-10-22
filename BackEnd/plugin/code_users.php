@@ -35,6 +35,81 @@ if (isset($_POST['update_users'])) {
     exit();
 }
 
+//page profile
+if (isset($_POST['update_profile'])) {
+    include('dbcon.php'); // Include the database connection
+
+    // Retrieve data from the form
+    $loggedInId = $_SESSION['user_id'];
+    $newPhoneNumber = $_POST['phonenumber'];
+    $name = $_POST['name'];
+    
+    // Construct the update data
+    $updateData = [
+        'name' => $name,
+        'phonenumber' => $newPhoneNumber,
+    ];
+
+    // Update the user data in the database
+    $ref_table = "User/" . $loggedInId; // Construct the reference path using the user ID
+    $updateQuery = $database->getReference($ref_table)->update($updateData);
+    
+    if ($updateQuery) {
+        $_SESSION['status'] = "Data Update Successfully";
+        header("Location: profile.php");
+        exit();
+    } else {
+        $_SESSION['status'] = "Data Update Failed";
+        // You can also log the error for debugging.
+        header("Location: profile.php");
+        exit();
+    }
+}
+
+//change pass
+if (isset($_POST['change_password'])) {
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+    $loggedInId = $_SESSION['user_id'];
+
+    // Lấy thông tin người dùng từ cơ sở dữ liệu
+    $ref_table = "User";
+    $user_data = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+
+    // Kiểm tra mật khẩu hiện tại
+    if ($current_password == $user_data['password']) {
+        // Kiểm tra mật khẩu mới và mật khẩu xác nhận
+        if ($new_password == $confirm_password) {
+            // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+            $database->getReference($ref_table)->getChild($loggedInId)->update([
+                'password' => $new_password
+            ]);
+
+            // Thông báo thành công
+            echo "success";
+            header("Location: profile.php?success=true");
+            exit;
+        } else {
+            // Mật khẩu mới và mật khẩu xác nhận không khớp
+            echo "password_mismatch";
+            header("Location: profile.php?mismatch=true");
+            exit;
+        }
+    } else {
+        // Mật khẩu hiện tại không đúng
+        echo "wrong_password";
+        header("Location: profile.php?wrong_password=true");
+        exit;
+    }
+}
+
+
+
+
+
+
+
 
 
 if(isset($_POST['delete_btn']))
