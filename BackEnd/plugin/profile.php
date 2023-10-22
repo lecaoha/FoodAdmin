@@ -71,29 +71,53 @@ $loggedInId = $_SESSION['user_id'];
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index_user.php">Trang chủ</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Story</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Thực đơn</a>
-                        </li>
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#">Our Updates</a>
-                        </li> -->
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Liên hệ</a>
-                        </li>
-                    </ul>
+                <div class="search-bar">
+                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                    <button id="search-button">Tìm kiếm</button>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Define your product data
+                        var products = <?php
+                            include('dbcon.php');
+                            $ref_table = "Foods";
+                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
+
+                            // Lấy danh sách sản phẩm
+                            $foods = $database->getReference($ref_table)->getValue();
+                            
+                        ?>; // Assuming $foods is an array
+
+                        // Get the HTML elements
+                        var searchInput = document.getElementById("product-search");
+                        var searchButton = document.getElementById("search-button");
+
+                        // Add an event listener for the search button
+                        searchButton.addEventListener("click", function () {
+                            searchProduct(searchInput.value.trim());
+                        });
+
+                        // Define the function to search products
+                        function searchProduct(query) {
+                            query = query.toLowerCase(); // Convert the query to lowercase for case-insensitive search
+
+                            // Loop through the products and show/hide them based on the search query
+                            products.forEach(function (product, index) {
+                                var productName = product.name.toLowerCase();
+
+                                // Find the corresponding product element in the HTML
+                                var productElement = document.querySelector(".menu-thumb:nth-child(" + (index + 1) + ")");
+
+                                if (productName.includes(query)) {
+                                    productElement.style.display = "block";
+                                } else {
+                                    productElement.style.display = "none";
+                                }
+                            });
+                        }
+                    });
+                </script>
 
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
