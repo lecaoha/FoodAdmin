@@ -1,19 +1,5 @@
 <?php
     include('include/head.php');
-    session_start();
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa
-if (!isset($_SESSION['name'])) {
-    // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
-    header("Location: login.php");
-    exit();
-}
-
-// Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
-$loggedInUserName = $_SESSION['name'];
-$loggedInUserPhone = $_SESSION['phonenumber'];
-$loggedInId = $_SESSION['user_id'];
-
-
 ?>
 
 <!doctype html>
@@ -27,7 +13,6 @@ $loggedInId = $_SESSION['user_id'];
 
 
         <title>Đồ ăn vặt</title>
-        
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -48,7 +33,6 @@ $loggedInId = $_SESSION['user_id'];
         <link href="./css/bootstrap-icons.css" rel="stylesheet">
 
         <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
         <style>
             .hero {
@@ -60,6 +44,112 @@ $loggedInId = $_SESSION['user_id'];
                 padding-top: 0px !important;
             }
 
+            .search-bar {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            #product-search {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #search-button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            #search-button:hover {
+                background-color: #0056b3;
+            }
+
+            .menu-thumb {
+                text-align: center;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 5px;
+                transition: transform 0.3s;
+            }
+
+
+            .menu-thumb:hover {
+                transform: scale(0.9); /* Thu nhỏ 90% khi di chuột qua */
+            }
+
+            .menu-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4 {
+                font-size: 14px; /* Điều chỉnh kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 12px; /* Điều chỉnh kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
+
+            .menu-thumb.special {
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 10px;
+                transition: transform 0.3s; /* Hiệu ứng thu nhỏ */
+                max-width: 100%; /* Điều chỉnh kích thước danh mục sản phẩm */
+            }
+
+            .menu-thumb.special:hover {
+                transform: scale(1.1); /* Phóng to 110% khi di chuột qua */
+            }
+
+            .menu-image.special {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info.special {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4.special {
+                font-size: 18px; /* Tăng kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag.special {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 8px 12px; /* Tăng kích thước padding */
+                font-size: 16px; /* Tăng kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
         </style>    
         
 
@@ -133,14 +223,7 @@ $loggedInId = $_SESSION['user_id'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-                <a href="profile.php" class="profile">
-                <?php
-                    include('dbcon.php');
-                    $ref_table = "User";
-                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                    ?>
-        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
-        </a>
+
             </div>
         </nav>
 
@@ -219,33 +302,56 @@ $loggedInId = $_SESSION['user_id'];
                     <div class="row">
 
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Danh mục sản phẩm</h2>
+                            <h2 class="text-center mb-lg-5 mb-4">Sản phẩm</h2>
                         </div>
+                        
+                        
                         <?php
-                            include('dbcon.php');
-                            $ref_table = "Category";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                                    include('dbcon.php');
+                                    $ref_table ='Foods';
+                                    $fetchdata = $database->getReference($ref_table)->getValue();
 
-                            // Lấy danh sách sản phẩm
-                            $categories = $database->getReference($ref_table)->getValue();
-                            
-                        ?>
-                        <?php foreach($categories as $key=>$category): ?>
-                            <a href="see_user.php?id=<?=$key;?>"  class="col-lg-2 col-md-4 col-12">
+
+                                    $selectedMenuId = ''; // Khởi tạo giá trị mặc định cho Menu ID bạn quan tâm
+
+                                    if (isset($_GET['id'])) {
+                                        $selectedMenuId = $_GET['id'];
+                                    }
+
+
+                                    if($fetchdata>0)
+                                    {
+                                        $i=0;
+                                        foreach ($fetchdata as $key => $row) {
+
+                                            if ($row['menuId'] == $selectedMenuId) {
+                                            ?>
+
+                                            <div  class="col-lg-2 col-md-4 col-12">
                                 <div class="menu-thumb" data-menu-id="<?= $key; ?>">
                                     <div class="menu-image-wrap">
-                                        <img src=<?=  $category['image'] ?> class="img-fluid menu-image" alt="">
+                                        <img src=<?=  $row['image'] ?> class="img-fluid menu-image" alt="">
 
                                     </div>
 
                                     <div class="menu-info d-flex flex-wrap align-items-center">
-                                        <h4 class="mb-0 category"><?=  $category['name'] ?></h4>
+                                        <h4 class="mb-0 category"><?=  $row['name'] ?></h4>
                         
                                     </div>
                                 </div>
-                            </a>
-                        <?php endforeach; ?>
+                            </div>
+                                            <?php
+                                            }
+                                        }
 
+                                    }else{
+                                        ?>
+                                            <tr>
+                                                <td colspan="7" >No Record Found</td>
+                                            </tr>
+                                        <?php
+                                    }
+                                ?>
                     </div>
                 </div>
             </section>
