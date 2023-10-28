@@ -5,7 +5,7 @@
 
 // Lấy thông tin phone và name từ phiên đăng nhập
 $loggedInUserName = $_SESSION['name'];
-$loggedInUserPhone = $_SESSION['phonenumber'];
+$loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedInId = $_SESSION['user_id'];
 
 ?>
@@ -42,6 +42,8 @@ $loggedInId = $_SESSION['user_id'];
 
         <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        
+
 
         <style>
         
@@ -50,6 +52,53 @@ $loggedInId = $_SESSION['user_id'];
         margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
         vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
     }
+    .background {
+    background: #d0a1d8;
+    /* margin-top: -24px; */
+    border: 10px
+
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #682773
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
         </style>    
         
 
@@ -71,28 +120,9 @@ $loggedInId = $_SESSION['user_id'];
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index_user.php">Trang chủ</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Story</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Thực đơn</a>
-                        </li>
-
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#">Our Updates</a>
-                        </li> -->
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Liên hệ</a>
-                        </li>
-                    </ul>
+                <div class="search-bar">
+                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                    <button id="search-button">Tìm kiếm</button>
                 </div>
 
                 <div class="d-none d-lg-block">
@@ -108,214 +138,54 @@ $loggedInId = $_SESSION['user_id'];
         </nav>
     
 <body>
+<body >
+<div class="container rounded bg-white mt-5 mb-5">
 
-<div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4" >
-            Thông tin tài khoản
-        </h4>
-        <div id="message" class="alert" style="display: none;"></div>
-
-        <div class="card overflow-hidden">
-            <div class="row no-gutters row-bordered row-border-light">
-                <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">
-                        <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">Tổng quan</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Thay đổi mật khẩu</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-info">Đơn hàng</a>                   
+    <div class="row background">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><?=$editdata["name"];?></span><span> </span></div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+            
+                
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Thông tin cá nhân</h4>
                     </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
-                        <?php
+                    <?php
                     include('dbcon.php');
                     $ref_table = "User";
                     $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
                     ?>
-                        <form method="POST" action="code_users.php">
-                        <input type="hidden" name="id" value="<?=$loggedInId;?>">
-
-                            <hr class="border-light m-0" >
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Tên</label>
-                                    <input type="text" class="form-control mb-1" name="name" value="<?=$editdata["name"];?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" name="phonenumber" value="<?=$editdata["phonenumber"];?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">E-mail</label>
-                                    <input type="text" class="form-control mb-1" >
-                            
-                                </div>
-                                
+                <form method="POST" action="code_users.php">
+                <input type="hidden" name="id" value="<?=$loggedInId;?>">
+                    <div class="row mt-2">
+                    <div class="col-md-12"><label class="labels">Tên</label><input type="text" class="form-control" name="name" value="<?=$editdata["name"];?>">
                             </div>
-                            <div class="card-body" style="position: relative;">
-
-                                <div class="text-right" style="position: absolute; bottom: 10px; right: 30px;">
-
-                                <button type="submit" class="btn btn-primary" name="update_profile">Lưu</button>&nbsp;
-                                <button type="button" class="btn btn-default">Huỷ</button>
-                            </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="account-change-password">
-
-                        <form method="POST" action="code_users.php">
-                                <div class="card-body pb-2">
-                                    <div class="form-group">
-                                        <label class="form-label">Mật khẩu hiện tại</label>
-                                        <input type="password" class="form-control" name="current_password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Mật khẩu mới</label>
-                                        <input type="password" class="form-control" name="new_password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Lặp lại mật khẩu mới</label>
-                                        <input type="password" class="form-control" name="confirm_password">
-                                    </div>
-                                    <div class="text-right" style="margin: 10px;">
-                                        <button type="submit" class="btn btn-primary" name="change_password">Đổi mật khẩu</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                        
-                        <div class="tab-pane fade" id="account-info">
-                        
-                        <?php
-// Đảm bảo bạn đã kết nối và cấu hình Firebase Admin SDK trong tệp dbcon.php
-
-// Hàm để lọc và hiển thị đơn hàng dựa trên trạng thái
-function filterOrders($status) {
-    include('dbcon.php');
-    $ordersRef = $database->getReference('Requests');
-    $ordersSnapshot = $ordersRef->getSnapshot();
-
-    $ordersList = [];
-
-    foreach ($ordersSnapshot->getValue() as $orderId => $orderData) {
-        if ($status === 'all' || $orderData['status'] === $status) {
-            $ordersList[$orderId] = $orderData;
-        }
-    }
-
-    return $ordersList;
-}
-
-// Lọc và hiển thị tất cả các đơn hàng
-$allOrders = filterOrders('all');
-
-// Lọc và hiển thị các đơn hàng chờ xác nhận
-$pendingOrders = filterOrders('1');
-
-// Lọc và hiển thị các đơn hàng đang ship
-$shippingOrders = filterOrders('2');
-
-// Lọc và hiển thị các đơn hàng giao thành công
-$deliveredOrders = filterOrders('3');
-
-// Lọc và hiển thị các đơn hàng bị huỷ
-$canceledOrders = filterOrders('4');
-
-?>
-                  <div class="btn-group">
-    <button class="btn" onclick="showOrders('all')">Tất cả</button>
-    <button class="btn" onclick="showOrders('pending')">Chờ xác nhận</button>
-    <button class="btn" onclick="showOrders('shipping')">Đang ship</button>
-    <button class="btn" onclick="showOrders('delivered')">Giao thành công</button>
-    <button class="btn" onclick="showOrders('canceled')">Huỷ</button>
-</div>
-
-<!-- Hiển thị danh sách đơn hàng -->
-<div id="ordersList">
-    <!-- Đây là nơi bạn sẽ hiển thị danh sách đơn hàng sau khi lọc -->
-</div>
-
-<script>
-function showOrders(status) {
-    var ordersList = document.getElementById('ordersList');
-    ordersList.innerHTML = '';
-
-    var orders;
-    if (status === 'all') {
-        orders = <?php echo json_encode($allOrders); ?>;
-    } else if (status === 'pending') {
-        orders = <?php echo json_encode($pendingOrders); ?>;
-    } else if (status === 'shipping') {
-        orders = <?php echo json_encode($shippingOrders); ?>;
-    } else if (status === 'delivered') {
-        orders = <?php echo json_encode($deliveredOrders); ?>;
-    } else if (status === 'canceled') {
-        orders = <?php echo json_encode($canceledOrders); ?>;
-    }
-
-    // Duyệt qua danh sách đơn hàng và hiển thị thông tin
-    for (var orderId in orders) {
-        var order = orders[orderId];
-        var orderInfo = document.createElement('div');
-        orderInfo.innerHTML = 'Mã đơn hàng: ' + orderId + '<br>';
-        orderInfo.innerHTML += 'Trạng thái: ' + order.status + '<br>';
-        orderInfo.innerHTML += 'Ngày đặt hàng: ' + order.order_date + '<br>';
-        orderInfo.innerHTML += 'Địa chỉ: ' + order.address + '<br>';
-        orderInfo.innerHTML += 'Số điện thoại: ' + order.phone + '<br>';
-        // Thêm logic để hiển thị các món ăn và thông tin khác
-        ordersList.appendChild(orderInfo);
-    }
-}
-
-// Hiển thị tất cả đơn hàng khi trang được tải
-showOrders('all');
-</script>
-                    
-                        </div>
-                       
-                            </div>
-                            
                     </div>
-                    
-                        </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="labels">Số điện thoại</label>
+                            <input type="text" class="form-control" name="phoneNumber" value="<?=$editdata["phoneNumber"];?>">
+                                    </div>
+                        <div class="col-md-12"><label class="labels">Địa chỉ</label><input type="text" class="form-control" placeholder="Nhập địa chỉ" value=""></div>
+                        <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="Nhập email" value=""></div>
+                        <div class="col-md-12"><label class="labels">Mật khẩu hiện tại</label><input type="password"  class="form-control" name="current_password" placeholder="Nhập mật khẩu hiện tại" value=""></div>
+                        <div class="col-md-12"><label class="labels">Mật khẩu mới</label><input type="password"  class="form-control" name="new_password" placeholder="Nhập mật khẩu mới" value=""></div>
+                        <div class="col-md-12"><label class="labels">Nhập lại mật khẩu mới</label><input type="password"  class="form-control" name="confirm_password" placeholder="Nhập lại mật khẩu mới" value=""></div>
+
                     </div>
-                    
-                </div>
-        
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" name="update_profile" type="submit">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
     </div>
     
-    <script type="text/javascript">
-    // Đợi cho tài liệu được tải hoàn toàn
-    document.addEventListener("DOMContentLoaded", function() {
-        var messageDiv = document.getElementById("message");
-        var params = new URLSearchParams(window.location.search);
-        var successMessage = params.get("success");
-        var mismatchMessage = params.get("mismatch");
-        var wrongPasswordMessage = params.get("wrong_password");
-
-        function showMessage(message, className) {
-            messageDiv.innerHTML = message;
-            messageDiv.className = "alert " + className;
-            messageDiv.style.display = "block";
-            setTimeout(function() {
-                messageDiv.style.display = "none";
-            }, 3000); // ẩn thông báo sau 3 giây
-        }
-
-        if (successMessage === "true") {
-            showMessage("Mật khẩu đã được thay đổi thành công!", "alert-success");
-        } else if (mismatchMessage === "true") {
-            showMessage("Mật khẩu mới và mật khẩu xác nhận không khớp!", "alert-danger");
-        } else if (wrongPasswordMessage === "true") {
-            showMessage("Mật khẩu hiện tại không đúng!", "alert-danger");
-        }
-    });
-</script>
+</div>
+</body>
 
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
@@ -324,7 +194,10 @@ showOrders('all');
     <script type="text/javascript">
 
     </script>
-        <footer class="site-footer section-padding">
+        
+
+    </body>
+    <footer class="site-footer section-padding">
             
             <div class="container">
                 
@@ -369,6 +242,4 @@ showOrders('all');
              </div><!-- container ending -->
              
         </footer>
-
-    </body>
 </html>

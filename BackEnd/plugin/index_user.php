@@ -10,7 +10,7 @@ if (!isset($_SESSION['name'])) {
 
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
 $loggedInUserName = $_SESSION['name'];
-$loggedInUserPhone = $_SESSION['phonenumber'];
+$loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedInId = $_SESSION['user_id'];
 
 
