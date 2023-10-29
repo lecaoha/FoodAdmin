@@ -57,6 +57,184 @@ $loggedInId = $_SESSION['user_id'];
                 height: 300px;
                 padding-top: 0px !important;
             }
+            .search-bar {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            #product-search {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #search-button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            #search-button:hover {
+                background-color: #0056b3;
+            }
+
+            .menu-thumb {
+                text-align: center;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 5px;
+                transition: transform 0.3s;
+            }
+
+
+            .menu-thumb:hover {
+                transform: scale(0.9); /* Thu nhỏ 90% khi di chuột qua */
+            }
+
+            .menu-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4 {
+                font-size: 14px; /* Điều chỉnh kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 12px; /* Điều chỉnh kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
+
+            .menu-thumb.special {
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 10px;
+                transition: transform 0.3s; /* Hiệu ứng thu nhỏ */
+                max-width: 100%; /* Điều chỉnh kích thước danh mục sản phẩm */
+            }
+
+            .menu-thumb.special:hover {
+                transform: scale(1.1); /* Phóng to 110% khi di chuột qua */
+            }
+
+            .menu-image.special {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info.special {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4.special {
+                font-size: 18px; /* Tăng kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag.special {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 8px 12px; /* Tăng kích thước padding */
+                font-size: 16px; /* Tăng kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
+
+            .cart-button {
+                background: transparent;
+                
+            }
+
+            .cart-icon {
+                color: black;
+            }
+            .main-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .header-right{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px
+            }
+
+            .custom-dropdown > a {
+  color: #000; }
+  .custom-dropdown > a .arrow {
+    display: inline-block;
+    position: relative;
+    -webkit-transition: .3s transform ease;
+    -o-transition: .3s transform ease;
+    transition: .3s transform ease; }
+
+.custom-dropdown.show > a .arrow {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.custom-dropdown .btn:active, .custom-dropdown .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none; }
+
+.custom-dropdown .btn.btn-custom {
+  border: 1px solid #efefef; }
+
+.custom-dropdown .title-wrap {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.custom-dropdown .title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.custom-dropdown .dropdown-link .profile-pic {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 50px; }
+  .custom-dropdown .dropdown-link .profile-pic img {
+    width: 50px;
+    border-radius: 50%; }
+
+.custom-dropdown .dropdown-link .profile-info h3, .custom-dropdown .dropdown-link .profile-info span {
+  margin: 0;
+  padding: 0; }
+
+.custom-dropdown .dropdown-link .profile-info h3 {
+  font-size: 16px; }
+
+.custom-dropdown .dropdown-link .profile-info span {
+  display: block;
+  font-size: 13px; }
 
 .custom-dropdown .dropdown-menu {
   border: 1px solid transparent !important;
@@ -133,15 +311,7 @@ $loggedInId = $_SESSION['user_id'];
                         <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
                             <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
                         </button>
-                        <a href="profile.php" class="profile">
-                    <?php
-                        include('dbcon.php');
-                        $ref_table = "User";
-                        $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                        ?>
-            <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
-            </a>
-                    </div>
+                       
                 </div>
 
                 
@@ -187,18 +357,35 @@ $loggedInId = $_SESSION['user_id'];
                         }
                     });
                 </script>
-
-                <div class="d-none d-lg-block">
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
-                </div>
-                <a href="profile.php" class="profile">
+            <div class="dropdown custom-dropdown">
+            <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
+              <div class="profile-pic mr-3">
+                <img src="img/person_2.jpg" alt="Image">
+              </div>
+              <div class="profile-info">
+              <h3 class="profile">
                 <?php
                     include('dbcon.php');
                     $ref_table = "User";
                     $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
                     ?>
-        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
-        </a>
+                     <?=$editdata["name"];?>
+                </h3>
+              </div>
+
+
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+              
+            
+              <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
+              <a class="dropdown-item" href="#"><span class="icon icon-cog"></span>Đơn hàng</span></a>
+              <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
+    
+            </div>
+          </div>
+
             </div>
         </nav>
         <script src="js/jquery-3.3.1.min.js"></script>
@@ -206,6 +393,7 @@ $loggedInId = $_SESSION['user_id'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    
         <main>
 
         <section class="hero">

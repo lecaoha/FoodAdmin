@@ -47,6 +47,134 @@ $loggedInId = $_SESSION['user_id'];
 
         <style>
         
+        .search-bar {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            #product-search {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #search-button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            #search-button:hover {
+                background-color: #0056b3;
+            }
+
+            .menu-thumb {
+                text-align: center;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 5px;
+                transition: transform 0.3s;
+            }
+
+
+            .menu-thumb:hover {
+                transform: scale(0.9); /* Thu nhỏ 90% khi di chuột qua */
+            }
+
+            .menu-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4 {
+                font-size: 14px; /* Điều chỉnh kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 12px; /* Điều chỉnh kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
+
+            .menu-thumb.special {
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 10px;
+                transition: transform 0.3s; /* Hiệu ứng thu nhỏ */
+                max-width: 100%; /* Điều chỉnh kích thước danh mục sản phẩm */
+            }
+
+            .menu-thumb.special:hover {
+                transform: scale(1.1); /* Phóng to 110% khi di chuột qua */
+            }
+
+            .menu-image.special {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .menu-info.special {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            h4.special {
+                font-size: 18px; /* Tăng kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
+
+            .price-tag.special {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 8px 12px; /* Tăng kích thước padding */
+                font-size: 16px; /* Tăng kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
+
+            .cart-button {
+                background: transparent;
+                
+            }
+
+            .cart-icon {
+                color: black;
+            }
+            .main-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .header-right{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px
+            }
             
             .fa-user-circle {
         margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
@@ -212,19 +340,23 @@ $loggedInId = $_SESSION['user_id'];
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
-                <a class="navbar-brand" href="index_user.php">
-                    Đồ ăn vặt
-                </a>
+                <div class="main-header">
+                    <a class="navbar-brand" href="index_user.php">
+                        Đồ ăn vặt
+                    </a>
+                    <div class="search-bar">
+                        <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-button">Tìm kiếm</button>
+                    </div>
 
-                <div class="d-lg-none">
-
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
+                    <div class="header-right">
+                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
+                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                        </button>
+                       
                 </div>
 
-                <div class="search-bar">
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                    <button id="search-button">Tìm kiếm</button>
-                </div>
+                
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         // Define your product data
@@ -267,11 +399,7 @@ $loggedInId = $_SESSION['user_id'];
                         }
                     });
                 </script>
-
-                <div class="d-none d-lg-block">
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
-                </div>
-                <div class="dropdown custom-dropdown">
+            <div class="dropdown custom-dropdown">
             <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
               <div class="profile-pic mr-3">
                 <img src="img/person_2.jpg" alt="Image">
