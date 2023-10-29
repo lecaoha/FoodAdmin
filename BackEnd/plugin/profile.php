@@ -99,13 +99,114 @@ $loggedInId = $_SESSION['user_id'];
     cursor: pointer;
     border: solid 1px #BA68C8
 }
+.custom-dropdown > a {
+  color: #000; }
+  .custom-dropdown > a .arrow {
+    display: inline-block;
+    position: relative;
+    -webkit-transition: .3s transform ease;
+    -o-transition: .3s transform ease;
+    transition: .3s transform ease; }
+
+.custom-dropdown.show > a .arrow {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.custom-dropdown .btn:active, .custom-dropdown .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none; }
+
+.custom-dropdown .btn.btn-custom {
+  border: 1px solid #efefef; }
+
+.custom-dropdown .title-wrap {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.custom-dropdown .title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.custom-dropdown .dropdown-link .profile-pic {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 50px; }
+  .custom-dropdown .dropdown-link .profile-pic img {
+    width: 50px;
+    border-radius: 50%; }
+
+.custom-dropdown .dropdown-link .profile-info h3, .custom-dropdown .dropdown-link .profile-info span {
+  margin: 0;
+  padding: 0; }
+
+.custom-dropdown .dropdown-link .profile-info h3 {
+  font-size: 16px; }
+
+.custom-dropdown .dropdown-link .profile-info span {
+  display: block;
+  font-size: 13px; }
+
+.custom-dropdown .dropdown-menu {
+  border: 1px solid transparent !important;
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  margin-top: -10px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-radius: 0;
+  background: #fff;
+  right: auto !important;
+  left: auto !important;
+  -webkit-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  -o-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  visibility: hidden; }
+  .custom-dropdown .dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px !important; }
+  .custom-dropdown .dropdown-menu a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    padding: 15px 15px;
+    position: relative;
+    color: #b2bac1; }
+    .custom-dropdown .dropdown-menu a:last-child {
+      border-bottom: none; }
+    .custom-dropdown .dropdown-menu a .icon {
+      margin-right: 15px;
+      display: inline-block; }
+    .custom-dropdown .dropdown-menu a:hover, .custom-dropdown .dropdown-menu a:active, .custom-dropdown .dropdown-menu a:focus {
+      background: #fff;
+      color: #000; }
+      .custom-dropdown .dropdown-menu a:hover .number, .custom-dropdown .dropdown-menu a:active .number, .custom-dropdown .dropdown-menu a:focus .number {
+        color: #fff; }
+    .custom-dropdown .dropdown-menu a .number {
+      padding: 2px 6px;
+      font-size: 11px;
+      background: #fd7e14;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      right: 15px;
+      border-radius: 4px;
+      color: #fff; 
+    }
         </style>    
         
 
     </head>
     
+    <body>
         
-        <nav class="navbar navbar-expand-lg bg-white shadow-lg">
+    
+    <nav class="navbar navbar-expand-lg bg-white shadow-lg">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -125,20 +226,98 @@ $loggedInId = $_SESSION['user_id'];
                     <button id="search-button">Tìm kiếm</button>
                 </div>
 
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Define your product data
+                        var products = <?php
+                            include('dbcon.php');
+                            $ref_table = "Foods";
+                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
+
+                            // Lấy danh sách sản phẩm
+                            $foods = $database->getReference($ref_table)->getValue();
+                            
+                        ?>; // Assuming $foods is an array
+
+                        // Get the HTML elements
+                        var searchInput = document.getElementById("product-search");
+                        var searchButton = document.getElementById("search-button");
+
+                        // Add an event listener for the search button
+                        searchButton.addEventListener("click", function () {
+                            searchProduct(searchInput.value.trim());
+                        });
+
+                        // Define the function to search products
+                        function searchProduct(query) {
+                            query = query.toLowerCase(); // Convert the query to lowercase for case-insensitive search
+
+                            // Loop through the products and show/hide them based on the search query
+                            products.forEach(function (product, index) {
+                                var productName = product.name.toLowerCase();
+
+                                // Find the corresponding product element in the HTML
+                                var productElement = document.querySelector(".menu-thumb:nth-child(" + (index + 1) + ")");
+
+                                if (productName.includes(query)) {
+                                    productElement.style.display = "block";
+                                } else {
+                                    productElement.style.display = "none";
+                                }
+                            });
+                        }
+                    });
+                </script>
+
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
+                <div class="dropdown custom-dropdown">
+            <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
+              <div class="profile-pic mr-3">
+                <img src="img/person_2.jpg" alt="Image">
+              </div>
+              <div class="profile-info">
+              <h3 class="profile">
                 <?php
                     include('dbcon.php');
                     $ref_table = "User";
                     $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
                     ?>
-        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
+                     <?=$editdata["name"];?>
+                </h3>
+              </div>
+
+
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+              
+            
+              <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
+              <a class="dropdown-item" href="#"><span class="icon icon-cog"></span>Đơn hàng</span></a>
+              <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
+    
+            </div>
+          </div>
+
             </div>
         </nav>
+        <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+
     
-<body>
-<body >
+<main>
 <div class="container rounded bg-white mt-5 mb-5">
 
     <div class="row background">
@@ -196,7 +375,7 @@ $loggedInId = $_SESSION['user_id'];
     </script>
         
 
-    </body>
+                </main>
     <footer class="site-footer section-padding">
             
             <div class="container">
@@ -242,4 +421,5 @@ $loggedInId = $_SESSION['user_id'];
              </div><!-- container ending -->
              
         </footer>
+        </body>  
 </html>

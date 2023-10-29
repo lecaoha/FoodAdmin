@@ -59,7 +59,105 @@ $loggedInId = $_SESSION['user_id'];
                 height: 300px;
                 padding-top: 0px !important;
             }
+            .custom-dropdown > a {
+  color: #000; }
+  .custom-dropdown > a .arrow {
+    display: inline-block;
+    position: relative;
+    -webkit-transition: .3s transform ease;
+    -o-transition: .3s transform ease;
+    transition: .3s transform ease; }
 
+.custom-dropdown.show > a .arrow {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+
+.custom-dropdown .btn:active, .custom-dropdown .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none; }
+
+.custom-dropdown .btn.btn-custom {
+  border: 1px solid #efefef; }
+
+.custom-dropdown .title-wrap {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.custom-dropdown .title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.custom-dropdown .dropdown-link .profile-pic {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 50px; }
+  .custom-dropdown .dropdown-link .profile-pic img {
+    width: 50px;
+    border-radius: 50%; }
+
+.custom-dropdown .dropdown-link .profile-info h3, .custom-dropdown .dropdown-link .profile-info span {
+  margin: 0;
+  padding: 0; }
+
+.custom-dropdown .dropdown-link .profile-info h3 {
+  font-size: 16px; }
+
+.custom-dropdown .dropdown-link .profile-info span {
+  display: block;
+  font-size: 13px; }
+
+.custom-dropdown .dropdown-menu {
+  border: 1px solid transparent !important;
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  margin-top: -10px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-radius: 0;
+  background: #fff;
+  right: auto !important;
+  left: auto !important;
+  -webkit-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  -o-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  visibility: hidden; }
+  .custom-dropdown .dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px !important; }
+  .custom-dropdown .dropdown-menu a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    padding: 15px 15px;
+    position: relative;
+    color: #b2bac1; }
+    .custom-dropdown .dropdown-menu a:last-child {
+      border-bottom: none; }
+    .custom-dropdown .dropdown-menu a .icon {
+      margin-right: 15px;
+      display: inline-block; }
+    .custom-dropdown .dropdown-menu a:hover, .custom-dropdown .dropdown-menu a:active, .custom-dropdown .dropdown-menu a:focus {
+      background: #fff;
+      color: #000; }
+      .custom-dropdown .dropdown-menu a:hover .number, .custom-dropdown .dropdown-menu a:active .number, .custom-dropdown .dropdown-menu a:focus .number {
+        color: #fff; }
+    .custom-dropdown .dropdown-menu a .number {
+      padding: 2px 6px;
+      font-size: 11px;
+      background: #fd7e14;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      right: 15px;
+      border-radius: 4px;
+      color: #fff; 
+    }
         </style>    
         
 
@@ -133,17 +231,42 @@ $loggedInId = $_SESSION['user_id'];
                 <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
                 </div>
-                <a href="profile.php" class="profile">
+                <div class="dropdown custom-dropdown">
+            <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
+              <div class="profile-pic mr-3">
+                <img src="img/person_2.jpg" alt="Image">
+              </div>
+              <div class="profile-info">
+              <h3 class="profile">
                 <?php
                     include('dbcon.php');
                     $ref_table = "User";
                     $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
                     ?>
-        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
-        </a>
+                     <?=$editdata["name"];?>
+                </h3>
+              </div>
+
+
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+              
+            
+              <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
+              <a class="dropdown-item" href="#"><span class="icon icon-cog"></span>Đơn hàng</span></a>
+              <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
+    
+            </div>
+          </div>
+
             </div>
         </nav>
-
+        <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
         <main>
 
         <section class="hero">
