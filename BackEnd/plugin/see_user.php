@@ -26,7 +26,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
-        
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">                    
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -150,6 +149,28 @@
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
                 margin-top: 10px;
             }
+
+            .cart-button {
+                background: transparent;
+                
+            }
+
+            .cart-icon {
+                color: black;
+            }
+            .main-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .header-right{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px
+            }
         </style>    
         
 
@@ -167,15 +188,16 @@
                     Đồ ăn vặt
                 </a>
 
-                <div class="d-lg-none">
-
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
+                <div class="header-right">
+                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
+                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                        </button>
                 </div>
 
-                <div class="search-bar">
+                <!-- <div class="search-bar">
                     <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
                     <button id="search-button">Tìm kiếm</button>
-                </div>
+                </div> -->
 
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
@@ -220,9 +242,9 @@
                     });
                 </script>
 
-                <div class="d-none d-lg-block">
+                <!-- <div class="d-none d-lg-block">
                     <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
-                </div>
+                </div> -->
 
             </div>
         </nav>
@@ -328,7 +350,7 @@
                                             ?>
 
                                             <div  class="col-lg-2 col-md-4 col-12">
-                                <div class="menu-thumb" data-menu-id="<?= $key; ?>">
+                                <a href="productdetails.php?id=<?=$key;?>" class="menu-thumb" data-menu-id="<?= $key; ?>">
                                     <div class="menu-image-wrap">
                                         <img src=<?=  $row['image'] ?> class="img-fluid menu-image" alt="">
 
@@ -338,7 +360,7 @@
                                         <h4 class="mb-0 category"><?=  $row['name'] ?></h4>
                         
                                     </div>
-                                </div>
+                                </a>
                             </div>
                                             <?php
                                             }
@@ -413,47 +435,6 @@
                     }
                 });
             </script>
-
-
-
-        <section class="menu section-padding">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Thực đơn đặc biệt</h2>
-                        </div>
-                        <?php
-                            include('dbcon.php');
-                            $ref_table = "Foods";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-
-                            // Lấy danh sách sản phẩm
-                            $foods = $database->getReference($ref_table)->getValue();
-                            
-                        ?>
-                        <?php foreach($foods as $key=>$food): ?>
-                            <div class="col-lg-4 col-md-6 col-12">
-                            <div class="menu-thumb special">
-                                <div class="menu-image-wrap">
-                                    <img src=<?=  $food['image'] ?> class="img-fluid menu-image" alt="">
-
-                                    <span class="menu-tag bg-warning">Đồ ăn vặt</span>
-                                </div>
-
-                                <div class="menu-info special">
-                                    <h4 class="mb-0"><?=  $food['name'] ?></h4>
-
-                                    <span class="price-tag bg-white shadow-lg ms-4 special"><small>$</small><?=  $food['price'] ?></span>
-
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-
-                    </div>
-                </div>
-            </section>
 
         </main>
 

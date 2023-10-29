@@ -27,7 +27,7 @@ $loggedInId = $_SESSION['user_id'];
 
 
         <title>Đồ ăn vặt</title>
-        
+
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -39,9 +39,7 @@ $loggedInId = $_SESSION['user_id'];
         <link rel="preconnect" href="https://fonts.googleapis.com">
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
-        
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">                    
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -60,6 +58,65 @@ $loggedInId = $_SESSION['user_id'];
                 padding-top: 0px !important;
             }
 
+            .cart-button {
+                background: transparent;
+                
+            }
+
+            .cart-icon {
+                color: black;
+            }
+            .main-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .header-right{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px
+            }
+            .profile{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .profile p {
+                margin-bottom: 0px;
+            }
+
+            .search-bar {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            #product-search {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            #search-button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+            #search-button:hover {
+                background-color: #0056b3;
+            }
+
+
         </style>    
         
 
@@ -73,20 +130,31 @@ $loggedInId = $_SESSION['user_id'];
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
-                <a class="navbar-brand" href="index_user.php">
-                    Đồ ăn vặt
-                </a>
+                <div class="main-header">
+                    <a class="navbar-brand" href="index_user.php">
+                        Đồ ăn vặt
+                    </a>
+                    <div class="search-bar">
+                        <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-button">Tìm kiếm</button>
+                    </div>
 
-                <div class="d-lg-none">
-
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
+                    <div class="header-right">
+                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
+                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                        </button>
+                        <a href="profile.php" class="profile">
+                    <?php
+                        include('dbcon.php');
+                        $ref_table = "User";
+                        $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+                        ?>
+            <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
+            </a>
+                    </div>
                 </div>
 
-                <div class="search-bar">
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                    <button id="search-button">Tìm kiếm</button>
-                </div>
-
+                
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         // Define your product data
@@ -130,17 +198,7 @@ $loggedInId = $_SESSION['user_id'];
                     });
                 </script>
 
-                <div class="d-none d-lg-block">
-                    <button type="button" class="custom-btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#BookingModal">Giỏ hàng</button>
-                </div>
-                <a href="profile.php" class="profile">
-                <?php
-                    include('dbcon.php');
-                    $ref_table = "User";
-                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                    ?>
-        <p><i class="fas fa-user-circle"></i> <?=$editdata["name"];?></p>
-        </a>
+                
             </div>
         </nav>
 
