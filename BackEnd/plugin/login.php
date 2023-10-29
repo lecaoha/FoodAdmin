@@ -18,7 +18,7 @@ session_start();
         <form action="logincode.php" method="POST">
             <h1>Đăng Nhập</h1>
             <div class="input-box">
-                <input name="phonenumber" type="text" placeholder="Số điện thoại"
+                <input name="phoneNumber" type="text" placeholder="Số điện thoại"
                 required>
                 <i class='bx bxs-user'></i>
             </div>

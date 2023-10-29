@@ -3,7 +3,7 @@ session_start();
 include('dbcon.php');
 
 if (isset($_POST['login_now_btn'])) {
-    $phonenumber = $_POST['phonenumber'];
+    $phonenumber = $_POST['phoneNumber'];
     $password = $_POST['password'];
 
     // Check if the user exists and has the correct phone number and password
@@ -16,7 +16,7 @@ if (isset($_POST['login_now_btn'])) {
     $userId = null; // Thêm biến này để lưu trữ ID của người dùng
 
     foreach ($fetchdata as $id => $user) {
-        if ($user['phonenumber'] == $phonenumber && $user['password'] == $password) {
+        if ($user['phoneNumber'] == $phonenumber && $user['password'] == $password) {
             // User found and authenticated
             $authenticated = true;
             $userId = $id; // Lưu ID của người dùng
@@ -39,7 +39,7 @@ if (isset($_POST['login_now_btn'])) {
         } else {
             // Redirect to the user panel
             $_SESSION['name'] = $user['name'];
-            $_SESSION['phonenumber'] = $phonenumber;
+            $_SESSION['phoneNumber'] = $phonenumber;
             $_SESSION['user_id'] = $userId; // Lưu ID của người dùng vào phiên
             header("Location: index_user.php");
             exit();
@@ -60,7 +60,7 @@ if (isset($_POST['login_now_btn'])) {
 
 
 if(isset($_POST['register_now_btn'])) {
-    $phonenumber = $_POST['phonenumber'];
+    $phonenumber = $_POST['phoneNumber'];
     $name = $_POST['name'];
     $password = $_POST['password'];
 
@@ -69,7 +69,7 @@ if(isset($_POST['register_now_btn'])) {
     $admin = false;  // Example value
 
     $postData = [
-        'phonenumber' => $phonenumber, // Add 'phonenumber' here
+        'phoneNumber' => $phonenumber, // Add 'phonenumber' here
         'isStaff' => $isStaff,
         'name' => $name,
         'password' => $password,

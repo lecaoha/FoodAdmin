@@ -294,7 +294,7 @@ if (!empty($fetchdata)) {
          if ($row['status'] == 2) { // Đã giao thành công
  
              // Tính tổng doanh thu theo tuần
-             $orderDate = $row['order_date'];
+             $orderDate = $row['orderDate'];
              $orderDate = date('Y-m-d', strtotime($orderDate));
              $orderWeek = date('W', strtotime($orderDate));
              $currentWeek = date('W', strtotime($currentDate));
