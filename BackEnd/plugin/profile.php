@@ -225,7 +225,6 @@ $loggedInId = $_SESSION['user_id'];
                     <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
                     <button id="search-button">Tìm kiếm</button>
                 </div>
-
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         // Define your product data
@@ -421,5 +420,4 @@ $loggedInId = $_SESSION['user_id'];
              </div><!-- container ending -->
              
         </footer>
-        </body>  
 </html>
