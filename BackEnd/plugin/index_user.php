@@ -285,6 +285,7 @@ $loggedInId = $_SESSION['user_id'];
       border-radius: 4px;
       color: #fff; 
     }
+    
         </style>    
         
 
@@ -300,7 +301,7 @@ $loggedInId = $_SESSION['user_id'];
                 
                 <div class="main-header">
                     <a class="navbar-brand" href="index_user.php">
-                        Đồ ăn vặt
+                    <img src="img/logo.png" alt="Image" width="50" height="50">
                     </a>
                     <div class="search-bar">
                         <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
@@ -312,55 +313,10 @@ $loggedInId = $_SESSION['user_id'];
                             <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
                         </button>
                        
-                </div>
-
-                
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        // Define your product data
-                        var products = <?php
-                            include('dbcon.php');
-                            $ref_table = "Foods";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-
-                            // Lấy danh sách sản phẩm
-                            $foods = $database->getReference($ref_table)->getValue();
-                            
-                        ?>; // Assuming $foods is an array
-
-                        // Get the HTML elements
-                        var searchInput = document.getElementById("product-search");
-                        var searchButton = document.getElementById("search-button");
-
-                        // Add an event listener for the search button
-                        searchButton.addEventListener("click", function () {
-                            searchProduct(searchInput.value.trim());
-                        });
-
-                        // Define the function to search products
-                        function searchProduct(query) {
-                            query = query.toLowerCase(); // Convert the query to lowercase for case-insensitive search
-
-                            // Loop through the products and show/hide them based on the search query
-                            products.forEach(function (product, index) {
-                                var productName = product.name.toLowerCase();
-
-                                // Find the corresponding product element in the HTML
-                                var productElement = document.querySelector(".menu-thumb:nth-child(" + (index + 1) + ")");
-
-                                if (productName.includes(query)) {
-                                    productElement.style.display = "block";
-                                } else {
-                                    productElement.style.display = "none";
-                                }
-                            });
-                        }
-                    });
-                </script>
-            <div class="dropdown custom-dropdown">
+                        <div class="dropdown custom-dropdown">
             <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
               <div class="profile-pic mr-3">
-                <img src="img/person_2.jpg" alt="Image">
+                <img class="logo-image" src="img/person_2.jpg" alt="Image">
               </div>
               <div class="profile-info">
               <h3 class="profile">
@@ -385,6 +341,11 @@ $loggedInId = $_SESSION['user_id'];
     
             </div>
           </div>
+                    </div>
+
+                
+
+            
 
             </div>
         </nav>
@@ -401,7 +362,7 @@ $loggedInId = $_SESSION['user_id'];
                     <div class="row">
                         <div class="col-lg-5 col-12 m-auto">
                             <div class="hero-text">
-                                <h1 class="text-white mb-lg-5 mb-3">Đồ ăn vặt</h1>
+                                <h3 class="text-white mb-lg-5 mb-3">Đồ ăn vặt</h3>
                                 <div class="c-reviews my-3 d-flex flex-wrap align-items-center">
                                     <div class="d-flex flex-wrap align-items-center">
                                     </div>
@@ -462,14 +423,10 @@ $loggedInId = $_SESSION['user_id'];
 
             
             <section class="menu section-padding">
-                <div id="product-list" class="rows">
-                    <!-- Danh sách sản phẩm sẽ được hiển thị ở đây -->
-                 </div>
                 <div class="container">
                     <div class="row">
-
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Danh mục sản phẩm</h2>
+                            <h3 class="text-center mb-4">Danh mục sản phẩm</h3>
                         </div>
                         <?php
                             include('dbcon.php');
@@ -564,7 +521,7 @@ $loggedInId = $_SESSION['user_id'];
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2 class="text-center mb-lg-5 mb-4">Thực đơn đặc biệt</h2>
+                            <h3 class="text-center mb-4">Thực đơn đặc biệt</h3>
                         </div>
                         <?php
                             include('dbcon.php');
