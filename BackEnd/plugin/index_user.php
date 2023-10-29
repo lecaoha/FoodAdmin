@@ -336,7 +336,7 @@ $loggedInId = $_SESSION['user_id'];
               
             
               <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
-              <a class="dropdown-item" href="#"><span class="icon icon-cog"></span>Đơn hàng</span></a>
+              <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn hàng</span></a>
               <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
     
             </div>

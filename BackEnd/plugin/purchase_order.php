@@ -1,12 +1,18 @@
 <?php
-    session_start();
     include('include/head.php');
-    $id = isset($_GET['id']) ? $_GET['id'] : '';
+    session_start();
+    // Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['name'])) {
+    // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
+    header("Location: login.php");
+    exit();
+}
 
-// Lấy thông tin phone và name từ phiên đăng nhập
+// Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
 $loggedInUserName = $_SESSION['name'];
 $loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedInId = $_SESSION['user_id'];
+
 
 ?>
 
@@ -21,13 +27,14 @@ $loggedInId = $_SESSION['user_id'];
 
 
         <title>Đồ ăn vặt</title>
-        <link rel="stylesheet" href="css/style2.css">
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
         <link rel="preconnect" href="https://fonts.googleapis.com">
         
@@ -42,12 +49,17 @@ $loggedInId = $_SESSION['user_id'];
 
         <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        
-
 
         <style>
-        
-        .search-bar {
+            .hero {
+                background-image: url("img/slide/bg.jpg");
+                background-size: 100% auto;
+                background-position: center; 
+                color: white;
+                height: 300px;
+                padding-top: 0px !important;
+            }
+            .search-bar {
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
@@ -175,59 +187,7 @@ $loggedInId = $_SESSION['user_id'];
                 align-items: center;
                 gap: 20px
             }
-            
-            .fa-user-circle {
-        margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
-        vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
-    }
-    .background {
-    background: #d0a1d8;
-    /* margin-top: -24px; */
-    border: 10px
-
-}
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #BA68C8
-}
-
-.profile-button {
-    background: rgb(99, 39, 120);
-    box-shadow: none;
-    border: none
-}
-
-.profile-button:hover {
-    background: #682773
-}
-
-.profile-button:focus {
-    background: #682773;
-    box-shadow: none
-}
-
-.profile-button:active {
-    background: #682773;
-    box-shadow: none
-}
-
-.back:hover {
-    color: #682773;
-    cursor: pointer
-}
-
-.labels {
-    font-size: 11px
-}
-
-.add-experience:hover {
-    background: #BA68C8;
-    color: #fff;
-    cursor: pointer;
-    border: solid 1px #BA68C8
-}
-.custom-dropdown > a {
+            .custom-dropdown > a {
   color: #000; }
   .custom-dropdown > a .arrow {
     display: inline-block;
@@ -326,6 +286,52 @@ $loggedInId = $_SESSION['user_id'];
       border-radius: 4px;
       color: #fff; 
     }
+    .filter-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+
+        .filter-item {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .filter-item:hover {
+            background-color: #ddd;
+        }
+
+        .active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .orders-container {
+            margin-top: 20px;
+        }
+
+        .order-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .custom-container {
+            background-color: #e0c1d7;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 5rem;
+            height: 500px; /* Đặt chiều cao 500px tại đây */
+            overflow: auto; /* Nếu nội dung vượt quá chiều cao, sẽ có thanh cuộn */
+            padding: 20px; /* Điều chỉnh padding theo nhu cầu */
+            position: relative; /* Để các phần tử con có thể định vị tương đối với container */
+
+        }
+        
         </style>    
         
 
@@ -333,7 +339,6 @@ $loggedInId = $_SESSION['user_id'];
     
     <body>
         
-    
     <nav class="navbar navbar-expand-lg bg-white shadow-lg">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -395,75 +400,161 @@ $loggedInId = $_SESSION['user_id'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.dropdown-toggle').dropdown();
-    });
-</script>
-
-    
 <main>
-<div class="container rounded bg-white mt-5 mb-5">
+<div class="container rounded bg-white mt-3 ">
+    <h4 class="btn btn-warning disabled placeholder "> Đơn mua hàng</h4>
 
-    <div class="row background">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><?=$editdata["name"];?></span><span> </span></div>
-        </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
-            
-                
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Thông tin cá nhân</h4>
-                    </div>
-                    <?php
-                    include('dbcon.php');
-                    $ref_table = "User";
-                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                    ?>
-                <form method="POST" action="code_users.php">
-                <input type="hidden" name="id" value="<?=$loggedInId;?>">
-                    <div class="row mt-2">
-                    <div class="col-md-12"><label class="labels">Tên</label><input type="text" class="form-control" name="name" value="<?=$editdata["name"];?>">
-                            </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-12">
-                            <label class="labels">Số điện thoại</label>
-                            <input type="text" class="form-control" name="phoneNumber" value="<?=$editdata["phoneNumber"];?>">
-                                    </div>
-                        <div class="col-md-12"><label class="labels">Địa chỉ</label><input type="text" class="form-control" placeholder="Nhập địa chỉ" value=""></div>
-                        <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="Nhập email" value=""></div>
-                        <div class="col-md-12"><label class="labels">Mật khẩu hiện tại</label><input type="password"  class="form-control" name="current_password" placeholder="Nhập mật khẩu hiện tại" value=""></div>
-                        <div class="col-md-12"><label class="labels">Mật khẩu mới</label><input type="password"  class="form-control" name="new_password" placeholder="Nhập mật khẩu mới" value=""></div>
-                        <div class="col-md-12"><label class="labels">Nhập lại mật khẩu mới</label><input type="password"  class="form-control" name="confirm_password" placeholder="Nhập lại mật khẩu mới" value=""></div>
+    <div class="filter-container">
+        <div class="filter-item active" id="all-orders">Tất cả đơn hàng</div>
+        <div class="filter-item" id="0">Đang xử lý</div>
+        <div class="filter-item" id="1">Đang giao hàng</div>
+        <div class="filter-item" id="2">Đã giao hàng</div>
+        <div class="filter-item" id="3">Đã huỷ</div>
 
-                    </div>
-                    <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" name="update_profile" type="submit">Lưu</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    
     </div>
-    
+    </div>
 </div>
-</body>
+    <div class="container rounded bg-white mb-5 ">
+    <div class="custom-container">
+    
 
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+    <div class="orders-container">
 
-    </script>
-        
+    <?php
+// Lấy dữ liệu đơn hàng từ Firebase
+$orderData = $database->getReference("Requests")->getValue();
 
-                </main>
-    <footer class="site-footer section-padding">
+$filteredOrders = array(); // Mảng để lưu trữ đơn hàng đã lọc
+
+foreach ($orderData as $orderId => $order) {
+    $orderPhone = $order["phone"]; // Số điện thoại trong đơn hàng
+
+    // Kiểm tra xem số điện thoại trong đơn hàng trùng với số điện thoại của người dùng đã đăng nhập
+    if ($orderPhone == $loggedInUserPhone) {
+        $filteredOrders[$orderId] = $order;
+    }
+}
+
+foreach ($filteredOrders as $orderId => $order) {
+    $status = $order["status"];
+
+    // Hiển thị đơn hàng dựa trên trạng thái
+    switch ($status) {
+        case "0":
+            $statusLabel = "Đang xử lý";
+            $statusClass = "text-primary";
+            break;
+        case "1":
+            $statusLabel = "Đang giao hàng";
+            $statusClass = "text-warning";
+            break;
+        case "2":
+            $statusLabel = "Đã giao hàng";
+            $statusClass = "text-success";
+            break;
+        case "3":
+            $statusLabel = "Đã huỷ";
+            $statusClass = "text-danger";
+            break;
+        default:
+            $statusLabel = "Không xác định";
+            $statusClass = "text-secondary";
+            break;
+    }
+    ?>
+        <div class="order-item" data-status="<?= $status ?>">
+
+        <div class="card mb-4">
+    <div class="card-header">
+    <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h5>
+            </div>
+            <div>
+                <h6><?= $order["orderDate"] ?></h6>
+            </div>
+    </div>
+    </div>
+    <div class="card-body">
+        <p class="card-text"><strong>Tên khách hàng:</strong> <?= $order["name"] ?></p>
+        <p class="card-text"><strong>Điện thoại:</strong> <?= $order["phone"] ?></p>
+        <p class="card-text"><strong>Địa chỉ:</strong> <?= $order["address"] ?></p>
+        <h6 class="card-subtitle mb-2 text-muted">Danh sách sản phẩm:</h6>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($order["foods"] as $food) { ?>
+                    <tr>
+                        <td><img src="<?= $food["image"] ?>" alt="<?= $food["productName"] ?>" class="img-thumbnail" style="max-width: 100px;"></td>
+                        <td><?= $food["productName"] ?></td>
+                        <td><?= $food["price"] ?></td>
+                        <td><?= $food["quantity"] ?></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+        <h6 class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h6>
+
+    </div>
+</div>
+
+
+        </div>
+<?php
+}
+?>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const filterItems = document.querySelectorAll('.filter-item');
+const orderItems = document.querySelectorAll('.order-item');
+
+filterItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // Remove 'active' class from all filter items
+        filterItems.forEach(filterItem => {
+            filterItem.classList.remove('active');
+        });
+
+        // Add 'active' class to the clicked filter item
+        item.classList.add('active');
+
+        const status = item.getAttribute('id');
+
+        // Loop through order items and check if the data-status matches the selected status
+        orderItems.forEach(orderItem => {
+            const orderStatus = orderItem.getAttribute('data-status');
+
+            // If the selected status is "all-orders" or matches the data-status, show the order item
+            if (status === 'all-orders' || orderStatus === status) {
+                orderItem.style.display = 'block';
+            } else {
+                // Otherwise, hide the order item
+                orderItem.style.display = 'none';
+            }
+        });
+    });
+});
+
+</script>
+    </div>
+    </div>
+</main>
+
+        <footer class="site-footer section-padding">
             
             <div class="container">
                 
@@ -508,4 +599,5 @@ $loggedInId = $_SESSION['user_id'];
              </div><!-- container ending -->
              
         </footer>
+    </body>
 </html>
