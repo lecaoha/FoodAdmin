@@ -7,7 +7,7 @@ include('dbcon.php');
 
 if (isset($_POST['update_users'])) {
     // Retrieve data from the form
-    $phonenumber = $_POST['phonenumber']; // Use 'phonenumber' as the key
+    $phonenumber = $_POST['phoneNumber']; // Use 'phonenumber' as the key
     
     // Other form data
     $isStaff = $_POST['isStaff'];
@@ -35,36 +35,60 @@ if (isset($_POST['update_users'])) {
     exit();
 }
 
-//page profile
+// page profile
 if (isset($_POST['update_profile'])) {
-    include('dbcon.php'); // Include the database connection
+    include('dbcon.php');
+    session_start(); // Start the session
 
-    // Retrieve data from the form
-    $loggedInId = $_SESSION['user_id'];
-    $newPhoneNumber = $_POST['phonenumber'];
-    $name = $_POST['name'];
-    
-    // Construct the update data
-    $updateData = [
-        'name' => $name,
-        'phonenumber' => $newPhoneNumber,
-    ];
+    // Verify user session
+    if (isset($_SESSION['user_id'])) {
+        // Retrieve data from the form
+        $loggedInId = $_SESSION['user_id'];
+        $newPhoneNumber = $_POST['phoneNumber'];
+        $name = $_POST['name'];
+        $currentPassword = $_POST['current_password'];
+        $newPassword = $_POST['new_password'];
+        $confirmPassword = $_POST['confirm_password'];
 
-    // Update the user data in the database
-    $ref_table = "User/" . $loggedInId; // Construct the reference path using the user ID
-    $updateQuery = $database->getReference($ref_table)->update($updateData);
-    
-    if ($updateQuery) {
-        $_SESSION['status'] = "Data Update Successfully";
-        header("Location: profile.php");
-        exit();
-    } else {
-        $_SESSION['status'] = "Data Update Failed";
-        // You can also log the error for debugging.
-        header("Location: profile.php");
-        exit();
+        // Check if the current password is correct (You need to implement your own logic here)
+        $currentPasswordIsValid = true; // Replace with your password validation logic
+
+        if ($currentPasswordIsValid) {
+            // Check if the new password and confirm password match
+            if ($newPassword === $confirmPassword) {
+                // Construct the update data
+                $updateData = [
+                    'name' => $name,
+                    'phoneNumber' => $newPhoneNumber,
+                    'password' => $newPassword // Update the password
+                ];
+
+                // Update the user data in the database
+                $ref_table = "User/" . $loggedInId;
+                $updateQuery = $database->getReference($ref_table)->update($updateData);
+
+                if ($updateQuery) {
+                    $_SESSION['status'] = "Data Update Successfully";
+                    header("Location: profile.php");
+                    exit();
+                } else {
+                    $_SESSION['status'] = "Data Update Failed";
+                    header("Location: profile.php");
+                    exit();
+                }
+            } else {
+                $_SESSION['status'] = "New password and confirm password do not match";
+                header("Location: profile.php");
+                exit();
+            }
+        } else {
+            $_SESSION['status'] = "Current password is incorrect";
+            header("Location: profile.php");
+            exit();
+        }
     }
 }
+
 
 //change pass
 if (isset($_POST['change_password'])) {

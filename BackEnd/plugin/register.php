@@ -23,7 +23,7 @@ session_start();
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input name="phonenumber" type="text" placeholder="Số điện thoại"
+                <input name="phoneNumber" type="text" placeholder="Số điện thoại"
                 required>
                 <i class='bx bxs-phone'></i>
             </div>
