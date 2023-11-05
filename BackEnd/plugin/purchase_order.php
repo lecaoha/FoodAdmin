@@ -469,7 +469,7 @@ foreach ($filteredOrders as $orderId => $order) {
     <div class="card-header">
     <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h5>
+                <h6 class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h6>
             </div>
             <div>
                 <h6><?= $order["orderDate"] ?></h6>
@@ -480,7 +480,7 @@ foreach ($filteredOrders as $orderId => $order) {
         <p class="card-text"><strong>Tên khách hàng:</strong> <?= $order["name"] ?></p>
         <p class="card-text"><strong>Điện thoại:</strong> <?= $order["phone"] ?></p>
         <p class="card-text"><strong>Địa chỉ:</strong> <?= $order["address"] ?></p>
-        <h6 class="card-subtitle mb-2 text-muted">Danh sách sản phẩm:</h6>
+        <!-- <h6 class="card-subtitle mb-2 text-muted">Danh sách sản phẩm:</h6>
         <table class="table">
             <thead>
                 <tr>
@@ -500,7 +500,7 @@ foreach ($filteredOrders as $orderId => $order) {
                     </tr>
                 <?php } ?>
             </tbody>
-        </table>
+        </table> -->
         <h6 class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h6>
 
     </div>
