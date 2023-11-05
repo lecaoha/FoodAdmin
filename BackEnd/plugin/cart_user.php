@@ -25,9 +25,12 @@ $loggedInId = $_SESSION['user_id'];
         <meta name="description" content="">
         <meta name="author" content="">
 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
 
         <title>Đồ ăn vặt</title>
-
+        
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -39,7 +42,9 @@ $loggedInId = $_SESSION['user_id'];
         <link rel="preconnect" href="https://fonts.googleapis.com">
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
+        
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">                    
         <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -56,9 +61,6 @@ $loggedInId = $_SESSION['user_id'];
                 color: white;
                 height: 300px;
                 padding-top: 0px !important;
-                margin-top: 20px;
-                margin-left: 50px;
-                margin-right: 50px;
             }
             .search-bar {
                 display: flex;
@@ -288,7 +290,26 @@ $loggedInId = $_SESSION['user_id'];
       border-radius: 4px;
       color: #fff; 
     }
+
+
+    .icon-hover-primary:hover {
+  border-color: #3b71ca !important;
+  background-color: white !important;
+}
+
+.icon-hover-primary:hover i {
+  color: #3b71ca !important;
+}
+.icon-hover-danger:hover {
+  border-color: #dc4c64 !important;
+  background-color: white !important;
+}
+
+.icon-hover-danger:hover i {
+  color: #dc4c64 !important;
+}
     
+        
         </style>    
         
 
@@ -296,7 +317,7 @@ $loggedInId = $_SESSION['user_id'];
     
     <body>
         
-        <nav class="navbar navbar-expand-lg bg-white shadow-lg">
+    <nav class="navbar navbar-expand-lg bg-white shadow-lg">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -312,9 +333,9 @@ $loggedInId = $_SESSION['user_id'];
                     </div>
 
                     <div class="header-right">
-                        <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
-                            <i  class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
-                        </a>
+                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
+                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                        </button>
                        
                         <div class="dropdown custom-dropdown">
             <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
@@ -357,214 +378,106 @@ $loggedInId = $_SESSION['user_id'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    
-        <main>
-
-        <section class="hero">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-5 col-12 m-auto">
-                            <div class="hero-text">
-                                <h3 class="text-white mb-lg-5 mb-3">Đồ ăn vặt</h3>
-                                <div class="c-reviews my-3 d-flex flex-wrap align-items-center">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-7 col-12">
-                            <div id="carouselExampleCaptions" class="carousel carousel-fade hero-carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <div class="carousel-image-wrap">
-                                            <img src="img/slide/anh1.jpg" class="img-fluid carousel-image" alt="">
-                                        </div>
-                                        <div class="carousel-caption">
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="carousel-image-wrap">
-                                            <img src="img/slide/anh2.jpg" class="img-fluid carousel-image" alt="">
-                                        </div>
-                                        <div class="carousel-caption">
-                                            <div class="d-flex align-items-center">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="carousel-image-wrap">
-                                            <img src="img/slide/anh3.jpg" class="img-fluid carousel-image" alt="">
-                                        </div>
-                                        <div class="carousel-caption">
-                                            <div class="d-flex align-items-center">
-                                            </div>
-                                            <div class="d-flex flex-wrap align-items-center">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<main>
+<section class="bg-light my-3">
+  <div class="container">
+    <div class="row">
+      <!-- cart -->
+      <div class="col-lg-9">
+        <div class="card border shadow-0">
+          <div class="m-4">
+            <h4 class="card-title mb-4">Giỏ hàng của bạn</h4>
+            <div class="row gy-3 mb-4">
+              <div class="col-lg-5">
+                <div class="me-lg-5">
+                  <div class="d-flex">
+                    <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/11.webp" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                    <div class="">
+                      <a href="#" class="nav-link">Winter jacket for men and lady</a>
                     </div>
+                  </div>
                 </div>
-                <div class="overlay"></div>
-
-            </section>
-
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var carousel = document.getElementById("carouselExampleCaptions");
-                    var myCarousel = new bootstrap.Carousel(carousel, {
-                        interval: 3000, // Đặt khoảng thời gian (milliseconds) giữa các lần chuyển đổi ảnh
-                        wrap: true, // Tự động quay lại ảnh đầu tiên sau khi đã duyệt hết tất cả ảnh
-                    });
-                });
-            </script>
-
-<div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
-                    <div class="card-header">
-                        <h4 style="">
-                        Danh mục
-                        </h4>
-                    </div>
-            <section class="menu ">
-                <div class="container">
-                    <div class="row">
-                        <?php
-                            include('dbcon.php');
-                            $ref_table = "Category";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-
-                            // Lấy danh sách sản phẩm
-                            $categories = $database->getReference($ref_table)->getValue();
-                            
-                        ?>
-                        <?php foreach($categories as $key=>$category): ?>
-                            <a href="see_user.php?id=<?=$key;?>"  class="col-lg-2 col-md-4 col-12">
-                                <div class="menu-thumb" data-menu-id="<?= $key; ?>">
-                                    <div class="menu-image-wrap">
-                                        <img src=<?=  $category['image'] ?> class="img-fluid menu-image" alt="">
-
-                                    </div>
-
-                                    <div class="menu-info d-flex flex-wrap align-items-center">
-                                        <h4 class="mb-0 category"><?=  $category['name'] ?></h4>
-                        
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
-
-                    </div>
+              </div>
+              <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                <div class="">
+                  <select style="width: 100px;" class="form-select me-4">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                  </select>
                 </div>
-            </section>
-</div>
-
-
-            <!-- Add this script after your other JavaScript code -->
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    // Define your product data and categories
-                    var products = <?php echo json_encode($foods); ?>; // Assuming $foods is an array
-                    var categories = <?php echo json_encode($categories); ?>; // Assuming $categories is an array
-
-                    // Get the HTML elements
-                    var searchInput = document.getElementById("product-search");
-                    var searchButton = document.getElementById("search-button");
-                    var categoryThumbs = document.querySelectorAll(".menu-thumb");
-                    var productList = document.getElementById("product-list");
-
-                    // Add an event listener for the search button
-                    searchButton.addEventListener("click", function () {
-                        searchProduct(searchInput.value.trim());
-                    });
-
-                    // Add click event listener for each category
-                    categoryThumbs.forEach(function (categoryThumb) {
-                        categoryThumb.addEventListener("click", function () {
-                            var categoryId = categoryThumb.dataset.menuId;
-                            filterByCategory(categoryId);
-                        });
-                    });
-
-                    // Define the function to search products
-                    function searchProduct(query) {
-                        query = query.toLowerCase();
-
-                        products.forEach(function (product, index) {
-                            var productName = product.name.toLowerCase();
-                            var productElement = productList.children[index];
-
-                            if (productName.includes(query)) {
-                                productElement.style.display = "block";
-                            } else {
-                                productElement.style.display = "none";
-                            }
-                        });
-                    }
-
-                    // Define the function to filter products by category
-                    function filterByCategory(categoryId) {
-                        products.forEach(function (product, index) {
-                            var productCategory = product.menu_id; // Make sure this property matches the Menu Id in your data
-                            var productElement = productList.children[index];
-
-                            if (productCategory === categoryId) {
-                                productElement.style.display = "block";
-                            } else {
-                                productElement.style.display = "none";
-                            }
-                        });
-                    }
-                });
-            </script>
-
-<div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
-    <h4 style="color: red; text-align: center;font-size: 24px;">
-        Gợi ý hôm nay
-    </h4>
-    <div style="border-bottom: 1px solid red;"></div>
-
-        <section class="menu">
-                <div class="container">
-                    <div class="row">
-                        <?php
-                            include('dbcon.php');
-                            $ref_table = "Foods";
-                            $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-
-                            // Lấy danh sách sản phẩm
-                            $foods = $database->getReference($ref_table)->getValue();
-                            
-                        ?>
-                        <?php foreach($foods as $key=>$food): ?>
-                            <div class="col-lg-4 col-md-6 col-12">
-                            <div class="menu-thumb special">
-                                <div class="menu-image-wrap">
-                                    <img src=<?=  $food['image'] ?> class="img-fluid menu-image" alt="">
-
-                                    <span class="menu-tag bg-warning">Đồ ăn vặt</span>
-                                </div>
-
-                                <div class="menu-info special">
-                                    <h4 class="mb-0"><?=  $food['name'] ?></h4>
-
-                                    <span class="price-tag bg-white shadow-lg ms-4 special"><small>$</small><?=  $food['price'] ?></span>
-
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-
-                    </div>
+                <div class="">
+                  <text class="h6">$1156.00</text> <br />
+                  <small class="text-muted text-nowrap"> $460.00 / per item </small>
                 </div>
-            </section>
-</div>
-        </main>
+              </div>
+              <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                <div class="float-md-end">
+                  <a href="#" class="btn btn-light border text-danger icon-hover-danger"> Xoá</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="border-top pt-4 mx-4 mb-4">
+            <p><i class="fas fa-truck text-muted fa-lg"></i> Giao hàng miễn phí trong vòng 1-2 tuần</p>
+            
+          </div>
+        </div>
+      </div>
+      <!-- cart -->
+      <!-- summary -->
+      <div class="col-lg-3">
+        <div class="card mb-3 border shadow-0">
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label class="form-label">Địa chỉ giao hàng</label>
+                <div class="input-group">
+                  <input type="text" class="form-control border" name="" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Lời nhắc nhở</label>
+                <div class="input-group">
+                  <input type="text" class="form-control border" name="" placeholder="" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card shadow-0 border">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Tổng giá:</p>
+              <p class="mb-2">$329.00</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Giảm giá:</p>
+              <p class="mb-2 text-success">$0</p>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <p class="mb-2">Tổng giá:</p>
+              <p class="mb-2 fw-bold">$283.00</p>
+            </div>
+
+            <div class="mt-3">
+              <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Mua hàng </a>
+              <a href="index_user.php" class="btn btn-light w-100 border mt-2"> Trở về trang chủ </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- summary -->
+    </div>
+  </div>
+</section>
+<!-- cart + summary -->
+<section>
+</main>
 
         <footer class="site-footer section-padding">
             
