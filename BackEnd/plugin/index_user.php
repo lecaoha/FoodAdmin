@@ -57,6 +57,9 @@ $loggedInId = $_SESSION['user_id'];
             color: white;
             height: 300px;
             padding-top: 0px !important;
+            margin-top: 20px;
+                margin-left: 50px;
+                margin-right: 50px;
         }
 
         .search-bar {
@@ -472,13 +475,16 @@ $loggedInId = $_SESSION['user_id'];
             });
         </script>
 
-
-        <section class="menu section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h3 class="text-center mb-4">Danh mục sản phẩm</h3>
+<div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
+                    <div class="card-header">
+                        <h4 style="font-size: 24px;">
+                        Danh mục
+                        </h4>
                     </div>
+            <section class="menu ">
+                <div class="container">
+                    <div class="row">
+                    
                     <?php
                     include('dbcon.php');
                     $ref_table = "Category";
@@ -509,6 +515,7 @@ $loggedInId = $_SESSION['user_id'];
                 </div>
             </div>
         </section>
+</div>
 
         <!-- Add this script after your other JavaScript code -->
         <script>
@@ -568,14 +575,17 @@ $loggedInId = $_SESSION['user_id'];
             });
         </script>
 
+<div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
+    <h4 style="color: red; text-align: center;font-size: 24px;">
+        Gợi ý hôm nay
+    </h4>
+    <div style="border-bottom: 1px solid red;"></div>
 
 
-        <section class="menu section-padding">
+        <section class="menu">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <h3 class="text-center mb-4">Thực đơn đặc biệt</h3>
-                    </div>
+                
                     <?php
                     include('dbcon.php');
                     $ref_table = "Foods";
@@ -609,7 +619,7 @@ $loggedInId = $_SESSION['user_id'];
                 </div>
             </div>
         </section>
-
+</div>
 
 
     </main>
