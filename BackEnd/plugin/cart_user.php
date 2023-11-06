@@ -422,7 +422,7 @@ $loggedInId = $_SESSION['user_id'];
           </div>
 
           <div class="border-top pt-4 mx-4 mb-4">
-            <p><i class="fas fa-truck text-muted fa-lg"></i> Giao hàng miễn phí trong vòng 1-2 tuần</p>
+            <p><i class="fas fa-truck text-muted fa-lg"></i> Giao hàng miễn phí trong 1-2 km</p>
             
           </div>
         </div>

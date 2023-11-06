@@ -358,10 +358,10 @@ $loggedInId = $_SESSION['user_id'];
                 </div>
 
                 <div class="header-right">
-                    <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
+                    <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
                         data-bs-target="#BookingModal">
                         <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
-                    </button>
+                    </a>
 
                     <div class="dropdown custom-dropdown">
                         <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
