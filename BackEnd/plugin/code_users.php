@@ -35,6 +35,59 @@ if (isset($_POST['update_users'])) {
     exit();
 }
 
+// // page profile
+// if (isset($_POST['update_profile'])) {
+//     include('dbcon.php');
+//     session_start(); // Start the session
+
+//     // Verify user session
+//     if (isset($_SESSION['user_id'])) {
+//         // Retrieve data from the form
+//         $loggedInId = $_SESSION['user_id'];
+//         $newPhoneNumber = $_POST['phoneNumber'];
+//         $name = $_POST['name'];
+//         $currentPassword = $_POST['current_password'];
+//         $newPassword = $_POST['new_password'];
+//         $confirmPassword = $_POST['confirm_password'];
+
+//         // Check if the current password is correct (You need to implement your own logic here)
+//         $currentPasswordIsValid = true; // Replace with your password validation logic
+
+//         if ($currentPasswordIsValid) {
+//             // Check if the new password and confirm password match
+//             if ($newPassword === $confirmPassword) {
+//                 // Construct the update data
+//                 $updateData = [
+//                     'name' => $name,
+//                     'phoneNumber' => $newPhoneNumber,
+//                     'password' => $newPassword // Update the password
+//                 ];
+
+//                 // Update the user data in the database
+//                 $ref_table = "User/" . $loggedInId;
+//                 $updateQuery = $database->getReference($ref_table)->update($updateData);
+
+//                 if ($updateQuery) {
+//                     $_SESSION['status'] = "Data Update Successfully";
+//                     header("Location: profile.php");
+//                     exit();
+//                 } else {
+//                     $_SESSION['status'] = "Data Update Failed";
+//                     header("Location: profile.php");
+//                     exit();
+//                 }
+//             } else {
+//                 $_SESSION['status'] = "New password and confirm password do not match";
+//                 header("Location: profile.php");
+//                 exit();
+//             }
+//         } else {
+//             $_SESSION['status'] = "Current password is incorrect";
+//             header("Location: profile.php");
+//             exit();
+//         }
+//     }
+// }
 // page profile
 if (isset($_POST['update_profile'])) {
     include('dbcon.php');
@@ -53,41 +106,68 @@ if (isset($_POST['update_profile'])) {
         // Check if the current password is correct (You need to implement your own logic here)
         $currentPasswordIsValid = true; // Replace with your password validation logic
 
+        // Construct the update data
+        $updateData = [];
+
+        // Update only if the name field is not empty
+        if (!empty($name)) {
+            $updateData['name'] = $name;
+        }
+
+        // Update only if the new phone number field is not empty
+        if (!empty($newPhoneNumber)) {
+            $updateData['phoneNumber'] = $newPhoneNumber;
+        }
+
+        // Update only if the current password is correct
         if ($currentPasswordIsValid) {
-            // Check if the new password and confirm password match
-            if ($newPassword === $confirmPassword) {
-                // Construct the update data
-                $updateData = [
-                    'name' => $name,
-                    'phoneNumber' => $newPhoneNumber,
-                    'password' => $newPassword // Update the password
-                ];
-
-                // Update the user data in the database
-                $ref_table = "User/" . $loggedInId;
-                $updateQuery = $database->getReference($ref_table)->update($updateData);
-
-                if ($updateQuery) {
-                    $_SESSION['status'] = "Data Update Successfully";
-                    header("Location: profile.php");
-                    exit();
-                } else {
-                    $_SESSION['status'] = "Data Update Failed";
-                    header("Location: profile.php");
-                    exit();
-                }
-            } else {
-                $_SESSION['status'] = "New password and confirm password do not match";
+            // Check if the new password and confirm password match and are at least 6 characters long
+            if (!empty($newPassword) && strlen($newPassword) >= 6 && $newPassword === $confirmPassword) {
+                $updateData['password'] = $newPassword;
+            } elseif (!empty($newPassword) && strlen($newPassword) < 6) {
+                $_SESSION['notification']['status'] = "error";
+                $_SESSION['notification']['message']= "New password must be at least 6 characters long";
+                header("Location: profile.php");
+                exit();
+            } elseif (!empty($newPassword) && $newPassword !== $confirmPassword) {
+                $_SESSION['notification']['status'] = "error";
+                $_SESSION['notification']['message']= "New password and confirm password do not match";
                 header("Location: profile.php");
                 exit();
             }
         } else {
-            $_SESSION['status'] = "Current password is incorrect";
+            $_SESSION['notification']['status'] = "error";
+            $_SESSION['notification']['message']= "Current password is incorrect";
+            header("Location: profile.php");
+            exit();
+        }
+
+        // Check if there is anything to update
+        if (!empty($updateData)) {
+            // Update the user data in the database
+            $ref_table = "User/" . $loggedInId;
+            $updateQuery = $database->getReference($ref_table)->update($updateData);
+
+            if ($updateQuery) {
+                $_SESSION['notification']['status'] = "success";
+                $_SESSION['notification']['message'] = "Data Update Successfully";
+                header("Location: profile.php");
+                exit();
+            } else {
+                $_SESSION['notification']['status'] = "error";
+                $_SESSION['notification']['message'] = "Data Update Failed";
+                header("Location: profile.php");
+                exit();
+            }
+        } else {
+            $_SESSION['status'] = "No fields to update";
             header("Location: profile.php");
             exit();
         }
     }
 }
+
+
 
 
 //change pass
@@ -193,6 +273,5 @@ if(isset($_POST['save_user']))
         }
     }
 }
-
 
 ?>

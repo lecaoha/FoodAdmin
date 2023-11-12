@@ -1,6 +1,7 @@
 <?php
 include('include/head.php');
 session_start();
+
 // Kiểm tra xem người dùng đã đăng nhập hay chưa
 if (!isset($_SESSION['name'])) {
     // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
@@ -13,7 +14,26 @@ $loggedInUserName = $_SESSION['name'];
 $loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedInId = $_SESSION['user_id'];
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitComment"])) {
+    include('dbcon.php');
 
+    // Get form data
+    $foodId = $_POST["foodId"];
+    $rating = $_POST["rating"];
+    $comment = $_POST["comment"];
+    $userPhone = $loggedInUserPhone;  // Assuming you want to associate the comment with the logged-in user
+
+    // Create an array with comment data
+    $commentData = [
+        "foodId" => $foodId,
+        "rateValue" => $rating,
+        "comment" => $comment,
+        "userPhone" => $userPhone
+    ];
+
+    // Push comment data to the "Rating" node in Firebase Realtime Database
+    $database->getReference("Rating")->push($commentData);
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,8 +43,6 @@ $loggedInId = $_SESSION['user_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
 
@@ -35,6 +53,20 @@ $loggedInId = $_SESSION['user_id'];
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/tooplate-crispy-kitchen.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+    
     <style>
         body {
             background-color: #ecedee;
@@ -97,7 +129,6 @@ $loggedInId = $_SESSION['user_id'];
         .colors {
             margin-top: 5px;
         }
-
         .colors ul {
             list-style: none;
             display: flex;
@@ -136,452 +167,407 @@ $loggedInId = $_SESSION['user_id'];
         .right-side {
             position: relative;
         }
-
-        .search-option {
-            position: absolute;
-            background-color: #000;
-            overflow: hidden;
-            align-items: center;
-            color: #fff;
-            width: 200px;
-            height: 200px;
-            border-radius: 49% 51% 50% 50% / 68% 69% 31% 32%;
-            left: 30%;
-            bottom: -250px;
-            transition: all 0.5s;
-            cursor: pointer;
-        }
-
-        .search-option .first-search {
-            position: absolute;
-            top: 20px;
-            left: 90px;
-            font-size: 20px;
-            opacity: 1000;
-        }
-
-        .search-option .inputs {
-            opacity: 0;
-            transition: all 0.5s ease;
-            transition-delay: 0.5s;
-            position: relative;
-        }
-
-        .search-option .inputs input {
-            position: absolute;
-            top: 200px;
-            left: 30px;
-            padding-left: 20px;
-            background-color: transparent;
-            width: 300px;
-            border: none;
-            color: #fff;
-            border-bottom: 1px solid #eee;
-            transition: all 0.5s;
-            z-index: 10;
-        }
-
-        .search-option .inputs input:focus {
-            box-shadow: none;
-            outline: none;
-            z-index: 10;
-        }
-
-        .search-option:hover {
-            border-radius: 0px;
-            width: 100%;
-            left: 0px;
-        }
-
-        .search-option:hover .inputs {
-            opacity: 1;
-        }
-
-        .search-option:hover .first-search {
-            left: 27px;
-            top: 25px;
-            font-size: 15px;
-        }
-
-        .search-option:hover .inputs input {
-            top: 20px;
-        }
-
-        .search-option .share {
-            position: absolute;
-            right: 20px;
-            top: 22px;
-        }
-
-        .buttons .btn {
-            height: 50px;
-            width: 150px;
-            border-radius: 0px !important;
-        }
-
         .search-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
 
-        #product-search {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+            #product-search {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-        #search-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+            #search-button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
 
-        #search-button:hover {
-            background-color: #0056b3;
-        }
+            #search-button:hover {
+                background-color: #0056b3;
+            }
 
-        .menu-thumb {
-            text-align: center;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-            transition: transform 0.3s;
-        }
+            .menu-thumb {
+                text-align: center;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 5px;
+                transition: transform 0.3s;
+            }
 
 
-        .menu-thumb:hover {
-            transform: scale(0.9);
-            /* Thu nhỏ 90% khi di chuột qua */
-        }
+            .menu-thumb:hover {
+                transform: scale(0.9); /* Thu nhỏ 90% khi di chuột qua */
+            }
 
-        .menu-image {
-            max-width: 100%;
-            height: auto;
-        }
+            .menu-image {
+                max-width: 100%;
+                height: auto;
+            }
 
-        .menu-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }
+            .menu-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
 
-        h4 {
-            font-size: 14px;
-            /* Điều chỉnh kích thước phông chữ cho tiêu đề */
-            margin-bottom: 10px;
-        }
+            h4 {
+                font-size: 14px; /* Điều chỉnh kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
 
-        .price-tag {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 12px;
-            /* Điều chỉnh kích thước phông chữ cho giá */
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            margin-top: 10px;
-        }
+            .price-tag {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 5px 10px;
+                font-size: 12px; /* Điều chỉnh kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
 
-        .menu-thumb.special {
-            text-align: center;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 10px;
-            transition: transform 0.3s;
-            /* Hiệu ứng thu nhỏ */
-            max-width: 100%;
-            /* Điều chỉnh kích thước danh mục sản phẩm */
-        }
+            .menu-thumb.special {
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin: 10px;
+                transition: transform 0.3s; /* Hiệu ứng thu nhỏ */
+                max-width: 100%; /* Điều chỉnh kích thước danh mục sản phẩm */
+            }
 
-        .menu-thumb.special:hover {
-            transform: scale(1.1);
-            /* Phóng to 110% khi di chuột qua */
-        }
+            .menu-thumb.special:hover {
+                transform: scale(1.1); /* Phóng to 110% khi di chuột qua */
+            }
 
-        .menu-image.special {
-            max-width: 100%;
-            height: auto;
-        }
+            .menu-image.special {
+                max-width: 100%;
+                height: auto;
+            }
 
-        .menu-info.special {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }
+            .menu-info.special {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 10px;
+            }
 
-        h4.special {
-            font-size: 18px;
-            /* Tăng kích thước phông chữ cho tiêu đề */
-            margin-bottom: 10px;
-        }
+            h4.special {
+                font-size: 18px; /* Tăng kích thước phông chữ cho tiêu đề */
+                margin-bottom: 10px;
+            }
 
-        .price-tag.special {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 8px 12px;
-            /* Tăng kích thước padding */
-            font-size: 16px;
-            /* Tăng kích thước phông chữ cho giá */
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            margin-top: 10px;
-        }
+            .price-tag.special {
+                background-color: #fff;
+                border-radius: 5px;
+                padding: 8px 12px; /* Tăng kích thước padding */
+                font-size: 16px; /* Tăng kích thước phông chữ cho giá */
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-top: 10px;
+            }
 
-        .cart-button {
-            background: transparent;
+            .cart-button {
+                background: transparent;
+                
+            }
 
-        }
+            .cart-icon {
+                color: black;
+            }
+            .main-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
 
-        .cart-icon {
-            color: black;
-        }
+            .header-right{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px
+            }
+            
+            .fa-user-circle {
+        margin-left: 30px; /* Điều chỉnh khoảng cách giữa biểu tượng và nội dung */
+        vertical-align: middle; /* Để đảm bảo biểu tượng được căn giữa theo chiều dọc */
+    }
+    .background {
+    background: #d0a1d8;
+    /* margin-top: -24px; */
+    border: 10px
 
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
+}
 
-        .header-right {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px
-        }
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
 
-        .custom-dropdown>a {
-            color: #000;
-        }
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+}
 
-        .custom-dropdown>a .arrow {
-            display: inline-block;
-            position: relative;
-            -webkit-transition: .3s transform ease;
-            -o-transition: .3s transform ease;
-            transition: .3s transform ease;
-        }
+.profile-button:hover {
+    background: #682773
+}
 
-        .custom-dropdown.show>a .arrow {
-            -webkit-transform: rotate(-180deg);
-            -ms-transform: rotate(-180deg);
-            transform: rotate(-180deg);
-        }
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
 
-        .custom-dropdown .btn:active,
-        .custom-dropdown .btn:focus {
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-            outline: none;
-        }
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
 
-        .custom-dropdown .btn.btn-custom {
-            border: 1px solid #efefef;
-        }
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
 
-        .custom-dropdown .title-wrap {
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
+.labels {
+    font-size: 11px
+}
 
-        .custom-dropdown .title {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+.custom-dropdown > a {
+  color: #000; }
+  .custom-dropdown > a .arrow {
+    display: inline-block;
+    position: relative;
+    -webkit-transition: .3s transform ease;
+    -o-transition: .3s transform ease;
+    transition: .3s transform ease; }
 
-        .custom-dropdown .dropdown-link .profile-pic {
-            -webkit-box-flex: 0;
-            -ms-flex: 0 0 20px;
-            flex: 0 0 50px;
-        }
+.custom-dropdown.show > a .arrow {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
 
-        .custom-dropdown .dropdown-link .profile-pic img {
-            width: 50px;
-            border-radius: 50%;
-        }
+.custom-dropdown .btn:active, .custom-dropdown .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none; }
 
-        .custom-dropdown .dropdown-link .profile-info h3,
-        .custom-dropdown .dropdown-link .profile-info span {
-            margin: 0;
-            padding: 0;
-        }
+.custom-dropdown .btn.btn-custom {
+  border: 1px solid #efefef; }
 
-        .custom-dropdown .dropdown-link .profile-info h3 {
-            font-size: 16px;
-        }
+.custom-dropdown .title-wrap {
+  padding-top: 10px;
+  padding-bottom: 10px; }
 
-        .custom-dropdown .dropdown-link .profile-info span {
-            display: block;
-            font-size: 13px;
-        }
+.custom-dropdown .title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase; }
 
-        .custom-dropdown .dropdown-menu {
-            border: 1px solid transparent !important;
-            -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
-            margin-top: -10px !important;
-            padding-top: 0;
-            padding-bottom: 0;
-            opacity: 0;
-            border-radius: 0;
-            background: #fff;
-            right: auto !important;
-            left: auto !important;
-            -webkit-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
-            -o-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
-            transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
-            visibility: hidden;
-        }
+.custom-dropdown .dropdown-link .profile-pic {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 50px; }
+  .custom-dropdown .dropdown-link .profile-pic img {
+    width: 50px;
+    border-radius: 50%; }
 
-        .custom-dropdown .dropdown-menu.active {
-            opacity: 1;
-            visibility: visible;
-            margin-top: 0px !important;
-        }
+.custom-dropdown .dropdown-link .profile-info h3, .custom-dropdown .dropdown-link .profile-info span {
+  margin: 0;
+  padding: 0; }
 
-        .custom-dropdown .dropdown-menu a {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            font-size: 14px;
-            padding: 15px 15px;
-            position: relative;
-            color: #b2bac1;
-        }
+.custom-dropdown .dropdown-link .profile-info h3 {
+  font-size: 16px; }
 
-        .custom-dropdown .dropdown-menu a:last-child {
-            border-bottom: none;
-        }
+.custom-dropdown .dropdown-link .profile-info span {
+  display: block;
+  font-size: 13px; }
 
-        .custom-dropdown .dropdown-menu a .icon {
-            margin-right: 15px;
-            display: inline-block;
-        }
+.custom-dropdown .dropdown-menu {
+  border: 1px solid transparent !important;
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  margin-top: -10px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-radius: 0;
+  background: #fff;
+  right: auto !important;
+  left: auto !important;
+  -webkit-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  -o-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  visibility: hidden; }
+  .custom-dropdown .dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 0px !important; }
+  .custom-dropdown .dropdown-menu a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    padding: 15px 15px;
+    position: relative;
+    color: #000; }
+    .custom-dropdown .dropdown-menu a:last-child {
+      border-bottom: none; }
+    .custom-dropdown .dropdown-menu a .icon {
+      margin-right: 15px;
+      display: inline-block; }
+    .custom-dropdown .dropdown-menu a:hover, .custom-dropdown .dropdown-menu a:active, .custom-dropdown .dropdown-menu a:focus {
+      background: #fff;
+      color: #000; }
+      .custom-dropdown .dropdown-menu a:hover .number, .custom-dropdown .dropdown-menu a:active .number, .custom-dropdown .dropdown-menu a:focus .number {
+        color: #fff; }
+    .custom-dropdown .dropdown-menu a .number {
+      padding: 2px 6px;
+      font-size: 11px;
+      background: #fd7e14;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      right: 15px;
+      border-radius: 4px;
+      color: #fff; 
+    }
 
-        .custom-dropdown .dropdown-menu a:hover,
-        .custom-dropdown .dropdown-menu a:active,
-        .custom-dropdown .dropdown-menu a:focus {
-            background: #fff;
-            color: #000;
-        }
+    .icon-hover-primary:hover {
+  border-color: #3b71ca !important;
+  background-color: white !important;
+}
 
-        .custom-dropdown .dropdown-menu a:hover .number,
-        .custom-dropdown .dropdown-menu a:active .number,
-        .custom-dropdown .dropdown-menu a:focus .number {
-            color: #fff;
-        }
+.icon-hover-primary:hover i {
+  color: #3b71ca !important;
+}
+.icon-hover-danger:hover {
+  border-color: #dc4c64 !important;
+  background-color: white !important;
+}
 
-        .custom-dropdown .dropdown-menu a .number {
-            padding: 2px 6px;
-            font-size: 11px;
-            background: #fd7e14;
-            position: absolute;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            right: 15px;
-            border-radius: 4px;
-            color: #fff;
-        }
+.icon-hover-danger:hover i {
+  color: #dc4c64 !important;
+}
+    
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
 
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+.comment-box {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-        html,
+.comment-box h4 {
+    font-size: 18px;
+    margin: 0;
+    margin-bottom: 10px;
+}
 
-        .comment-box {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f7f7f7;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+.comment-box .rating {
+    display: flex;
+    margin-top: 10px;
+}
 
-        .comment-box h4 {
-            font-size: 18px;
-            margin: 0;
-            margin-bottom: 10px;
-        }
+.comment-box .rating>input {
+    display: none;
+}
 
-        .comment-box .rating {
-            display: flex;
-            margin-top: 10px;
-        }
+.comment-box .rating>label {
+    position: relative;
+    width: 20px;
+    font-size: 25px;
+    color: #ff0000;
+    cursor: pointer;
+}
 
-        .comment-box .rating>input {
-            display: none;
-        }
+.comment-box .rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0;
+}
 
-        .comment-box .rating>label {
-            position: relative;
-            width: 20px;
-            font-size: 25px;
-            color: #ff0000;
-            cursor: pointer;
-        }
+.comment-box .rating>label:hover:before,
+.comment-box .rating>label:hover~label:before {
+    opacity: 1 !important;
+}
 
-        .comment-box .rating>label::before {
-            content: "\2605";
-            position: absolute;
-            opacity: 0;
-        }
+.comment-box .rating>input:checked~label:before {
+    opacity: 1;
+}
 
-        .comment-box .rating>label:hover:before,
-        .comment-box .rating>label:hover~label:before {
-            opacity: 1 !important;
-        }
+.comment-box .rating:hover>input:checked~label:before {
+    opacity: 0.4;
+}
 
-        .comment-box .rating>input:checked~label:before {
-            opacity: 1;
-        }
+.comment-box .comment-area textarea {
+    resize: none;
+    border: 1px solid #ad9f9f;
+    width: 50%;
+}
 
-        .comment-box .rating:hover>input:checked~label:before {
-            opacity: 0.4;
-        }
+.comment-box .send {
+    color: #fff;
+    background-color: #ff0000;
+    border-color: #ff0000;
+    margin-top: 10px;
+}
 
-        .comment-box .comment-area textarea {
-            resize: none;
-            border: 1px solid #ad9f9f;
-            width: 50%;
-        }
+.comment-box .send:hover {
+    color: #fff;
+    background-color: #f50202;
+    border-color: #f50202;
+}
 
-        .comment-box .send {
-            color: #fff;
-            background-color: #ff0000;
-            border-color: #ff0000;
-            margin-top: 10px;
-        }
+.comment-box .comment-btns {
+    margin-top: 10px;
+}
 
-        .comment-box .send:hover {
-            color: #fff;
-            background-color: #f50202;
-            border-color: #f50202;
-        }
+.comment-box .comment-btns .btn {
+    margin-right: 10px;
+}
 
-        .comment-box .comment-btns {
-            margin-top: 10px;
-        }
+.rating-flex {
+    flex-direction: row-reverse;
+    justify-content: start;
+}
+.search-button {
+    background-color: #4CAF50; /* Green color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+}
 
-        .comment-box .comment-btns .btn {
-            margin-right: 10px;
-        }
-
-        .rating-flex {
+/* Add this style to change the button color on hover */
+.search-button:hover {
+    background-color: #45a049; /* 
+    Darker green color on hover */
+}
+        .rating {
             flex-direction: row-reverse;
             justify-content: start;
         }
-    </style>
+        
+        </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-white shadow-lg">
+<nav class="navbar navbar-expand-lg bg-white shadow-lg">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -592,22 +578,39 @@ $loggedInId = $_SESSION['user_id'];
                 <a class="navbar-brand" href="index_user.php">
                     <img src="img/logo.png" alt="Image" width="50" height="50">
                 </a>
-                <div class="search-bar">
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                    <button id="search-button">Tìm kiếm</button>
+                <div class="input-group md-form form-sm form-2 pl-0 ml-5 mr-5">
+                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                    <div class="input-group-append">
+                        <!-- Add the "search-button" class to the button -->
+                        <button class="input-group-text lime lighten-2 search-button" id="basic-text1">
+                            <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Get the search input element
+                        var searchInput = document.getElementById("product-search");
+
+                        // Add a click event listener to the search input
+                        searchInput.addEventListener("click", function () {
+                            // Redirect to search.php when the input is clicked
+                            window.location.href = "search_user.php";
+                        });
+                    });
+                </script>
 
                 <div class="header-right">
-                    <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
+                    <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
                         data-bs-target="#BookingModal">
-                        <i class="fas fa-shopping-cart cart-icon"></i>
-                    </button>
+                        <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+    </a>
 
                     <div class="dropdown custom-dropdown">
                         <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
                             aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
                             <div class="profile-pic mr-3">
-                                <img class="logo-image" src="img/person_2.jpg" alt="Image">
+                                <img class="logo-image" src="img/person_2.png" alt="Image">
                             </div>
                             <div class="profile-info">
                                 <h3 class="profile">
@@ -620,6 +623,7 @@ $loggedInId = $_SESSION['user_id'];
                                 </h3>
                             </div>
 
+
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -629,20 +633,31 @@ $loggedInId = $_SESSION['user_id'];
                                 tin cá nhân</a>
                             <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn
                                 hàng</span></a>
-                            <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>
+                            <a class="dropdown-item" href="logout_user.php"><span class="icon icon-sign-out"></span>Đăng xuất</a>
 
                         </div>
                     </div>
                 </div>
 
+
+
+
+
             </div>
     </nav>
-    <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+    <main>
     <?php
     include('dbcon.php');
 
@@ -673,22 +688,24 @@ $loggedInId = $_SESSION['user_id'];
     }
     ?>
 
-    <div class="container mt-5 mb-5">
-        <div class="card" style="height: 60vh;">
-            <div class="row g-0">
+<div class="container mt-3 mb-3">
+    <div class="card" >
+    
+    <form method="POST" action="cart_user.php">
+        <div class="row g-0">
                 <div class="col-md-6 border-end">
                     <div class="d-flex flex-column justify-content-center">
                         <div class="main_image">
-                            <img src="<?= $food_ref['image'] ?>" id="main_product_image" width="450">
+                            <img src="<?= $food_ref['image'] ?>" id="main_product_image" width="400">
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="p-3 right-side">
-                        <h3>
+                <div class="col-md-6" style="height: auto;">
+                    <div class="p-3 right-side" >
+                        <h4 style="font-size: 20px;">
                             <?= $food_ref['name'] ?>
                             <p><strong>Giá: <span style="color: red;">$<?= $food_ref['price'] ?></span></strong></p>
-                        </h3> 
+                        </h4>
 
                         <div class="ratings d-flex flex-row align-items-center mt-3">
                             <div class="d-flex flex-row">
@@ -709,67 +726,106 @@ $loggedInId = $_SESSION['user_id'];
 
                         <div class="mt-4">
                             <span class="fw-bold">Số lượng</span>
-                            
+
                             <div class="input-group">
-                                <input type="number" id="quantity" name="quantity" class="form-control" value="1"
-                                    min="1" style="max-width: 60px;">
+                            <input type="number" name="quantity1" class="form-control" value="1" min="1" max="10" style="max-width: 60px;">
                             </div>
+
+                        </div>
+                        <div class="mt-4">
+                            <h4>Mô tả sản phẩm</h4>
+                            <p style="font-size: 15px;">
+                                
+                                <!-- Add your product description here -->
+                                <?= $food_ref['description'] ?>
+                            </p>
                         </div>
 
+
                         <div class="buttons d-flex flex-row mt-5 gap-4" style="margin-top: 1rem;">
-                            <button class="btn btn-outline-dark">Mua ngay</button>
-                            <button class="btn btn-dark">Thêm vào giỏ</button>
+                            <button class="btn btn-outline-dark" type="submit" name="addcart" value="đặt hàng">Mua ngay</button>
+                            <button class="btn btn-dark" type="submit" name="addcart" value="đặt hàng">Thêm vào giỏ</button>
                         </div>
+                        
+
                     </div>
                 </div>
+        </div>
+    <input type="hidden" name="product_id" value="<?= $id ?>">
+    <input type="hidden" name="product_name" value="<?= $food_ref['name'] ?>">
+    <input type="hidden" name="product_price" value="<?= $food_ref['price'] ?>">
+    <input type="hidden" name="product_image" value="<?= $food_ref['image'] ?>">
+    <!-- <input type="number" id="quantity_<?= $id ?>" name="quantity" class="form-control" value="1" min="1" style="max-width: 60px;"> -->
+        </form>
+    </div>
+</div>
+
+
+<section style="background-color: #FFFFFF;">
+
+    <div class="container my-2 py-2 text-dark">
+
+        <div class="row d-flex justify-content-center">
+            <h4 style="font-size: 20px;"> Bình luận</h4>
+
+            <div class="col-md-12 col-lg-10 col-xl-8">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                </div>
+                <?php
+                // Loop through the comments for the current food item
+                foreach ($ratingsForCurrentItem as $rating) {
+                    if (isset($rating['comment'])) {
+                        echo '<div class="card mb-3" style="background-color: #f7f6f6;">';
+                        echo '<div class="card-body">';
+                        echo '<div class="d-flex flex-start">';
+                        echo '<div class="w-100">';
+                        echo '<div class="d-flex justify-content-between align-items-center mb-3">';
+                        echo '<div class="comment">';
+                        echo '<div class="profile-pic mr-3">
+                                <img class="logo-image" src="img/person_2.png" alt="Image" style="width: 40px; height: 40px;">
+                                <strong>' . $rating['userPhone'] . '</strong>
+                             </div>';
+                        $starIcons = generateStarIcons($rating['rateValue']);
+                        echo '<div class="stars" style="margin-left: 45px;">' . $starIcons . '</div>';
+                        echo '<p style="margin-left: 45px;">' . $rating['comment'] . '</p>';
+                        
+                        echo '</div>';
+                        echo '<div class="comment-actions">';
+                        echo '<p class="small mb-0" style="color: #aaa;">';
+                        echo '<a href="#!" class="link-grey">Remove</a> •';
+                        echo '<a href="#!" class="link-grey">Reply</a>';
+                        echo '</p>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                }
+                function generateStarIcons($rateValue) {
+                // Replace this with your logic to generate star icons based on rateValue
+                $starIcons = '';
+                for ($i = 0; $i < $rateValue; $i++) {
+                    $starIcons .= '⭐'; // Replace with your star icon or image
+                }
+                return $starIcons;
+            }
+                ?>
             </div>
         </div>
     </div>
+    <div class="card">
 
-    <section style="background-color: #f7f6f6;">
-        <div class="container my-5 py-5 text-dark">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-lg-10 col-xl-8">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="d-flex flex-start">
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <?php
-                                        // Loop through the comments for the current food item
-                                        foreach ($ratingsForCurrentItem as $rating) {
-                                            if (isset($rating['comment'])) {
-                                                echo '<div class="comment">';
-                                                echo '<strong>' . $rating['userPhone'] . ':</strong>';
-                                                echo '<p>' . $rating['comment'] . '</p>';
-                                                echo '</div>';
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class="small mb-0" style="color: #aaa;">
-                                            <a href="#!" class="link-grey">Remove</a> •
-                                            <a href="#!" class="link-grey">Reply</a> •
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center" style="height: 320px;">
 
-            <div class="row">
-                <div class="d-flex justify-content-center align-items-center" style="height: 320px;">
+            <div class="col-md-7">
+                <div class="comment-box">
+                    <h4>Add a comment</h4>
+                    <form id="commentForm" method="POST" action="">
 
-                    <div class="col-md-7">
-                        <div class="comment-box">
-                            <h4>Add a comment</h4>
                             <div class="rating">
                                 <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
                                 <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
@@ -777,32 +833,36 @@ $loggedInId = $_SESSION['user_id'];
                                 <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
                                 <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
                             </div>
-                            <div class="comment-area">
-                                <textarea class="form-control" style="width: 700px;" placeholder="What is your view?"
-                                    rows="4"></textarea>
-                            </div>
-                            <div class="comment-btns mt-2">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="pull-left">
-                                            <button class="btn btn-success btn-sm">Cancel</button>
-                                        </div>
+                        <div class="comment-area">
+                            <input type="hidden" name="foodId" value="<?= $id ?>">
+
+                            <textarea class="form-control" name="comment" style="width: 700px;" placeholder="What is your view?" rows="4"></textarea>
+                        </div>
+                        <div class="comment-btns mt-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="pull-left">
+                                        <button type="button" class="btn btn-success btn-sm">Huỷ</button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="pull-right">
-                                            <button class="btn btn-success send btn-sm">Send <i
-                                                    class="fa fa-long-arrow-right ml-1"></i></button>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-success send btn-sm" name="submitComment">Gửi <i class="fa fa-long-arrow-right ml-1"></i></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-    </section>
+</section>
+
+</main>
 
     <footer class="site-footer section-padding"
         style="background-color: #3c3043; color: #fff; padding-top: 50px; padding-bottom: 50px;">
@@ -812,7 +872,7 @@ $loggedInId = $_SESSION['user_id'];
             <div class="row">
 
                 <div class="col-12">
-                    <h3 class="text-white mb-4 me-5">Đồ ăn vặt</h3>
+                    <h3 style="font-size: 20px;" class="text-white mb-4 me-5">Đồ ăn vặt</h3>
                 </div>
 
                 <div class="col-lg-4 col-md-7 col-xs-12 tooplate-mt30">
@@ -860,6 +920,7 @@ $loggedInId = $_SESSION['user_id'];
         var main_product_image = document.getElementById('main_product_image');
         main_product_image.src = element.src;
     }
+    
 </script>
 
 </html>
