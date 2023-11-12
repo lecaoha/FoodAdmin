@@ -1,5 +1,17 @@
 <?php
 include('include/head.php');
+session_start();
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['name'])) {
+    // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
+    header("Location: login.php");
+    exit();
+}
+
+// Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
+$loggedInUserName = $_SESSION['name'];
+$loggedInId = $_SESSION['user_id'];
+
 
 // Khởi tạo biến tổng
 $totalSum = 0;
@@ -275,11 +287,7 @@ if (!empty($fetchdata)) {
  $week2Revenue = 0;
  $week3Revenue = 0;
  $week4Revenue = 0;
- $month1Revenue = 0;
- $month2Revenue = 0;
- $month3Revenue = 0;
- $month4Revenue = 0;
- $yearRevenue = 0;
+ 
  
  // Lấy dữ liệu đơn hàng từ cơ sở dữ liệu hoặc dự liệu JSON của bạn
  include('dbcon.php');
@@ -309,27 +317,6 @@ if (!empty($fetchdata)) {
                  $week4Revenue += str_replace(['$', ','], '', $row['total']);
              }
  
-             // Tính tổng doanh thu theo tháng
-             $orderMonth = date('n', strtotime($orderDate));
-             $currentMonth = date('n', strtotime($currentDate));
- 
-             if ($orderMonth == $currentMonth) {
-                 $month1Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderMonth == $currentMonth - 1) {
-                 $month2Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderMonth == $currentMonth - 2) {
-                 $month3Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderMonth == $currentMonth - 3) {
-                 $month4Revenue += str_replace(['$', ','], '', $row['total']);
-             }
- 
-             // Tính tổng doanh thu theo năm
-             $orderYear = date('Y', strtotime($orderDate));
-             $currentYear = date('Y', strtotime($currentDate));
- 
-             if ($orderYear == $currentYear) {
-                 $yearRevenue += str_replace(['$', ','], '', $row['total']);
-             }
          }
      }
  }
@@ -351,14 +338,14 @@ if (!empty($fetchdata)) {
 
   // Define the data for the chart
   var data = {
-    labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Năm 2023"],
+    labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
     datasets: [
       {
         label: "Số lượng ($)",
-        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
-        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)"],
         borderWidth: 1,
-        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>, <?= $month1Revenue; ?>, <?= $month2Revenue; ?>, <?= $month3Revenue; ?>, <?= $month4Revenue; ?>, <?= $yearRevenue; ?>],
+        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>],
       },
     ],
   };

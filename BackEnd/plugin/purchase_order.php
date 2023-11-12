@@ -262,7 +262,7 @@ $loggedInId = $_SESSION['user_id'];
     font-size: 14px;
     padding: 15px 15px;
     position: relative;
-    color: #b2bac1; }
+    color: #000; }
     .custom-dropdown .dropdown-menu a:last-child {
       border-bottom: none; }
     .custom-dropdown .dropdown-menu a .icon {
@@ -331,6 +331,16 @@ $loggedInId = $_SESSION['user_id'];
             position: relative; /* Để các phần tử con có thể định vị tương đối với container */
 
         }
+        .search-button {
+    background-color: #4CAF50; /* Green color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+}
+
+/* Add this style to change the button color on hover */
+.search-button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
         
         </style>    
         
@@ -340,61 +350,83 @@ $loggedInId = $_SESSION['user_id'];
     <body>
         
     <nav class="navbar navbar-expand-lg bg-white shadow-lg">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="main-header">
-                    <a class="navbar-brand" href="index_user.php">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="main-header">
+                <a class="navbar-brand" href="index_user.php">
                     <img src="img/logo.png" alt="Image" width="50" height="50">
-                    </a>
-                    <div class="search-bar">
-                        <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                        <button id="search-button">Tìm kiếm</button>
-                    </div>
-
-                    <div class="header-right">
-                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
-                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                </a>
+                <div class="input-group md-form form-sm form-2 pl-0 ml-5 mr-5">
+                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                    <div class="input-group-append">
+                        <!-- Add the "search-button" class to the button -->
+                        <button class="input-group-text lime lighten-2 search-button" id="basic-text1">
+                            <i class="fas fa-search text-grey" aria-hidden="true"></i>
                         </button>
-                       
-                        <div class="dropdown custom-dropdown">
-            <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
-              <div class="profile-pic mr-3">
-                <img class="logo-image" src="img/person_2.jpg" alt="Image">
-              </div>
-              <div class="profile-info">
-              <h3 class="profile">
-                <?php
-                    include('dbcon.php');
-                    $ref_table = "User";
-                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                    ?>
-                     <?=$editdata["name"];?>
-                </h3>
-              </div>
-
-
-            </a>
-
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-              
-            
-              <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
-              <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn hàng</span></a>
-              <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
-    
-            </div>
-          </div>
                     </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Get the search input element
+                        var searchInput = document.getElementById("product-search");
 
-                
+                        // Add a click event listener to the search input
+                        searchInput.addEventListener("click", function () {
+                            // Redirect to search.php when the input is clicked
+                            window.location.href = "search_user.php";
+                        });
+                    });
+                </script>
 
-            
+                <div class="header-right">
+                    <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
+                        data-bs-target="#BookingModal">
+                        <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+    </a>
+
+                    <div class="dropdown custom-dropdown">
+                        <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
+                            aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
+                            <div class="profile-pic mr-3">
+                                <img class="logo-image" src="img/person_2.png" alt="Image">
+                            </div>
+                            <div class="profile-info">
+                                <h3 class="profile">
+                                    <?php
+                                    include('dbcon.php');
+                                    $ref_table = "User";
+                                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+                                    ?>
+                                    <?= $editdata["name"]; ?>
+                                </h3>
+                            </div>
+
+
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+
+                            <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông
+                                tin cá nhân</a>
+                            <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn
+                                hàng</span></a>
+                            <a class="dropdown-item" href="logout_user.php"><span class="icon icon-sign-out"></span>Đăng xuất</a>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
             </div>
-        </nav>
+    </nav>
         <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -469,39 +501,18 @@ foreach ($filteredOrders as $orderId => $order) {
     <div class="card-header">
     <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h6 class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h6>
+                <h6 style="font-size: 20px;" class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h6>
             </div>
             <div>
-                <h6><?= $order["orderDate"] ?></h6>
+                <h6 style="font-size: 18px;"><?= $order["orderDate"] ?></h6>
             </div>
     </div>
     </div>
     <div class="card-body">
-        <p class="card-text"><strong>Tên khách hàng:</strong> <?= $order["name"] ?></p>
-        <p class="card-text"><strong>Điện thoại:</strong> <?= $order["phone"] ?></p>
-        <p class="card-text"><strong>Địa chỉ:</strong> <?= $order["address"] ?></p>
-        <!-- <h6 class="card-subtitle mb-2 text-muted">Danh sách sản phẩm:</h6>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Hình ảnh</th>
-                    <th scope="col">Tên sản phẩm</th>
-                    <th scope="col">Giá</th>
-                    <th scope="col">Số lượng</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order["foods"] as $food) { ?>
-                    <tr>
-                        <td><img src="<?= $food["image"] ?>" alt="<?= $food["productName"] ?>" class="img-thumbnail" style="max-width: 100px;"></td>
-                        <td><?= $food["productName"] ?></td>
-                        <td><?= $food["price"] ?></td>
-                        <td><?= $food["quantity"] ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table> -->
-        <h6 class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h6>
+        <p class="card-text" style="font-size: 15px;"><strong>Tên khách hàng: <?= $order["name"] ?></strong></p>
+        <p class="card-text" style="font-size: 15px;"><strong>Điện thoại: <?= $order["phone"] ?></strong></p>
+        <p class="card-text" style="font-size: 15px;"><strong>Địa chỉ: <?= $order["address"] ?></strong></p>
+        <h4 style="font-size: 15px;" class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h4>
 
     </div>
 </div>

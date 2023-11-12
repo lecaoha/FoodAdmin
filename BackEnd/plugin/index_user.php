@@ -289,6 +289,7 @@ $loggedInId = $_SESSION['user_id'];
             opacity: 1;
             visibility: visible;
             margin-top: 0px !important;
+            
         }
 
         .custom-dropdown .dropdown-menu a {
@@ -296,7 +297,7 @@ $loggedInId = $_SESSION['user_id'];
             font-size: 14px;
             padding: 15px 15px;
             position: relative;
-            color: #b2bac1;
+            color: #000;
         }
 
         .custom-dropdown .dropdown-menu a:last-child {
@@ -312,7 +313,7 @@ $loggedInId = $_SESSION['user_id'];
         .custom-dropdown .dropdown-menu a:active,
         .custom-dropdown .dropdown-menu a:focus {
             background: #fff;
-            color: #000;
+    color: #000; /* Set the text color to light */
         }
 
         .custom-dropdown .dropdown-menu a:hover .number,
@@ -334,6 +335,16 @@ $loggedInId = $_SESSION['user_id'];
             border-radius: 4px;
             color: #fff;
         }
+        .search-button {
+    background-color: #4CAF50; /* Green color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+}
+
+/* Add this style to change the button color on hover */
+.search-button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
     </style>
 
 
@@ -352,22 +363,38 @@ $loggedInId = $_SESSION['user_id'];
                 <a class="navbar-brand" href="index_user.php">
                     <img src="img/logo.png" alt="Image" width="50" height="50">
                 </a>
-                <div class="search-bar">
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                    <button id="search-button">Tìm kiếm</button>
+                <div class="input-group md-form form-sm form-2 pl-0 ml-5 mr-5">
+                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                    <div class="input-group-append">
+                        <!-- Add the "search-button" class to the button -->
+                        <button class="input-group-text lime lighten-2 search-button" id="basic-text1">
+                            <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Get the search input element
+                        var searchInput = document.getElementById("product-search");
+
+                        // Add a click event listener to the search input
+                        searchInput.addEventListener("click", function () {
+                            // Redirect to search.php when the input is clicked
+                            window.location.href = "search_user.php";
+                        });
+                    });
+                </script>
 
                 <div class="header-right">
                     <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
                         data-bs-target="#BookingModal">
-                        <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
-                    </a>
+                        <i class="fas fa-shopping-cart cart-icon"></i>
 
                     <div class="dropdown custom-dropdown">
                         <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
                             aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
                             <div class="profile-pic mr-3">
-                                <img class="logo-image" src="img/person_2.jpg" alt="Image">
+                                <img class="logo-image" src="img/person_2.png" alt="Image">
                             </div>
                             <div class="profile-info">
                                 <h3 class="profile">
@@ -390,7 +417,7 @@ $loggedInId = $_SESSION['user_id'];
                                 tin cá nhân</a>
                             <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn
                                 hàng</span></a>
-                            <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>
+                            <a class="dropdown-item" href="logout_user.php"><span class="icon icon-sign-out"></span>Đăng xuất</a>
 
                         </div>
                     </div>
@@ -582,7 +609,7 @@ $loggedInId = $_SESSION['user_id'];
     <div style="border-bottom: 1px solid red;"></div>
 
 
-        <section class="menu">
+        <section class="menu mt-3">
             <div class="container">
                 <div class="row">
                 
@@ -595,7 +622,7 @@ $loggedInId = $_SESSION['user_id'];
                     $foods = $database->getReference($ref_table)->getValue();
                     ?>
                     <?php foreach ($foods as $key => $food): ?>
-                        <div class="col-lg-4 col-md-6 col-12">
+                        <div class="col-lg-3 col-md-6 col-10">
                             <div class="menu-thumb special">
                                 <div class="menu-image-wrap">
                                     <a href="productdetails.php?id=<?= $key ?>">

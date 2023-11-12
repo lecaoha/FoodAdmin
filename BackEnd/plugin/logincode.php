@@ -13,34 +13,34 @@ if (isset($_POST['login_now_btn'])) {
     $authenticated = false;
     $isAdmin = false;
     $isStaff = false;
-    $userId = null; // Thêm biến này để lưu trữ ID của người dùng
+    $userId = null; // Add this variable to store the user's ID
 
     foreach ($fetchdata as $id => $user) {
         if ($user['phoneNumber'] == $phonenumber && $user['password'] == $password) {
             // User found and authenticated
             $authenticated = true;
-            $userId = $id; // Lưu ID của người dùng
-            if ($user['admin'] === true && $user['isStaff'] === true) {
+            $userId = $id; // Store the user's ID
+            if ($user['admin'] === 'true' && $user['isStaff'] === 'true') {
                 // User has admin and isStaff privileges
-                $isAdmin = true;
-                $isStaff = true;
+                $isAdmin = 'true';
+                $isStaff = 'true';
             }
             break;
         }
     }
 
     if ($authenticated) {
-        if ($isAdmin && $isStaff) {
+        if ($isAdmin =='true' && $isStaff=='true') {
             // Redirect to the admin and isStaff panel
             $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
-            $_SESSION['user_id'] = $userId; // Lưu ID của người dùng vào phiên
+            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
             header("Location: home.php");
             exit();
         } else {
             // Redirect to the user panel
             $_SESSION['name'] = $user['name'];
             $_SESSION['phoneNumber'] = $phonenumber;
-            $_SESSION['user_id'] = $userId; // Lưu ID của người dùng vào phiên
+            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
             header("Location: index_user.php");
             exit();
         }
@@ -51,6 +51,7 @@ if (isset($_POST['login_now_btn'])) {
         exit();
     }
 }
+
 
 
 

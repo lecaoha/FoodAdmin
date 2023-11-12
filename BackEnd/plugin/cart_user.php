@@ -13,6 +13,140 @@ $loggedInUserName = $_SESSION['name'];
 $loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedInId = $_SESSION['user_id'];
 
+// Đoạn mã khi xoá sản phẩm khỏi giỏ hàng
+if (isset($_GET['remove_product'])) {
+  $product_id_to_remove = $_GET['remove_product'];
+
+  foreach ($_SESSION['giohang'] as $key => $item) {
+      if ($item[0] == $product_id_to_remove) {
+          unset($_SESSION['giohang'][$key]);
+          break;
+      }
+  }
+
+  // Cập nhật lại mảng giỏ hàng sau khi xoá
+  $_SESSION['giohang'] = array_values($_SESSION['giohang']);
+}
+
+
+if(!isset($_SESSION['giohang'])) $_SESSION['giohang']=[];
+if(isset($_GET['delcart'])&&($_GET['delcart']==1)) unset($_SESSION['giohang']);
+
+if (isset($_POST['addcart']) && ($_POST['addcart'])) {
+  $id = $_POST['product_id'];
+  $name = $_POST['product_name'];
+  $price = $_POST['product_price'];
+  $image = $_POST['product_image'];
+  $quantity = $_POST['quantity1'];
+
+  // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng
+  $product_exists = false;
+  foreach ($_SESSION['giohang'] as $key => $item) {
+      if ($item[0] == $id) {
+          $product_exists = true;
+          // Tăng số lượng sản phẩm
+          $_SESSION['giohang'][$key][4] += $quantity;
+          break;
+      }
+  }
+
+  // Nếu sản phẩm không tồn tại và số lượng lớn hơn 0, thêm mới vào giỏ hàng
+  if (!$product_exists && $quantity > 0) {
+      $product_data = [$id, $name, $price, $image, $quantity];
+      $_SESSION['giohang'][] = $product_data;
+  }
+  
+  header("Location: cart_user.php");
+  exit();
+}
+
+
+// Đoạn mã khi cập nhật số lượng sản phẩm trong giỏ hàng
+if (isset($_POST['updatecart'])) {
+  // Lấy thông tin sản phẩm được cập nhật
+  $product_id = $_POST['product_id'];
+  $new_quantity = $_POST['new_quantity'];
+
+  // Lặp qua giỏ hàng và cập nhật số lượng cho sản phẩm cụ thể
+  foreach ($_SESSION['giohang'] as $key => $item) {
+      if ($item[0] == $product_id) {
+          // Cập nhật số lượng
+          $_SESSION['giohang'][$key][4] = $new_quantity;
+          break; // Khi tìm thấy sản phẩm cần cập nhật, thoát khỏi vòng lặp
+      }
+  }
+}
+$totalPrice = 0;
+
+foreach ($_SESSION['giohang'] as $key => $item) {
+    $product_price = $item[2];
+    $quantity = $item[4];
+
+    // Calculate the total price for each product and accumulate
+    $totalPrice += $product_price * $quantity;
+}
+
+if (isset($_POST['buy'])) {
+  include('dbcon.php');
+
+  // Lấy thông tin địa chỉ và lời nhắc từ form
+  $address = $_POST['address'];
+  $comment = $_POST['comment'];
+
+  // Tạo mảng dữ liệu cho request
+  $request_data = array(
+      'name' => $loggedInUserName,
+      'phone' => $loggedInUserPhone,
+      'address' => $address,
+      'comment' => $comment,
+      'orderDate' => date('Y-m-d'),
+      'total' => '$' . number_format($totalPrice,2),
+      'status' => '0', // Set default status to 0 (pending)
+      'foods' => array()
+  );
+
+  // Lặp qua các sản phẩm trong giỏ hàng và thêm vào mảng dữ liệu request
+  foreach ($_SESSION['giohang'] as $key => $item) {
+      $product_id = $item[0];
+      $product_name = $item[1];
+      $product_price = $item[2];
+      $product_image = $item[3];
+      $quantity = $item[4];
+
+      $food_data = array(
+          'id' => (int)$product_id,
+          'productId' => $product_id,
+          'productName' => $product_name,
+          'price' => $product_price,
+          'image' => $product_image,
+          'quantity' => $quantity,
+          'discount' => '0' // Set default discount to 0
+      );
+
+      // Thêm món ăn vào mảng dữ liệu foods
+      $request_data['foods'][] = $food_data;
+  }
+
+  // Generate a random 13-digit key
+  $random_key = strval(mt_rand(1000000000000, 9999999999999));
+
+
+  // Check if the key already exists, generate a new one if it does
+  while ($database->getReference('Requests')->getChild($random_key)->getValue() !== null) {
+      $random_key = strval(mt_rand(1000000000000, 9999999999999));
+  }
+
+  // Set the key for the new request
+  $ref = $database->getReference('Requests')->getChild($random_key);
+  $ref->set($request_data);
+
+  // Xóa giỏ hàng sau khi mua hàng thành công
+  unset($_SESSION['giohang']);
+
+  // Chuyển hướng về trang chủ
+  header("Location: index_user.php");
+  exit();
+}
 
 ?>
 
@@ -266,7 +400,7 @@ $loggedInId = $_SESSION['user_id'];
     font-size: 14px;
     padding: 15px 15px;
     position: relative;
-    color: #b2bac1; }
+    color: #000; }
     .custom-dropdown .dropdown-menu a:last-child {
       border-bottom: none; }
     .custom-dropdown .dropdown-menu a .icon {
@@ -308,7 +442,22 @@ $loggedInId = $_SESSION['user_id'];
 .icon-hover-danger:hover i {
   color: #dc4c64 !important;
 }
-    
+/* CSS để căn chỉnh nút "Xoá All" */
+.btn-light.border.text-danger.icon-hover-danger {
+    float: right;
+    margin-top: -2px; /* Điều chỉnh margin-top nếu cần thiết */
+}
+.search-button {
+    background-color: #4CAF50; /* Green color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+}
+
+/* Add this style to change the button color on hover */
+.search-button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
+
         
         </style>    
         
@@ -318,141 +467,236 @@ $loggedInId = $_SESSION['user_id'];
     <body>
         
     <nav class="navbar navbar-expand-lg bg-white shadow-lg">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="main-header">
-                    <a class="navbar-brand" href="index_user.php">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="main-header">
+                <a class="navbar-brand" href="index_user.php">
                     <img src="img/logo.png" alt="Image" width="50" height="50">
-                    </a>
-                    <div class="search-bar">
-                        <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm...">
-                        <button id="search-button">Tìm kiếm</button>
-                    </div>
-
-                    <div class="header-right">
-                        <button type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal" data-bs-target="#BookingModal">
-                            <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+                </a>
+                <div class="input-group md-form form-sm form-2 pl-0 ml-5 mr-5">
+                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                    <div class="input-group-append">
+                        <!-- Add the "search-button" class to the button -->
+                        <button class="input-group-text lime lighten-2 search-button" id="basic-text1">
+                            <i class="fas fa-search text-grey" aria-hidden="true"></i>
                         </button>
-                       
-                        <div class="dropdown custom-dropdown">
-            <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left" aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
-              <div class="profile-pic mr-3">
-                <img class="logo-image" src="img/person_2.jpg" alt="Image">
-              </div>
-              <div class="profile-info">
-              <h3 class="profile">
-                <?php
-                    include('dbcon.php');
-                    $ref_table = "User";
-                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
-                    ?>
-                     <?=$editdata["name"];?>
-                </h3>
-              </div>
-
-
-            </a>
-
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-              
-            
-              <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông tin cá nhân</a>
-              <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn hàng</span></a>
-              <a class="dropdown-item" href="#"><span class="icon icon-sign-out"></span>Đăng xuất</a>              
-    
-            </div>
-          </div>
                     </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Get the search input element
+                        var searchInput = document.getElementById("product-search");
 
-                
+                        // Add a click event listener to the search input
+                        searchInput.addEventListener("click", function () {
+                            // Redirect to search.php when the input is clicked
+                            window.location.href = "search_user.php";
+                        });
+                    });
+                </script>
 
-            
+                <div class="header-right">
+                    <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
+                        data-bs-target="#BookingModal">
+                        <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+    </a>
+
+                    <div class="dropdown custom-dropdown">
+                        <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
+                            aria-haspopup="true" aria-expanded="false" data-offset="0, 10">
+                            <div class="profile-pic mr-3">
+                                <img class="logo-image" src="img/person_2.png" alt="Image">
+                            </div>
+                            <div class="profile-info">
+                                <h3 class="profile">
+                                    <?php
+                                    include('dbcon.php');
+                                    $ref_table = "User";
+                                    $editdata = $database->getReference($ref_table)->getChild($loggedInId)->getValue();
+                                    ?>
+                                    <?= $editdata["name"]; ?>
+                                </h3>
+                            </div>
+
+
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+
+                            <a class="dropdown-item" href="profile.php"> <span class="icon icon-dashboard"></span> Thông
+                                tin cá nhân</a>
+                            <a class="dropdown-item" href="purchase_order.php"><span class="icon icon-cog"></span>Đơn
+                                hàng</span></a>
+                            <a class="dropdown-item" href="logout_user.php"><span class="icon icon-sign-out"></span>Đăng xuất</a>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
             </div>
-        </nav>
+    </nav>
         <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+    
 <main>
 <section class="bg-light my-3">
   <div class="container">
     <div class="row">
       <!-- cart -->
-      <div class="col-lg-9">
-        <div class="card border shadow-0">
-          <div class="m-4">
-            <h4 class="card-title mb-4">Giỏ hàng của bạn</h4>
-            <div class="row gy-3 mb-4">
-              <div class="col-lg-5">
-                <div class="me-lg-5">
-                  <div class="d-flex">
-                    <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/11.webp" class="border rounded me-3" style="width: 96px; height: 96px;" />
-                    <div class="">
-                      <a href="#" class="nav-link">Winter jacket for men and lady</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                <div class="">
-                  <select style="width: 100px;" class="form-select me-4">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                  </select>
-                </div>
-                <div class="">
-                  <text class="h6">$1156.00</text> <br />
-                  <small class="text-muted text-nowrap"> $460.00 / per item </small>
-                </div>
-              </div>
-              <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                <div class="float-md-end">
-                  <a href="#" class="btn btn-light border text-danger icon-hover-danger"> Xoá</a>
-                </div>
+      <!-- cart -->
+<div class="col-lg-9">
+  <div class="card border shadow-0">
+  
+    <div class="m-3">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title mb-4" style="font-size: 18px;">Giỏ hàng của bạn</h4>
+                <a href="cart_user.php?delcart=1" type="submit" class="btn btn-light border text-danger icon-hover-danger">Xoá All</a>
+            </div>
+     
+        <?php
+      // Check if the shopping cart is not empty
+      if (!empty($_SESSION['giohang'])) {
+         
+        foreach ($_SESSION['giohang'] as $key => $item) {
+          $product_id = $item[0];
+          $product_name = $item[1];
+          $product_price = $item[2];
+          $product_image = $item[3];
+          $quantity = $item[4];
+          
+      ?>
+      
+
+      <div class="row gy-3 mb-4">
+        <div class="col-lg-5">
+          <div class="me-lg-5">
+            <div class="d-flex">
+              <img src="<?php echo $product_image; ?>" class="border rounded me-3" style="width: 96px; height: 96px;" />
+              <div class="">
+                <a href="#" class="nav-link"><?php echo $product_name; ?></a>
               </div>
             </div>
-
           </div>
-
-          <div class="border-top pt-4 mx-4 mb-4">
-            <p><i class="fas fa-truck text-muted fa-lg"></i> Giao hàng miễn phí trong 1-2 km</p>
+        </div>
+        <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+          <div class="">
+            
+          <select style="width: 100px;" class="form-select me-4 quantity-select" data-product-id="<?php echo $product_id; ?>">
+            <!-- Generate options for quantity here -->
+            <?php for ($i = 1; $i <= 10; $i++) { ?>
+              <option <?php echo ($i == $quantity) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+            <?php } ?>
+          </select>
+          </div>
+          <div class="mt-2">
+          <span class="product-price" data-product-price="<?php echo $product_price; ?>">$<?php echo $product_price * $quantity; ?></span>
             
           </div>
         </div>
+        <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+          <div class="float-md-end">
+          <a href="cart_user.php?remove_product=<?php echo $product_id; ?>" class="btn btn-light border text-danger icon-hover-danger">Xoá</a>
+          </div>
+        </div>
       </div>
+
+      <?php } // End of foreach loop
+      } else {
+        echo "<p>Giỏ hàng của bạn trống</p>";
+      }
+      ?>
+
+    </div>
+
+    <div class="border-top pt-4 mx-4 mb-4">
+      <p><i class="fas fa-truck text-muted fa-lg"></i> Giao hàng miễn phí trong vòng 1-2 tuần</p>
+    </div>
+  </div>
+</div>
+<!-- cart -->
+
+<script>
+$(document).ready(function () {
+  $('.quantity-select').change(function () {
+    // Lấy số lượng mới và giá sản phẩm
+    const newQuantity = $(this).val();
+    const productId = $(this).data('product-id');
+    const productPrice = $(this).closest('.row').find('.product-price').data('product-price');
+
+    // Tính giá mới dựa trên số lượng mới
+    const newTotalPrice = newQuantity * productPrice;
+
+    // Cập nhật giá trên giao diện
+    $(this).closest('.row').find('.product-price').text('$' + newTotalPrice);
+  });
+});
+</script>
+
+
+
       <!-- cart -->
       <!-- summary -->
       <div class="col-lg-3">
         <div class="card mb-3 border shadow-0">
           <div class="card-body">
-            <form>
+            <form method="POST" action="">
               <div class="form-group">
                 <label class="form-label">Địa chỉ giao hàng</label>
                 <div class="input-group">
-                  <input type="text" class="form-control border" name="" placeholder="" />
+                  <input type="text" class="form-control border" name="address" placeholder="" />
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Lời nhắc nhở</label>
                 <div class="input-group">
-                  <input type="text" class="form-control border" name="" placeholder="" />
+                  <input type="text" class="form-control border" name="comment" placeholder="" />
                 </div>
               </div>
-            </form>
+
           </div>
         </div>
         <div class="card shadow-0 border">
+          <?php
+          $totalPrice = 0;
+
+          // Vòng lặp hiển thị sản phẩm trong giỏ hàng và tính tổng giá trị
+          foreach ($_SESSION['giohang'] as $key => $item) {
+              $product_id = $item[0];
+              $product_price = $item[2];
+              $quantity = $item[4];
+          
+              // Tính tổng giá trị cho sản phẩm cụ thể
+              $productTotalPrice = $product_price * $quantity;
+          
+              // Cộng dồn vào tổng giá trị của giỏ hàng
+              $totalPrice += $productTotalPrice;
+          }
+          
+          // Hiển thị tổng giá trị ở ngoài vòng lặp
+          ?>
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2">$329.00</p>
+              <p class="mb-2 fw-bold">$<?php echo number_format($totalPrice,2); ?></p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">Giảm giá:</p>
@@ -461,13 +705,15 @@ $loggedInId = $_SESSION['user_id'];
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2 fw-bold">$283.00</p>
+              <p class="mb-2 fw-bold" name = "">$<?php echo number_format($totalPrice,2); ?></p>
             </div>
 
             <div class="mt-3">
-              <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Mua hàng </a>
+            <button type="submit" name="buy" class="btn btn-success w-100 shadow-0 mb-2"> Mua hàng </button>
               <a href="index_user.php" class="btn btn-light w-100 border mt-2"> Trở về trang chủ </a>
             </div>
+            </form>
+
           </div>
         </div>
       </div>
