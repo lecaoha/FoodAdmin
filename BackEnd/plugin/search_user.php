@@ -364,7 +364,7 @@ $loggedInId = $_SESSION['user_id'];
                     <img src="img/logo.png" alt="Image" width="50" height="50">
                 </a>
                 <div class="input-group md-form form-sm form-2 pl-0 ml-5 mr-5">
-                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                    <input id="product-search" class="form-control my-0 py-1 lime-border" type="text" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
                         <!-- Add the "search-button" class to the button -->
                         <button class="input-group-text lime lighten-2 search-button" id="basic-text1">
@@ -373,22 +373,28 @@ $loggedInId = $_SESSION['user_id'];
                     </div>
                 </div>
                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        // Get the search input element
-                        var searchInput = document.getElementById("product-search");
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the search input element
+        var searchInput = document.getElementById("product-search");
 
-                        // Add a click event listener to the search input
-                        searchInput.addEventListener("click", function () {
-                            // Redirect to search.php when the input is clicked
-                            window.location.href = "search_user.php";
-                        });
-                    });
-                </script>
+        // Add a click event listener to the search input
+        searchInput.addEventListener("click", function () {
+            // Check if the current page is not search.php
+            if (window.location.href.indexOf("search_user.php") === -1) {
+                // Redirect to search.php when the input is clicked
+                window.location.href = "search_user.php";
+            }
+            // If already on search.php, do nothing
+        });
+    });
+</script>
+
 
                 <div class="header-right">
                     <a href="cart_user.php" type="button" class="custom-btn btn btn-danger cart-button" data-bs-toggle="modal"
                         data-bs-target="#BookingModal">
-                        <i class="fas fa-shopping-cart cart-icon"></i>
+                        <i class="fas fa-shopping-cart cart-icon"></i> <!-- Add the shopping cart icon here -->
+    </a>
 
                     <div class="dropdown custom-dropdown">
                         <a href="#" data-toggle="dropdown" class="d-flex align-items-center dropdown-link text-left"
@@ -434,184 +440,85 @@ $loggedInId = $_SESSION['user_id'];
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
     <main>
 
-        <section class="hero">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-12 m-auto">
-                        <div class="hero-text">
-                            <h3 class="text-white mb-lg-5 mb-3">Đồ ăn vặt</h3>
-                            <div class="c-reviews my-3 d-flex flex-wrap align-items-center">
-                                <div class="d-flex flex-wrap align-items-center">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-12">
-                        <div id="carouselExampleCaptions" class="carousel carousel-fade hero-carousel slide"
-                            data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="carousel-image-wrap">
-                                        <img src="img/slide/anh1.jpg" class="img-fluid carousel-image" alt="">
-                                    </div>
-                                    <div class="carousel-caption">
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="carousel-image-wrap">
-                                        <img src="img/slide/anh2.jpg" class="img-fluid carousel-image" alt="">
-                                    </div>
-                                    <div class="carousel-caption">
-                                        <div class="d-flex align-items-center">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="carousel-image-wrap">
-                                        <img src="img/slide/anh3.jpg" class="img-fluid carousel-image" alt="">
-                                    </div>
-                                    <div class="carousel-caption">
-                                        <div class="d-flex align-items-center">
-                                        </div>
-                                        <div class="d-flex flex-wrap align-items-center">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="overlay"></div>
-
-        </section>
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var carousel = document.getElementById("carouselExampleCaptions");
-                var myCarousel = new bootstrap.Carousel(carousel, {
-                    interval: 3000, // Đặt khoảng thời gian (milliseconds) giữa các lần chuyển đổi ảnh
-                    wrap: true, // Tự động quay lại ảnh đầu tiên sau khi đã duyệt hết tất cả ảnh
-                });
-            });
-        </script>
-
-<div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
-                    <div class="card-header">
-                        <h4 style="font-size: 24px;">
-                        Danh mục
-                        </h4>
-                    </div>
-            <section class="menu ">
-                <div class="container">
-                    <div class="row">
-                    
-                    <?php
-                    include('dbcon.php');
-                    $ref_table = "Category";
-                    $totalnum = $database->getReference($ref_table)->getSnapshot()->numChildren();
-
-                    // Lấy danh sách sản phẩm
-                    $categories = $database->getReference($ref_table)->getValue();
-
-                    ?>
-                    <?php foreach ($categories as $key => $category): ?>
-                        <a href="see_user.php?id=<?= $key; ?>" class="col-lg-2 col-md-4 col-12">
-                            <div class="menu-thumb" data-menu-id="<?= $key; ?>">
-                                <div class="menu-image-wrap">
-                                    <img src=<?= $category['image'] ?> class="img-fluid menu-image" alt="">
-
-                                </div>
-
-                                <div class="menu-info d-flex flex-wrap align-items-center">
-                                    <h4 class="mb-0 category">
-                                        <?= $category['name'] ?>
-                                    </h4>
-
-                                </div>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
-
-                </div>
-            </div>
-        </section>
-</div>
 
         <!-- Add this script after your other JavaScript code -->
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Define your product data and categories
-                var products = <?php echo json_encode($foods); ?>; // Assuming $foods is an array
-                var categories = <?php echo json_encode($categories); ?>; // Assuming $categories is an array
+    document.addEventListener("DOMContentLoaded", function () {
+        // Define your product data and categories
+        var products = <?php echo json_encode($foods); ?>; // Assuming $foods is an array
+        var categories = <?php echo json_encode($categories); ?>; // Assuming $categories is an array
 
-                // Get the HTML elements
-                var searchInput = document.getElementById("product-search");
-                var searchButton = document.getElementById("search-button");
-                var categoryThumbs = document.querySelectorAll(".menu-thumb");
-                var productList = document.getElementById("product-list");
+        // Get the HTML elements
+        var searchInput = document.getElementById("product-search");
+        var searchButton = document.getElementById("search-button");
+        var categoryThumbs = document.querySelectorAll(".menu-thumb");
+        var productList = document.getElementById("product-list");
 
-                // Add an event listener for the search button
-                searchButton.addEventListener("click", function () {
-                    searchProduct(searchInput.value.trim());
-                });
+        // Add an event listener for the search button
+        searchButton.addEventListener("click", function () {
+            searchProduct(searchInput.value.trim());
+        });
 
-                // Add click event listener for each category
-                categoryThumbs.forEach(function (categoryThumb) {
-                    categoryThumb.addEventListener("click", function () {
-                        var categoryId = categoryThumb.dataset.menuId;
-                        filterByCategory(categoryId);
-                    });
-                });
+        // Add click event listener for each category
+        categoryThumbs.forEach(function (categoryThumb) {
+            categoryThumb.addEventListener("click", function () {
+                var categoryId = categoryThumb.dataset.menuId;
+                filterByCategory(categoryId);
+            });
+        });
 
-                // Define the function to search products
-                function searchProduct(query) {
-                    query = query.toLowerCase();
+        // Define the function to search products
+        function searchProduct(query) {
+            query = query.toLowerCase();
 
-                    products.forEach(function (product, index) {
-                        var productName = product.name.toLowerCase();
-                        var productElement = productList.children[index];
+            products.forEach(function (product, index) {
+                var productName = product.name.toLowerCase();
+                var productElement = productList.children[index];
 
-                        if (productName.includes(query)) {
-                            productElement.style.display = "block";
-                        } else {
-                            productElement.style.display = "none";
-                        }
-                    });
-                }
-
-                // Define the function to filter products by category
-                function filterByCategory(categoryId) {
-                    products.forEach(function (product, index) {
-                        var productCategory = product.menu_id; // Make sure this property matches the Menu Id in your data
-                        var productElement = productList.children[index];
-
-                        if (productCategory === categoryId) {
-                            productElement.style.display = "block";
-                        } else {
-                            productElement.style.display = "none";
-                        }
-                    });
+                if (productName.includes(query)) {
+                    productElement.style.display = "block";
+                } else {
+                    productElement.style.display = "none";
                 }
             });
-        </script>
+        }
+
+        // Define the function to filter products by category
+        function filterByCategory(categoryId) {
+            products.forEach(function (product, index) {
+                var productCategory = product.menu_id; // Make sure this property matches the Menu Id in your data
+                var productElement = productList.children[index];
+
+                if (productCategory === categoryId) {
+                    productElement.style.display = "block";
+                } else {
+                    productElement.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+
 
 <div class="card" style="margin-top: 20px; margin-left: 50px; margin-right: 50px;">
-    <h4 style="color: red; text-align: center;font-size: 24px;">
-        Gợi ý hôm nay
+    <h4 style="margin-top: 10px;color: red; text-align: center;font-size: 24px;">
+        Tìm kiếm nhiều nhất
     </h4>
     <div style="border-bottom: 1px solid red;"></div>
 
 
         <section class="menu mt-3">
             <div class="container">
-                <div class="row">
+                <div id="product-list" class="row">
                 
                     <?php
                     include('dbcon.php');
@@ -644,6 +551,33 @@ $loggedInId = $_SESSION['user_id'];
 
                     <?php endforeach; ?>
                 </div>
+                <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the HTML elements
+        var searchInput = document.getElementById("product-search");
+        var productList = document.getElementById("product-list");
+
+        // Add an event listener for the search input
+        searchInput.addEventListener("input", function () {
+            searchProduct(searchInput.value.trim());
+        });
+
+        // Define the function to search products
+        function searchProduct(query) {
+            query = query.toLowerCase();
+
+            Array.from(productList.children).forEach(function (productElement) {
+                var productName = productElement.querySelector(".menu-info.special h4 a").innerText.toLowerCase();
+
+                if (productName.includes(query)) {
+                    productElement.style.display = "block";
+                } else {
+                    productElement.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
             </div>
         </section>
 </div>

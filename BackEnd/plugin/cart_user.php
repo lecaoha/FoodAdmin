@@ -609,7 +609,6 @@ if (isset($_POST['buy'])) {
           </div>
           <div class="mt-2">
           <span class="product-price" data-product-price="<?php echo $product_price; ?>">$<?php echo $product_price * $quantity; ?></span>
-
             
           </div>
         </div>
