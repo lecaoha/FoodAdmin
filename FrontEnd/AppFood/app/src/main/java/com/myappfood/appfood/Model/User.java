@@ -6,17 +6,27 @@ public class User {
     private String Phone;
     private String IsStaff;
     private String Admin;
+    private String PhoneNumber;
 
     public User(){
 
     }
 
-    public User(String name, String password) {
+    public User(String name, String password , String phonenumber) {
         Name = name;
         Password = password;
+        PhoneNumber = phonenumber;
         IsStaff ="false";
         Admin ="false";
 
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
     }
 
     public String getIsStaff() {

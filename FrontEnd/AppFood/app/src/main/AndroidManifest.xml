@@ -23,9 +23,6 @@
             android:name=".Cart"
             android:exported="false" />
         <activity
-            android:name=".ViewHolder.Cart"
-            android:exported="false" />
-        <activity
             android:name=".Home"
             android:exported="false"
             android:label="@string/title_activity_home"
