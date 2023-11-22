@@ -12,7 +12,7 @@ public class Order {
 
     }
 
-    public Order(String productId, String productName, String quantity, String price, String discount, String image) {
+    public Order(String productId, String productName, String quantity, String price, String discount,String image) {
         ProductId = productId;
         ProductName = productName;
         Quantity = quantity;
@@ -21,7 +21,7 @@ public class Order {
         Image = image;
     }
 
-    public Order(int ID, String productId, String productName, String quantity, String price, String discount, String image) {
+    public Order(int ID, String productId, String productName, String quantity, String price, String discount,String image) {
         this.ID = ID;
         ProductId = productId;
         ProductName = productName;
