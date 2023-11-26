@@ -131,13 +131,13 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S1.no</th>
-                                    <th>Tên</th>
-                                    <th>Ảnh</th>
+                                    <th style="background: #55608f;color: white;">S1.no</th>
+                                    <th style="background: #55608f;color: white;">Tên</th>
+                                    <th style="background: #55608f;color: white;">Ảnh</th>
                                     <!-- <th>Menu Id</th> -->
-                                    <th>Sửa</th>
-                                    <th>Xoá</th>
-                                    <th>Xem</th>
+                                    <th style="background: #55608f;color: white;">Sửa</th>
+                                    <th style="background: #55608f;color: white;">Xoá</th>
+                                    <th style="background: #55608f;color: white;">Xem</th>
 
 
                                 </tr>

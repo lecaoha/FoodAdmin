@@ -30,6 +30,7 @@ if (isset($_GET['remove_product'])) {
 
 
 if(!isset($_SESSION['giohang'])) $_SESSION['giohang']=[];
+
 if(isset($_GET['delcart'])&&($_GET['delcart']==1)) unset($_SESSION['giohang']);
 
 if (isset($_POST['addcart']) && ($_POST['addcart'])) {
@@ -39,14 +40,16 @@ if (isset($_POST['addcart']) && ($_POST['addcart'])) {
   $image = $_POST['product_image'];
   $quantity = $_POST['quantity1'];
 
-  // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng
+  // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng 
   $product_exists = false;
   foreach ($_SESSION['giohang'] as $key => $item) {
       if ($item[0] == $id) {
           $product_exists = true;
           // Tăng số lượng sản phẩm
           $_SESSION['giohang'][$key][4] += $quantity;
+
           break;
+          
       }
   }
 
@@ -55,6 +58,7 @@ if (isset($_POST['addcart']) && ($_POST['addcart'])) {
       $product_data = [$id, $name, $price, $image, $quantity];
       $_SESSION['giohang'][] = $product_data;
   }
+
   
   header("Location: cart_user.php");
   exit();
@@ -598,15 +602,16 @@ if (isset($_POST['buy'])) {
           </div>
         </div>
         <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-          <div class="">
+          <div>
             
-          <select style="width: 100px;" class="form-select me-4 quantity-select" data-product-id="<?php echo $product_id; ?>">
-            <!-- Generate options for quantity here -->
-            <?php for ($i = 1; $i <= 10; $i++) { ?>
-              <option <?php echo ($i == $quantity) ? 'selected' : ''; ?>><?php echo $i; ?></option>
-            <?php } ?>
+          <select name="quantt"  id="<?php echo $product_id; ?>" style="width: 100px;" class="form-select me-4 quantity-select" data-product-id="<?php echo $product_id; ?>">
+              <?php for ($i = 1; $i <= 10; $i++) { ?>
+                  <option <?php echo ($i == $quantity) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+              <?php } ?>
           </select>
-          </div>
+
+
+</div>
           <div class="mt-2">
           <span class="product-price" data-product-price="<?php echo $product_price; ?>">$<?php echo $product_price * $quantity; ?></span>
             
@@ -635,21 +640,31 @@ if (isset($_POST['buy'])) {
 <!-- cart -->
 
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
   $('.quantity-select').change(function () {
-    // Lấy số lượng mới và giá sản phẩm
     const newQuantity = $(this).val();
     const productId = $(this).data('product-id');
     const productPrice = $(this).closest('.row').find('.product-price').data('product-price');
 
-    // Tính giá mới dựa trên số lượng mới
+    // Update the total price for the specific product
     const newTotalPrice = newQuantity * productPrice;
-
-    // Cập nhật giá trên giao diện
     $(this).closest('.row').find('.product-price').text('$' + newTotalPrice);
+
+    // Loop through all products and update the total price of the cart
+    let totalCartPrice = 0;
+    $('.quantity-select').each(function () {
+      const quantity = $(this).val();
+      const price = $(this).closest('.row').find('.product-price').data('product-price');
+      totalCartPrice += quantity * price;
+    });
+
+    // Update the total price in the summary section
+    $('[name="total-cart-price"]').text('$' + totalCartPrice);
   });
 });
+
 </script>
+
 
 
 
@@ -684,6 +699,14 @@ $(document).ready(function () {
               $product_price = $item[2];
               $quantity = $item[4];
           
+              if(isset($_POST['submit'])){
+                if ($item[0] == $product_id) {
+                  $selected_val = $_POST['buy'];
+                  // Cập nhật số lượng
+                  $_SESSION['giohang'][$key][4] = $selected_val;
+                  break; // Khi tìm thấy sản phẩm cần cập nhật, thoát khỏi vòng lặp
+                }
+              }
               // Tính tổng giá trị cho sản phẩm cụ thể
               $productTotalPrice = $product_price * $quantity;
           
@@ -696,7 +719,7 @@ $(document).ready(function () {
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2 fw-bold">$<?php echo number_format($totalPrice,2); ?></p>
+              <p class="mb-2 fw-bold" name = "total-cart-price">$<?php echo number_format($totalPrice,2); ?></p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">Giảm giá:</p>
@@ -705,7 +728,8 @@ $(document).ready(function () {
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2 fw-bold" name = "">$<?php echo number_format($totalPrice,2); ?></p>
+              <p class="mb-2 fw-bold" name = "total-cart-price">$<?php echo number_format($totalPrice,2); ?></p>
+
             </div>
 
             <div class="mt-3">

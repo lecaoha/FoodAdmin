@@ -49,14 +49,14 @@ $loggedInId = $_SESSION['user_id'];
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Product Name</th>
-                                    <th>Id Food</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Product Id</th>
-                                    <th>Discount</th>
-                                    <th>Quantity</th>
+                                    <th style="background: #55608f;color: white;">Id</th>
+                                    <th style="background: #55608f;color: white;">Tên sản phẩm</th>
+                                    <!-- <th>Id Food</th> -->
+                                    <th style="background: #55608f;color: white;">Ảnh</th>
+                                    <th style="background: #55608f;color: white;">Giá</th>
+                                    <!-- <th>Product Id</th> -->
+                                    <th style="background: #55608f;color: white;">Giảm giá</th>
+                                    <th style="background: #55608f;color: white;">Số lượng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,7 +93,7 @@ $loggedInId = $_SESSION['user_id'];
                                                     <tr>
                                                         <td><?php echo $food['id']; ?></td>
                                                         <td><?php echo $food['productName']; ?></td>
-                                                        <td><?php echo $food['productId']; ?></td>
+                                                        <!-- <td><?php echo $food['productId']; ?></td> -->
                                                         <td>
                                                             <?php
                                                             if (!empty($food['image'])) {
@@ -104,7 +104,7 @@ $loggedInId = $_SESSION['user_id'];
                                                             ?>
                                                         </td>
                                                         <td><?php echo $food['price']; ?></td>
-                                                        <td><?php echo $food['productId']; ?></td>
+                                                        <!-- <td><?php echo $food['productId']; ?></td> -->
                                                         <td><?php echo $food['discount']; ?></td>
                                                         <td><?php echo $food['quantity']; ?></td>
                                                     </tr>

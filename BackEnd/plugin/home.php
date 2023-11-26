@@ -65,6 +65,14 @@ if (!empty($fetchdata)) {
         margin-right: 10px;
         background-color: #33FFFF;
     }
+    .layout1 {
+    display: flex;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    align-items: center;
+    background-color: #33FFFF;
+}
+
 
     .layout:last-child {
         margin-right: 0;
@@ -118,6 +126,7 @@ if (!empty($fetchdata)) {
     .layout:nth-child(4) { /* Thay đổi màu cho hình ảnh 4 */
         background-color: #FF33FF; /* Màu nền cho hình ảnh 4 */
     }
+    
    
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
@@ -204,16 +213,16 @@ if (!empty($fetchdata)) {
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Số điện thoại</th>
-                    <th>Tên</th>
-                    <th>Trạng thái</th>
-                    <th>Địa chỉ</th>
-                    <th>Bình luận</th>
-                    <th>Tổng</th>
-                    <th>Sửa</th>
-                    <th>Xoá</th>
-                    <th>Xem</th>
+                    <th style="background: #55608f;color: white;">Id</th>
+                    <th style="background: #55608f;color: white;">Số điện thoại</th>
+                    <th style="background: #55608f;color: white;">Tên</th>
+                    <th style="background: #55608f;color: white;">Trạng thái</th>
+                    <th style="background: #55608f;color: white;">Địa chỉ</th>
+                    <th style="background: #55608f;color: white;">Bình luận</th>
+                    <th style="background: #55608f;color: white;">Tổng</th>
+                    <th style="background: #55608f;color: white;">Sửa</th>
+                    <th style="background: #55608f;color: white;">Xoá</th>
+                    <th style="background: #55608f;color: white;">Xem</th>
                 </tr>
             </thead>
             <tbody>
@@ -281,13 +290,59 @@ if (!empty($fetchdata)) {
                 </div>
 
             </div> 
+            <div class="col-md-3 layout1 mt-3 mb-3">
+    <div class="label-container">
+        <label for="filterType" class="mt-1 mb-1" style="margin-left: 10px;">Chọn loại bộ lọc:</label>
+    </div>
+    <select class="selectpicker mt-1 mb-1" data-live-search="true" id="filterType" onchange="updateChart()">
+        <option value="week">Tuần</option>
+        <option value="month">Tháng</option>
+        <option value="year">Năm</option>
+    </select>
+</div>
 
+<!-- Biểu đồ theo tuần -->
+<canvas id="revenueChart" width="400" height="200"></canvas>
+
+<!-- Biểu đồ theo tháng -->
+<canvas id="revenueChart1" width="400" height="200" style="display: none;"></canvas>
+
+<!-- Biểu đồ theo năm -->
+<canvas id="revenueChart2" width="400" height="200" style="display: none;"></canvas>
             <?php
  $week1Revenue = 0;
  $week2Revenue = 0;
  $week3Revenue = 0;
  $week4Revenue = 0;
- 
+ $month1Revenue = 0;
+ $month2Revenue = 0;
+ $month3Revenue = 0;
+ $month4Revenue = 0;
+ $yearRevenue = 0;
+ $monthNames = [
+    1 => 'Tháng 1',
+    2 => 'Tháng 2',
+    3 => 'Tháng 3',
+    4 => 'Tháng 4',
+    5 => 'Tháng 5',
+    6 => 'Tháng 6',
+    7 => 'Tháng 7',
+    8 => 'Tháng 8',
+    9 => 'Tháng 9',
+    10 => 'Tháng 10',
+    11 => 'Tháng 11',
+    12 => 'Tháng 12',
+];
+$yearNames = [
+    date('Y') => '2023',
+    date('Y') - 1 => '2022',
+    // Các năm khác nếu cần
+];
+
+$yearRevenue1 = array_fill_keys(array_values($yearNames), 0);
+
+$monthRevenue = array_fill_keys(array_values($monthNames), 0);
+$yearRevenue = 0;
  
  // Lấy dữ liệu đơn hàng từ cơ sở dữ liệu hoặc dự liệu JSON của bạn
  include('dbcon.php');
@@ -301,27 +356,44 @@ if (!empty($fetchdata)) {
      foreach ($fetchdata as $key => $row) {
          if ($row['status'] == 2) { // Đã giao thành công
  
-             // Tính tổng doanh thu theo tuần
-             $orderDate = $row['orderDate'];
-             $orderDate = date('Y-m-d', strtotime($orderDate));
-             $orderWeek = date('W', strtotime($orderDate));
-             $currentWeek = date('W', strtotime($currentDate));
- 
-             if ($orderWeek == $currentWeek) {
-                 $week1Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderWeek == $currentWeek - 1) {
-                 $week2Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderWeek == $currentWeek - 2) {
-                 $week3Revenue += str_replace(['$', ','], '', $row['total']);
-             } elseif ($orderWeek == $currentWeek - 3) {
-                 $week4Revenue += str_replace(['$', ','], '', $row['total']);
-             }
+            // Tính tổng doanh thu theo tuần
+            $orderDate = $row['orderDate'];
+            $orderDate = date('Y-m-d', strtotime($orderDate));
+            $orderWeek = date('W', strtotime($orderDate));
+            $currentWeek = date('W', strtotime($currentDate));
+
+            if ($orderWeek == $currentWeek) {
+                $week1Revenue += str_replace(['$', ','], '', $row['total']);
+            } elseif ($orderWeek == $currentWeek - 1) {
+                $week2Revenue += str_replace(['$', ','], '', $row['total']);
+            } elseif ($orderWeek == $currentWeek - 2) {
+                $week3Revenue += str_replace(['$', ','], '', $row['total']);
+            } elseif ($orderWeek == $currentWeek - 3) {
+                $week4Revenue += str_replace(['$', ','], '', $row['total']);
+            }
+
+            // Tính tổng doanh thu theo tháng
+            $orderMonth = date('n', strtotime($orderDate));
+            $currentMonth = date('n', strtotime($currentDate));
+
+            if ($orderMonth == $currentMonth) {
+                $monthRevenue[$monthNames[$orderMonth]] += str_replace(['$', ','], '', $row['total']);
+            }
+
+            // Tính tổng doanh thu theo năm
+            $orderYear = date('Y', strtotime($orderDate));
+            $currentYear = date('Y', strtotime($currentDate));
+
+            if (isset($yearRevenue1[$orderYear])) {
+                $yearRevenue1[$yearNames[$orderYear]] += str_replace(['$', ','], '', $row['total']);
+            }
+            
  
          }
      }
  }
             ?>
-            <canvas id="revenueChart" width="400" height="200"></canvas>
+            <!-- <canvas id="revenueChart2" width="400" height="200"></canvas> -->
 
 
     </div>
@@ -340,12 +412,12 @@ if (!empty($fetchdata)) {
   var data = {
     labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
     datasets: [
-      {
+        {
         label: "Số lượng ($)",
-        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)"],
-        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)"],
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
         borderWidth: 1,
-        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>],
+        data: [<?= $week1Revenue; ?>, <?= $week2Revenue; ?>, <?= $week3Revenue; ?>, <?= $week4Revenue; ?>, <?= $month1Revenue; ?>, <?= $month2Revenue; ?>, <?= $month3Revenue; ?>, <?= $month4Revenue; ?>, <?= $yearRevenue; ?>],
       },
     ],
   };
@@ -371,6 +443,105 @@ if (!empty($fetchdata)) {
     options: options,
   });
 </script>
+<script>
+  // Get the canvas element
+  var ctx = document.getElementById('revenueChart1').getContext('2d');
+
+  // Define the data for the chart
+  var data = {
+    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+    datasets: [
+        {
+        label: "Số lượng ($)",
+        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+        borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+        borderWidth: 1,
+        data: [<?= implode(', ', array_values($monthRevenue)); ?>, <?= $yearRevenue; ?>],
+      },
+    ],
+  };
+
+  // Define chart options
+  var options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, index, values) {
+            return '$' + value;
+          },
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  var revenueChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options,
+  });
+</script>
+<script>
+  // Get the canvas element
+  var ctx = document.getElementById('revenueChart2').getContext('2d');
+
+  // Define the data for the chart
+  var data = {
+    labels: ["2023", "2022"],
+    datasets: [
+        {
+        label: "Số lượng ($)",
+        backgroundColor: ["rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)"],
+        borderColor: ["rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)"],
+        borderWidth: 1,
+        data: [<?= implode(', ', array_values($yearRevenue1)); ?>],
+      },
+    ],
+  };
+
+  // Define chart options
+  var options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value, index, values) {
+            return '$' + value;
+          },
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  var revenueChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options,
+  });
+</script>
+<script>
+    function updateChart() {
+        var filterType = document.getElementById("filterType").value;
+
+        // Ẩn tất cả các biểu đồ
+        document.getElementById("revenueChart").style.display = "none";
+        document.getElementById("revenueChart1").style.display = "none";
+        document.getElementById("revenueChart2").style.display = "none";
+
+        // Hiển thị biểu đồ tương ứng với loại bộ lọc được chọn
+        if (filterType === "week") {
+            document.getElementById("revenueChart").style.display = "block";
+        } else if (filterType === "month") {
+            document.getElementById("revenueChart1").style.display = "block";
+        } else if (filterType === "year") {
+            document.getElementById("revenueChart2").style.display = "block";
+        }
+    }
+</script>
+
+
 <script>
     function changeStatus(selectElement, orderId) {
     const newStatus = selectElement.value;

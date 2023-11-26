@@ -128,16 +128,16 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Phone</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Address</th>
-                    <th>Comment</th>
-                    <th>Total</th>
-                    <th>Sửa</th>
-                    <th>Xoá</th>
-                    <th>Xem</th>
+                    <th style="background: #55608f;color: white;">Id</th>
+                    <th style="background: #55608f;color: white;">Số điện thoại</th>
+                    <th style="background: #55608f;color: white;">Tên</th>
+                    <th style="background: #55608f;color: white;">Trạng thái</th>
+                    <th style="background: #55608f;color: white;">Địa chỉ</th>
+                    <th style="background: #55608f;color: white;">Bình luận</th>
+                    <th style="background: #55608f;color: white;">Tổng</th>
+                    <th style="background: #55608f;color: white;">Sửa</th>
+                    <th style="background: #55608f;color: white;">Xoá</th>
+                    <th style="background: #55608f;color: white;">Xem</th>
                 </tr>
             </thead>
             <tbody>

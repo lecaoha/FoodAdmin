@@ -108,13 +108,13 @@ $loggedInId = $_SESSION['user_id'];
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S1.no</th>
-                                    <th>Số Điện Thoại</th>
-                                    <th>Tên</th>
-                                    <th>Mật Khẩu</th>
-                                    <th>Nhân Viên</th>
-                                    <th>Sửa</th>
-                                    <th>Xoá</th>
+                                    <th style="background: #55608f;color: white;">S1.no</th>
+                                    <th style="background: #55608f;color: white;">Số Điện Thoại</th>
+                                    <th style="background: #55608f;color: white;">Tên</th>
+                                    <th style="background: #55608f;color: white;">Mật Khẩu</th>
+                                    <th style="background: #55608f;color: white;">Nhân Viên</th>
+                                    <th style="background: #55608f;color: white;">Sửa</th>
+                                    <th style="background: #55608f;color: white;">Xoá</th>
                                 </tr>
                             </thead>
                             <tbody>
