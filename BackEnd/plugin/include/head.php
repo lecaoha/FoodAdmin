@@ -31,4 +31,4 @@
   <!-- <?php
   // include('navbar.php');
   ?> -->
-  <div class="py-4">
+  <div class="">

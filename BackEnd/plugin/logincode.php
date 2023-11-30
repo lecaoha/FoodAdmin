@@ -3,40 +3,95 @@ session_start();
 include('dbcon.php');
 
 if (isset($_POST['login_now_btn'])) {
-    $phonenumber = $_POST['phonenumber'];
+    $phonenumber = $_POST['phoneNumber'];
     $password = $_POST['password'];
 
-    // Check if the user exists and has admin privileges
-   // Check if the user exists and has admin privileges
-   $ref_table = "User";
-   $fetchdata = $database->getReference($ref_table)->getValue();
-   $isAdmin = false;
-foreach ($fetchdata as $userId => $user) {
-    if ($userId == $phonenumber) {
-        // Add debugging output
-        echo "Phone Number: " . $userId . "<br>";
-        echo "Password: " . $user['password'] . "<br>";
-        echo "Admin Status: " . $user['admin'] . "<br>";
+    // Check if the user exists and has the correct phone number and password
+    $ref_table = "User";
+    $fetchdata = $database->getReference($ref_table)->getValue();
 
-        if ($user['password'] == $password && $user['admin'] == 'true') {
-            $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
+    $authenticated = false;
+    $isAdmin = false;
+    $isStaff = false;
+    $userId = null; // Add this variable to store the user's ID
 
-            $isAdmin = true;
+    foreach ($fetchdata as $id => $user) {
+        if ($user['phoneNumber'] == $phonenumber && $user['password'] == $password) {
+            // User found and authenticated
+            $authenticated = true;
+            $userId = $id; // Store the user's ID
+            if ($user['admin'] === 'true' && $user['isStaff'] === 'true') {
+                // User has admin and isStaff privileges
+                $isAdmin = 'true';
+                $isStaff = 'true';
+            }
             break;
         }
     }
+
+    if ($authenticated) {
+        if ($isAdmin =='true' && $isStaff=='true') {
+            // Redirect to the admin and isStaff panel
+            $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
+            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+            header("Location: home.php");
+            exit();
+        } else {
+            // Redirect to the user panel
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['phoneNumber'] = $phonenumber;
+            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+            header("Location: index_user.php");
+            exit();
+        }
+    } else {
+        // Invalid credentials
+        $_SESSION['status'] = "Thông tin đăng nhập không hợp lệ.";
+        header("Location: login.php");
+        exit();
+    }
 }
 
-if ($isAdmin) {
-    // Redirect to the admin panel or perform any admin-specific actions
-    header("Location: index.php");
-    exit();
-} else {
-    // Invalid credentials or not an admin
-    $_SESSION['status'] = "Thông tin đăng nhập không hợp lệ hoặc không phải là quản trị viên.";
-    header("Location: login.php");
-    exit();
+
+
+
+
+
+
+
+
+if(isset($_POST['register_now_btn'])) {
+    $phonenumber = $_POST['phoneNumber'];
+    $name = $_POST['name'];
+    $password = $_POST['password'];
+
+    // Define $isStaff and $admin or remove them if not needed.
+    $isStaff = false; // Example value
+    $admin = false;  // Example value
+
+    $postData = [
+        'phoneNumber' => $phonenumber, // Add 'phonenumber' here
+        'isStaff' => $isStaff,
+        'name' => $name,
+        'password' => $password,
+        'admin' => $admin
+    ];
+
+    // Assuming you have already initialized $database and connected to your Firebase project.
+
+    $ref_table = "User";
+    // Use the 'phonenumber' as the key
+    $postRef = $database->getReference($ref_table)->getChild($phonenumber)->set($postData);
+
+    if($postRef) {
+        $_SESSION['status'] = "Data Insert Successfully";
+        header("Location: index_user.php");
+    } else {
+        $_SESSION['status'] = "Data Not Insert";
+        header("Location: register.php");
+    }
 }
-}
+
+
 
 ?>

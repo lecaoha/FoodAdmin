@@ -1,8 +1,24 @@
 <?php
 include('include/head.php');
+session_start();
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['name'])) {
+    // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
+    header("Location: login.php");
+    exit();
+}
 
+// Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
+$loggedInUserName = $_SESSION['name'];
+$loggedInId = $_SESSION['user_id'];
 $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
 ?>
+<style>
+
+    .col-sm-3{
+        width: 100%;
+    }
+</style>
 
 <div class="container">
     <div class="sidebar">
@@ -33,12 +49,28 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
                                 <label for="">Price</label>
                                 <input type="number" name="price" class="form-control">
                             </div>
-                            <div class="form-group row mb-3">
-                                <label for="menuId" class="col-sm-2 col-form-label">Menu Id</label>
+
+                            <div class="form-group mb-3">
+                                <label for="menuName" class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-3">
-                                    <input type="text" name="menuId" class="form-control" value="<?php echo htmlspecialchars($menuId); ?>" readonly>
+                                    <select id="menuSelect" class="form-control" name="menuName">
+                                        <option value="" selected disabled>Chọn danh mục</option>
+                                        <?php
+                                        // Kết nối Firebase và truy vấn danh sách category
+                                        include('dbcon.php');
+                                        $ref_table = 'Category';
+                                        $categories = $database->getReference($ref_table)->getValue();
+
+                                        if ($categories) {
+                                            foreach ($categories as $category) {
+                                                echo '<option value="' . $category['name'] . '">' . $category['name'] . '</option>';
+                                            }
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
+
                             <div class="form-group mb-3">
                                 <label for="">Discount</label>
                                 <input type="text" name="discount" class="form-control">
@@ -57,6 +89,27 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
         </div>
     </div>
 </div>
+<script>
+    // Lắng nghe sự kiện thay đổi giá trị của dropdown
+    document.getElementById('menuSelect').addEventListener('change', function () {
+        var selectedOption = this.options[this.selectedIndex];
+        var selectedMenuName = selectedOption.value;
+
+        // Lặp qua danh sách danh mục để tìm `menuId` tương ứng với tên được chọn
+        var categories = <?php echo json_encode($categories); ?>;
+        var selectedMenuId = null;
+        for (var $key in categories) {
+            if (categories[key].name === selectedMenuName) {
+                selectedMenuId = key;
+                break;
+            }
+        }
+
+        document.querySelector('input[name="menuId"]').value = selectedMenuId;
+    });
+</script>
+
+
 
 <?php
 include('include/footer.php');

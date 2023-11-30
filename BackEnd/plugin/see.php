@@ -2,6 +2,17 @@
 ob_start();
 
     include('include/head.php');
+    session_start();
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['name'])) {
+    // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
+    header("Location: login.php");
+    exit();
+}
+
+// Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
+$loggedInUserName = $_SESSION['name'];
+$loggedInId = $_SESSION['user_id'];
 
 ?>
 
@@ -46,15 +57,15 @@ ob_start();
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>S1.no</th>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Price</th>
-                                    <th>Menu Id</th>
-                                    <th>discount</th>
-                                    <th>description</th>
-                                    <th>Sửa</th>
-                                    <th>Xoá</th>
+                                    <th style="background: #55608f;color: white;">S1.no</th>
+                                    <th style="background: #55608f;color: white;">Tên</th>
+                                    <th style="background: #55608f;color: white;">Ảnh</th>
+                                    <th style="background: #55608f;color: white;">Giá</th>
+                                    <th style="background: #55608f;color: white;">Danh mục</th>
+                                    <th style="background: #55608f;color: white;">Giảm giá</th>
+                                    <th style="background: #55608f;color: white;">Mô tả</th>
+                                    <th style="background: #55608f;color: white;">Sửa</th>
+                                    <th style="background: #55608f;color: white;">Xoá</th>
 
 
                                 </tr>
@@ -109,7 +120,25 @@ ob_start();
                                                 </td>
                                                 <td><?=$row['price'];?></td>
 
-                                                <td><?=$row['menuId'];?></td>
+                                                <td>
+    <?php
+    if (!empty($row['menuId'])) {
+        // Tìm tên danh mục tương ứng với menuId
+        $menuId = $row['menuId'];
+        $ref_table = 'Category';
+        $categories = $database->getReference($ref_table)->getValue();
+        
+        if (isset($categories[$menuId])) {
+            $menuName = $categories[$menuId]['name'];
+            echo $menuName;
+        } else {
+            echo 'Unknown Category';
+        }
+    } else {
+        echo 'N/A';
+    }
+    ?>
+</td>
                                                 <td><?=$row['discount'];?></td>
                                                 <td><?=$row['description'];?></td>
 
