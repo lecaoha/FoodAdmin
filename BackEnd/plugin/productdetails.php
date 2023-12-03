@@ -787,6 +787,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitComment"])) {
                                 <strong>' . $rating['userPhone'] . '</strong>
                              </div>';
                         $starIcons = generateStarIcons($rating['rateValue']);
+
                         echo '<div class="stars" style="margin-left: 45px;">' . $starIcons . '</div>';
                         echo '<p style="margin-left: 45px;">' . $rating['comment'] . '</p>';
                         
@@ -823,20 +824,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitComment"])) {
 
             <div class="col-md-7">
                 <div class="comment-box">
-                    <h4>Add a comment</h4>
+                    <h4>Thêm bình luận</h4>
                     <form id="commentForm" method="POST" action="">
 
                             <div class="rating">
-                                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
                                 <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
                             </div>
                         <div class="comment-area">
                             <input type="hidden" name="foodId" value="<?= $id ?>">
 
-                            <textarea class="form-control" name="comment" style="width: 700px;" placeholder="What is your view?" rows="4"></textarea>
+                            <textarea class="form-control" name="comment" style="width: 700px;" placeholder="Bạn nghĩ gì về món ăn?" rows="4"></textarea>
                         </div>
                         <div class="comment-btns mt-2">
                             <div class="row">
