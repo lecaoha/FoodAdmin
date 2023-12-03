@@ -11,6 +11,8 @@ if (!isset($_SESSION['name'])) {
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
 $loggedInUserName = $_SESSION['name'];
 $loggedInId = $_SESSION['user_id'];
+$loggedIAdmin = $_SESSION['admin'];
+$loggedisStaff = $_SESSION['isStaff'];
 
 
 // Khởi tạo biến tổng

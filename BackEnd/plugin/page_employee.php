@@ -11,6 +11,8 @@
     // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
     $loggedInUserName = $_SESSION['name'];
     $loggedInId = $_SESSION['user_id'];
+    $loggedIAdmin = $_SESSION['admin'];
+    $loggedisStaff = $_SESSION['isStaff'];
 ?>
 
 <style>
@@ -144,8 +146,15 @@
                                                     <td>********</td>                                                    <td>true</td> <!-- Hiển thị "true" -->
                                                     <td><?=$row['admin'];?></td>
                                                     <td>
-                                                        <input type="hidden" name="id" value="<?= $key; ?>">
-                                                        <a href="edit_employee.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                        <?php
+                                                        // Check if admin is true before displaying the edit button
+                                                        if ($loggedIAdmin === 'true') {
+                                                        ?>
+                                                            <input type="hidden" name="id" value="<?= $key; ?>">
+                                                            <a href="edit_employee.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                     <td>
                                                         <form action="code_employee.php" method="POST">

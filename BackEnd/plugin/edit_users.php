@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('include/head.php');
-session_start();
 // Kiểm tra xem người dùng đã đăng nhập hay chưa
 if (!isset($_SESSION['name'])) {
     // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.

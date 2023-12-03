@@ -74,7 +74,9 @@ if(isset($_POST['save_user']))
         'isStaff' => $isStaff,
         'name' => $name,
         'password' => $password,
-        'admin' => $admin
+        'admin' => $admin,
+        'phoneNumber' => $phonenumber,
+
 
 
     ];
