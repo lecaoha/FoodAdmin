@@ -147,9 +147,16 @@ if (!isset($_SESSION['name'])) {
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php
+                                                        // Check if admin is true before displaying the edit button
+                                                        if ($loggedIAdmin === 'true') {
+                                                        ?>
                                                         <form action="code_users.php" method="POST">
                                                             <button type="submit" name="delete_btn" value="<?=$key?>" class="btn btn-danger btn-sm">Xoá</button>
                                                         </form>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                                 <?php

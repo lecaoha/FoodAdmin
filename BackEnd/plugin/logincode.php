@@ -59,6 +59,7 @@ include('dbcon.php');
 //         exit();
 //     }
 // }
+
 if (isset($_POST['login_now_btn'])) {
     $phonenumber = $_POST['phoneNumber'];
     $password = $_POST['password'];
@@ -77,6 +78,7 @@ if (isset($_POST['login_now_btn'])) {
             // User found and authenticated
             $authenticated = true;
             $userId = $id; // Store the user's ID
+
             if ($user['admin'] === 'true' && $user['isStaff'] === 'true') {
                 // User has admin and isStaff privileges
                 $isAdmin = true;
@@ -91,7 +93,7 @@ if (isset($_POST['login_now_btn'])) {
     }
 
     if ($authenticated) {
-        if ($isAdmin && $isStaff || !$isAdmin) {
+        if ($isAdmin && $isStaff ||!$isAdmin) {
             // Redirect to the admin and isStaff panel
             $_SESSION['name'] = $user['name'];
             $_SESSION['user_id'] = $userId;
@@ -114,8 +116,6 @@ if (isset($_POST['login_now_btn'])) {
         exit();
     }
 }
-
-
 
 
 
