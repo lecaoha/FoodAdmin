@@ -139,6 +139,17 @@
                     android:textSize="17sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vnđ"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical|start"
+                    android:textAllCaps="true"
+                    android:text="VNĐ"
+                    android:textSize="17sp"
+                    android:textColor="#E15A5A"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton

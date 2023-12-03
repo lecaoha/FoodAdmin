@@ -54,7 +54,11 @@ public class OrderStatus extends AppCompatActivity {
     }
 
     private void loadOrder(String phone) {
-        Query query = FirebaseDatabase .getInstance("https://appfood-9abc2-default-rtdb.asia-southeast1.firebasedatabase.app/") .getReference("Requests") .orderByChild("phone").equalTo(phone);
+        Query query = FirebaseDatabase .getInstance("https://appfood-9abc2-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                .getReference("Requests")
+                .orderByChild("phone")
+                .equalTo(phone)
+                ; // Add this line to order by status
 
         FirebaseRecyclerOptions<Request> options;
         options = new FirebaseRecyclerOptions.Builder<Request>().setQuery(query, Request.class).build();
