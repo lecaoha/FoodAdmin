@@ -542,9 +542,11 @@ $loggedInId = $_SESSION['user_id'];
                                             <span style="color: black;">
                                                 <?= $food['name'] ?>
                                         </a></h4>
-                                    <span class="price-tag bg-white shadow-lg ms-4 special"><small>$</small>
-                                        <?= $food['price'] ?>
-                                    </span>
+                                        <span class="price-tag bg-white shadow-lg ms-2 special" style="width: 150px;">
+                                            <small >
+                                                <?= $food['price'] ?>VNĐ
+                                            </small>
+                                        </span>
                                 </div>
                             </div>
                         </div>

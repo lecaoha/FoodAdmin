@@ -19,7 +19,6 @@ $totalSelling = 0;
 $totalcancel = 0;
 $profit = 0;
 
-
 // Các loại phí
 $shippingFee = 50; // Phí vận chuyển
 $taxFee = 10; // Phí thuế
@@ -32,10 +31,9 @@ $fetchdata = $database->getReference($ref_table)->getValue();
 // Tính tổng của trường "total" cho từng đơn hàng với điều kiện "status" là 2
 if (!empty($fetchdata)) {
     foreach ($fetchdata as $key => $row) {
-        if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 2 hay không
+        if ($row['status'] == 2) { // Kiểm tra trạng thái đã giao thành công
             $totalSum += str_replace(['$', ','], '', $row['total']); // Loại bỏ ký tự "$" và ","
             $profit += str_replace(['$', ','], '', $row['total']) - ($shippingFee + $taxFee);
-
         }
         if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 1 (đơn hàng đã bán) hay không
             $totalSelling++;
@@ -153,9 +151,9 @@ if (!empty($fetchdata)) {
                         <div class="col-md-3 layout">
                             <img src="src/sales.png" alt="Hình ảnh 1">
                             <h4>Tổng doanh thu</h4>
-                            <p class="fs-3">$<?php
-                    echo number_format($totalSum, 2, '.', ','); // Hiển thị tổng với định dạng số tiền
-                    ?></p>
+                            <p class="fs-3"><?php
+                    echo number_format($totalSum, 0, '.', ','); // Hiển thị tổng với định dạng số tiền
+                    ?> VNĐ</p>
                         </div>
                         <!-- Kết thúc layout 1 -->
 
@@ -179,7 +177,7 @@ if (!empty($fetchdata)) {
                         <div class="col-md-4 layout">
                             <img src="src/profit.png" alt="Hình ảnh 3">
                             <h4>Lợi nhuận</h4>
-                            <p class="fs-3">$<?php echo number_format($profit, 2, '.', ','); ?></p>
+                            <p class="fs-3"><?php echo number_format($profit, 0, '.', ','); ?> VNĐ</p>
                         </div>
                     </div>
                 </div>
@@ -310,6 +308,7 @@ if (!empty($fetchdata)) {
 <!-- Biểu đồ theo năm -->
 <canvas id="revenueChart2" width="400" height="200" style="display: none;"></canvas>
             <?php
+            
  $week1Revenue = 0;
  $week2Revenue = 0;
  $week3Revenue = 0;
@@ -363,13 +362,13 @@ $yearRevenue = 0;
             $currentWeek = date('W', strtotime($currentDate));
 
             if ($orderWeek == $currentWeek) {
-                $week1Revenue += str_replace(['$', ','], '', $row['total']);
-            } elseif ($orderWeek == $currentWeek - 1) {
-                $week2Revenue += str_replace(['$', ','], '', $row['total']);
-            } elseif ($orderWeek == $currentWeek - 2) {
-                $week3Revenue += str_replace(['$', ','], '', $row['total']);
-            } elseif ($orderWeek == $currentWeek - 3) {
-                $week4Revenue += str_replace(['$', ','], '', $row['total']);
+                $week1Revenue += (int)$row['total'];
+            } elseif ($orderWeek = $currentWeek - 1) {
+                $week2Revenue = (int)$row['total'];
+            } elseif ($orderWeek += (int)$currentWeek - 2) {
+                $week3Revenue = (int)$row['total'];
+            } elseif ($orderWeek += $currentWeek - 3) {
+                $week4Revenue = (int)$row['total'];
             }
 
             // Tính tổng doanh thu theo tháng
@@ -377,7 +376,7 @@ $yearRevenue = 0;
             $currentMonth = date('n', strtotime($currentDate));
 
             if ($orderMonth == $currentMonth) {
-                $monthRevenue[$monthNames[$orderMonth]] += str_replace(['$', ','], '', $row['total']);
+                $monthRevenue[$monthNames[$orderMonth]] +=  (int)$row['total'];
             }
 
             // Tính tổng doanh thu theo năm
@@ -385,7 +384,7 @@ $yearRevenue = 0;
             $currentYear = date('Y', strtotime($currentDate));
 
             if (isset($yearRevenue1[$orderYear])) {
-                $yearRevenue1[$yearNames[$orderYear]] += str_replace(['$', ','], '', $row['total']);
+                $yearRevenue1[$yearNames[$orderYear]] += (int)$row['total'];
             }
             
  
@@ -413,7 +412,7 @@ $yearRevenue = 0;
     labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4"],
     datasets: [
         {
-        label: "Số lượng ($)",
+        label: "Số lượng (VNĐ)",
         backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
         borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
         borderWidth: 1,
@@ -429,7 +428,7 @@ $yearRevenue = 0;
         beginAtZero: true,
         ticks: {
           callback: function (value, index, values) {
-            return '$' + value;
+            return value +' VNĐ';
           },
         },
       },
@@ -452,7 +451,7 @@ $yearRevenue = 0;
     labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
     datasets: [
         {
-        label: "Số lượng ($)",
+        label: "Số lượng (VNĐ)",
         backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
         borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)", "rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
         borderWidth: 1,
@@ -468,7 +467,7 @@ $yearRevenue = 0;
         beginAtZero: true,
         ticks: {
           callback: function (value, index, values) {
-            return '$' + value;
+            return value+ ' VNĐ';
           },
         },
       },
@@ -491,7 +490,7 @@ $yearRevenue = 0;
     labels: ["2023", "2022"],
     datasets: [
         {
-        label: "Số lượng ($)",
+        label: "Số lượng (VNĐ)",
         backgroundColor: ["rgba(153, 102, 255, 0.2)", "rgba(255, 206, 86, 0.2)"],
         borderColor: ["rgba(153, 102, 255, 1)", "rgba(255, 206, 86, 1)"],
         borderWidth: 1,
@@ -507,7 +506,7 @@ $yearRevenue = 0;
         beginAtZero: true,
         ticks: {
           callback: function (value, index, values) {
-            return '$' + value;
+            return value+'VNĐ';
           },
         },
       },
@@ -602,7 +601,7 @@ function deleteOrder(orderId) {
     labels: ["Tổng doanh thu", "Lợi nhuận"],
     datasets: [
       {
-        label: "Số lượng ($)",
+        label: "Số lượng (VNĐ)",
         backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],
         borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
@@ -618,7 +617,7 @@ function deleteOrder(orderId) {
         beginAtZero: true,
         ticks: {
           callback: function (value, index, values) {
-            return '$' + value;
+            return value +'VNĐ';
           },
         },
       },

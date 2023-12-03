@@ -163,7 +163,7 @@
                             </td>
                             <td><?= $row['address']; ?></td>
                             <td><?= $row['comment']; ?></td>
-                            <td><?= $row['total']; ?></td>
+                            <td><?= $row['total']; ?> VNĐ</td>
 
                             <td>
                                 <a href="edit_order.php?id=<?= $key; ?>" class="btn btn-primary btn-sm">Sửa</a>

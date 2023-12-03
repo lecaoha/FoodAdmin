@@ -38,20 +38,20 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
                     <div class="card-body">
                         <form action="code.php" method="POST">
                             <div class="form-group mb-3">
-                                <label for="">Name</label>
+                                <label for="">Tên sản phẩm</label>
                                 <input type="text" name="name" class="form-control">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Image</label>
+                                <label for="">Ảnh</label>
                                 <input type="text" name="image" class="form-control">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Price</label>
+                                <label for="">Giá</label>
                                 <input type="number" name="price" class="form-control">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="menuName" class="col-sm-2 col-form-label">Category</label>
+                                <label for="menuName" class="col-sm-2 col-form-label">Danh mục</label>
                                 <div class="col-sm-3">
                                     <select id="menuSelect" class="form-control" name="menuName">
                                         <option value="" selected disabled>Chọn danh mục</option>
@@ -72,11 +72,11 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="">Discount</label>
+                                <label for="">Giảm giá</label>
                                 <input type="text" name="discount" class="form-control">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Description</label>
+                                <label for="">Sự miêu tả</label>
                                 <input type="text" name="description" class="form-control">
                             </div>
                             <div class="form-group mb-3">

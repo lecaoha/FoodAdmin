@@ -118,11 +118,11 @@ $loggedInId = $_SESSION['user_id'];
                                                     }
                                                     ?>
                                                 </td>
-                                                <td><?=$row['price'];?></td>
+                                                <td><?=$row['price'];?> VNĐ</td>
 
                                                 <td>
     <?php
-    if (!empty($row['menuId'])) {
+    if (!empty($row['menuId']) ||$row['menuId'] >=0) {
         // Tìm tên danh mục tương ứng với menuId
         $menuId = $row['menuId'];
         $ref_table = 'Category';

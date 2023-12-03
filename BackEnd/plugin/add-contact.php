@@ -39,11 +39,11 @@ $loggedInId = $_SESSION['user_id'];
                         <form action="code.php" method="POST">
                             <!-- Loại bỏ trường nhập menuId -->
                             <div class="form-group mb-3">
-                                <label for="">Name</label>
+                                <label for="">Tên Danh mục</label>
                                 <input type="text" name="name" class="form-control">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Image</label>
+                                <label for="">Ảnh</label>
                                 <input type="text" name="image" class="form-control">
                             </div>
                             <div class="form-group mb-3">
