@@ -83,12 +83,16 @@ if (isset($_POST['updatecart'])) {
 $totalPrice = 0;
 
 foreach ($_SESSION['giohang'] as $key => $item) {
-    $product_price = $item[2];
-    $quantity = $item[4];
+  $product_price =$item[2]; // assuming it's a floating-point number
+  $quantity = $item[4];
 
     // Calculate the total price for each product and accumulate
-    $totalPrice += $product_price * $quantity;
-}
+      // Calculate the total price for each product and accumulate
+      // $totalPrice += $product_price * $quantity;
+      $totalPrice += ((integer)$item['2'] * (int)$item['4']);
+
+  }
+  // echo "$totalPrice";
 
 if (isset($_POST['buy'])) {
   include('dbcon.php');
@@ -104,7 +108,7 @@ if (isset($_POST['buy'])) {
       'address' => $address,
       'comment' => $comment,
       'orderDate' => date('Y-m-d'),
-      'total' => '$' . number_format($totalPrice,2),
+      'total' => number_format($totalPrice, 3, ',', '.'),
       'status' => '0', // Set default status to 0 (pending)
       'foods' => array()
   );
@@ -149,7 +153,10 @@ if (isset($_POST['buy'])) {
 
   // Chuyển hướng về trang chủ
   header("Location: index_user.php");
+  
   exit();
+
+  
 }
 
 ?>
@@ -613,7 +620,8 @@ if (isset($_POST['buy'])) {
 
 </div>
           <div class="mt-2">
-          <span class="product-price" data-product-price="<?php echo $product_price; ?>">$<?php echo $product_price * $quantity; ?></span>
+          
+          <span class="product-price" data-product-price="<?php echo $product_price; ?>"><?php echo number_format((int)($product_price) * (int)($quantity), 3, ',', '.') . ' VNĐ' ; ?></span>
             
           </div>
         </div>
@@ -648,18 +656,18 @@ if (isset($_POST['buy'])) {
 
     // Update the total price for the specific product
     const newTotalPrice = newQuantity * productPrice;
-    $(this).closest('.row').find('.product-price').text('$' + newTotalPrice);
+    $(this).closest('.row').find('.product-price').text(newTotalPrice +'VNĐ');
 
     // Loop through all products and update the total price of the cart
     let totalCartPrice = 0;
     $('.quantity-select').each(function () {
       const quantity = $(this).val();
       const price = $(this).closest('.row').find('.product-price').data('product-price');
-      totalCartPrice += quantity * price;
+      totalCartPrice += number_format($quantity * $price, 3, ',', '.');
     });
 
     // Update the total price in the summary section
-    $('[name="total-cart-price"]').text('$' + totalCartPrice);
+    $('[name="total-cart-price"]').text(totalCartPrice+'VNĐ');
   });
 });
 
@@ -708,7 +716,7 @@ if (isset($_POST['buy'])) {
                 }
               }
               // Tính tổng giá trị cho sản phẩm cụ thể
-              $productTotalPrice = $product_price * $quantity;
+              $productTotalPrice = (int)$product_price * (int)$quantity;
           
               // Cộng dồn vào tổng giá trị của giỏ hàng
               $totalPrice += $productTotalPrice;
@@ -719,16 +727,16 @@ if (isset($_POST['buy'])) {
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2 fw-bold" name = "total-cart-price">$<?php echo number_format($totalPrice,2); ?></p>
+              <p class="mb-2 fw-bold" name = "total-cart-price"><?php echo number_format($totalPrice, 3, ',', '.'); ?> VNĐ</p>
             </div>
             <div class="d-flex justify-content-between">
               <p class="mb-2">Giảm giá:</p>
-              <p class="mb-2 text-success">$0</p>
+              <p class="mb-2 text-success">0 VNĐ</p>
             </div>
             <hr />
             <div class="d-flex justify-content-between">
               <p class="mb-2">Tổng giá:</p>
-              <p class="mb-2 fw-bold" name = "total-cart-price">$<?php echo number_format($totalPrice,2); ?></p>
+              <p class="mb-2 fw-bold" name = "total-cart-price"><?php echo number_format($totalPrice, 3, ',', '.'); ?> VNĐ</p>
 
             </div>
 

@@ -537,8 +537,10 @@ $loggedInId = $_SESSION['user_id'];
                                                 <span style="color: black;"><?= $row['name'] ?></span>
                                             </a>
                                         </h4>
-                                        <span class="price-tag bg-white shadow-lg ms-4 special">
-                                            <small>$</small><?= $row['price'] ?>
+                                        <span class="price-tag bg-white shadow-lg ms-2 special" style="width: 150px;">
+                                            <small >
+                                                <?= $row['price'] ?>VNĐ
+                                            </small>
                                         </span>
                                     </div>
                                 </div>

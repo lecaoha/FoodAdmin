@@ -704,7 +704,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitComment"])) {
                     <div class="p-3 right-side" >
                         <h4 style="font-size: 20px;">
                             <?= $food_ref['name'] ?>
-                            <p><strong>Giá: <span style="color: red;">$<?= $food_ref['price'] ?></span></strong></p>
+                            <p><strong>Giá: <span style="color: red;"><?= $food_ref['price'] ?> VNĐ</span></strong></p>
                         </h4>
 
                         <div class="ratings d-flex flex-row align-items-center mt-3">

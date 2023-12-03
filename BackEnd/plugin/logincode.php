@@ -20,20 +20,24 @@ if (isset($_POST['login_now_btn'])) {
             // User found and authenticated
             $authenticated = true;
             $userId = $id; // Store the user's ID
-            if ($user['admin'] === 'true' && $user['isStaff'] === 'true') {
+            if ($user['admin'] === 'true' && $user['isStaff'] === 'true' ||$user['admin'] === 'false') {
                 // User has admin and isStaff privileges
                 $isAdmin = 'true';
                 $isStaff = 'true';
+                $isAdmin = 'false';
+
             }
             break;
         }
     }
 
     if ($authenticated) {
-        if ($isAdmin =='true' && $isStaff=='true') {
+        if ($isAdmin =='true' && $isStaff=='true' || $isAdmin=='false') {
             // Redirect to the admin and isStaff panel
             $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
             $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+            $_SESSION['admin'] = $user['admin'];
+            $_SESSION['isStaff'] = $user['isStaff'];
             header("Location: home.php");
             exit();
         } else {

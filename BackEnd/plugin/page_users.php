@@ -9,8 +9,10 @@ if (!isset($_SESSION['name'])) {
 }
 
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
-$loggedInUserName = $_SESSION['name'];
-$loggedInId = $_SESSION['user_id'];
+    $loggedInUserName = $_SESSION['name'];
+    $loggedInId = $_SESSION['user_id'];
+    $loggedIAdmin = $_SESSION['admin'];
+    $loggedisStaff = $_SESSION['isStaff'];
 ?>
 
 <style>
@@ -132,8 +134,17 @@ $loggedInId = $_SESSION['user_id'];
                                                     <td><?=$row['name'];?></td>
                                                     <td>********</td>                                                  
                                                     <td>false</td> <!-- Hiển thị "false" -->
+                            
                                                     <td>
-                                                        <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                        <?php
+                                                        // Check if admin is true before displaying the edit button
+                                                        if ($loggedIAdmin === 'true') {
+                                                        ?>
+                                                            <input type="hidden" name="id" value="<?= $key; ?>">
+                                                            <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                     <td>
                                                         <form action="code_users.php" method="POST">

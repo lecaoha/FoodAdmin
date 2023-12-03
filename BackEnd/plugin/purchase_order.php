@@ -468,6 +468,10 @@ foreach ($orderData as $orderId => $order) {
     }
 }
 
+uasort($filteredOrders, function($a, $b) {
+    return $a['status'] - $b['status'];
+});
+
 foreach ($filteredOrders as $orderId => $order) {
     $status = $order["status"];
 
@@ -494,14 +498,17 @@ foreach ($filteredOrders as $orderId => $order) {
             $statusClass = "text-secondary";
             break;
     }
+    
     ?>
         <div class="order-item" data-status="<?= $status ?>">
 
         <div class="card mb-4">
     <div class="card-header">
+        
     <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h6 style="font-size: 20px;" class="card-title <?= $statusClass ?>">Đơn hàng <?= $orderId ?> - <?= $statusLabel ?></h6>
+
             </div>
             <div>
                 <h6 style="font-size: 18px;"><?= $order["orderDate"] ?></h6>
@@ -515,6 +522,7 @@ foreach ($filteredOrders as $orderId => $order) {
         <h4 style="font-size: 15px;" class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h4>
 
     </div>
+    
 </div>
 
 
@@ -524,6 +532,7 @@ foreach ($filteredOrders as $orderId => $order) {
 ?>
         </div>
 
+        
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -559,6 +568,8 @@ filterItems.forEach(item => {
         });
     });
 });
+
+
 
 </script>
     </div>

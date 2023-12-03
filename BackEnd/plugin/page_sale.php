@@ -34,7 +34,6 @@ if (!empty($fetchdata)) {
         if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 2 hay không
             $totalSum += str_replace(['$', ','], '', $row['total']); // Loại bỏ ký tự "$" và ","
             $profit += str_replace(['$', ','], '', $row['total']) - ($shippingFee + $taxFee);
-
         }
         if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 1 (đơn hàng đã bán) hay không
             $totalSelling++;
@@ -128,10 +127,10 @@ if (!empty($fetchdata)) {
                         <div class="col-md-3 layout">
                             <img src="src/sales.png" alt="Hình ảnh 1">
                             <h4>Tổng doanh thu</h4>
-                            <p class="fs-3">$
+                            <p class="fs-3">
                                 <?php
-                                echo number_format($totalSum, 2, '.', ','); // Hiển thị tổng với định dạng số tiền
-                                ?>
+                    echo number_format((int)$totalSum, 0, '.', ','); // Hiển thị tổng với định dạng số tiền
+                    ?> VNĐ
                             </p>
                         </div>
                         <!-- Kết thúc layout 1 -->
@@ -160,9 +159,8 @@ if (!empty($fetchdata)) {
                         <div class="col-md-4 layout">
                             <img src="src/profit.png" alt="Hình ảnh 3">
                             <h4>Lợi nhuận</h4>
-                            <p class="fs-3">$
-                                <?php echo number_format($profit, 2, '.', ','); ?>
-                            </p>
+                            <p class="fs-3"><?php echo number_format($profit, 0, '.', ','); ?> VNĐ</p>
+
                         </div>
                     </div>
                 </div>
@@ -182,7 +180,7 @@ if (!empty($fetchdata)) {
         labels: ["Tổng doanh thu", "Lợi nhuận"],
         datasets: [
             {
-                label: "Số lượng ($)",
+                label: "Số lượng (VNĐ)",
                 backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],
                 borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
                 borderWidth: 1,
@@ -198,7 +196,7 @@ if (!empty($fetchdata)) {
                 beginAtZero: true,
                 ticks: {
                     callback: function (value, index, values) {
-                        return '$' + value;
+                        return value + 'VNĐ';
                     },
                 },
             },
