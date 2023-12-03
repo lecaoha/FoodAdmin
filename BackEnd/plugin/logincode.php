@@ -2,6 +2,63 @@
 session_start();
 include('dbcon.php');
 
+// if (isset($_POST['login_now_btn'])) {
+//     $phonenumber = $_POST['phoneNumber'];
+//     $password = $_POST['password'];
+
+//     // Check if the user exists and has the correct phone number and password
+//     $ref_table = "User";
+//     $fetchdata = $database->getReference($ref_table)->getValue();
+
+//     $authenticated = false;
+//     // $isAdmin = false;
+//     // $isStaff = false;
+//     $userId = null; // Add this variable to store the user's ID
+
+//     foreach ($fetchdata as $id => $user) {
+//         if ($user['phoneNumber'] == $phonenumber && $user['password'] == $password) {
+//             // User found and authenticated
+//             $authenticated = true;
+//             $userId = $id; // Store the user's ID
+//             if ($user['admin'] === 'true' && $user['isStaff'] === 'true' ||$user['admin'] === 'false') {
+//                 // User has admin and isStaff privileges
+//                 $isAdmin = 'true';
+//                 $isStaff = 'true';
+//                 $isAdmin = 'false';
+
+//             }elseif ($user['admin'] === 'false' && $user['isStaff'] === 'false') {
+//                 // User is not an admin
+//                 $isAdmin = 'false';
+//                 $isStaff = 'false';
+//             }
+//             break;
+//         }
+//     }
+
+//     if ($authenticated) {
+//         if ($isAdmin =='true' && $isStaff=='true' || $isAdmin=='false') {
+//             // Redirect to the admin and isStaff panel
+//             $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
+//             $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+//             $_SESSION['admin'] = $user['admin'];
+//             $_SESSION['isStaff'] = $user['isStaff'];
+//             header("Location: home.php");
+//             exit();
+//         } elseif ($isAdmin === 'false' && $isStaff === 'false')  {
+//             // Redirect to the user panel
+//             $_SESSION['name'] = $user['name'];
+//             $_SESSION['phoneNumber'] = $phonenumber;
+//             $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+//             header("Location: index_user.php");
+//             exit();
+//         }
+//     } else {
+//         // Invalid credentials
+//         $_SESSION['status'] = "Thông tin đăng nhập không hợp lệ.";
+//         header("Location: login.php");
+//         exit();
+//     }
+// }
 if (isset($_POST['login_now_btn'])) {
     $phonenumber = $_POST['phoneNumber'];
     $password = $_POST['password'];
@@ -20,31 +77,33 @@ if (isset($_POST['login_now_btn'])) {
             // User found and authenticated
             $authenticated = true;
             $userId = $id; // Store the user's ID
-            if ($user['admin'] === 'true' && $user['isStaff'] === 'true' ||$user['admin'] === 'false') {
+            if ($user['admin'] === 'true' && $user['isStaff'] === 'true') {
                 // User has admin and isStaff privileges
-                $isAdmin = 'true';
-                $isStaff = 'true';
-                $isAdmin = 'false';
-
+                $isAdmin = true;
+                $isStaff = true;
+            } elseif ($user['admin'] === 'false' && $user['isStaff'] === 'false') {
+                // User is not an admin
+                $isAdmin = false;
+                $isStaff = false;
             }
             break;
         }
     }
 
     if ($authenticated) {
-        if ($isAdmin =='true' && $isStaff=='true' || $isAdmin=='false') {
+        if ($isAdmin && $isStaff || !$isAdmin) {
             // Redirect to the admin and isStaff panel
-            $_SESSION['name'] = $user['name']; // Assuming 'name' is the key for the name data
-            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
-            $_SESSION['admin'] = $user['admin'];
-            $_SESSION['isStaff'] = $user['isStaff'];
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['admin'] = $isAdmin;
+            $_SESSION['isStaff'] = $isStaff;
             header("Location: home.php");
             exit();
-        } else {
+        } elseif (!$isAdmin && !$isStaff) {
             // Redirect to the user panel
             $_SESSION['name'] = $user['name'];
             $_SESSION['phoneNumber'] = $phonenumber;
-            $_SESSION['user_id'] = $userId; // Store the user's ID in the session
+            $_SESSION['user_id'] = $userId;
             header("Location: index_user.php");
             exit();
         }
@@ -55,7 +114,6 @@ if (isset($_POST['login_now_btn'])) {
         exit();
     }
 }
-
 
 
 
