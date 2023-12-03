@@ -96,24 +96,37 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 order.setQuantity(String.valueOf(newValue));
                 new Database(cart).updateCart(order);
 
-                //update txttotal
-                int total =0;
+                // Update txtTotalPrice
+                int total = 0;
                 List<Order> orders = new Database(cart).getCart();
-                for (Order item:orders)
-                    total+=(Integer.parseInt(order.getPrice()))*(Integer.parseInt(item.getQuantity()));
-                Locale locale = new Locale("en","US");
-                NumberFormat fmt= NumberFormat.getCurrencyInstance(locale);
+                for (Order item : orders) {
+                    String priceWithoutComma = item.getPrice().replaceAll(",", "");
+                    total += (Integer.parseInt(priceWithoutComma)) * (Integer.parseInt(item.getQuantity()));
+                }
 
-                cart.txtTotalPrice.setText(fmt.format(total));
+                Locale locale = new Locale("vi", "VN");
+                NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+
+                // Format the total with dots as the decimal separator
+                String formattedTotal = fmt.format(total);
+                formattedTotal = formattedTotal.replace("₫", ""); // Remove the currency symbol
+                formattedTotal = formattedTotal.replace(",", ".");  // Replace commas with dots
+
+                cart.txtTotalPrice.setText(formattedTotal);
             }
         });
+        String priceWithoutComma = listData.get(position).getPrice().replaceAll(",", "");
+        int price = Integer.parseInt(priceWithoutComma) * Integer.parseInt(listData.get(position).getQuantity());
 
-        Locale locale = new Locale("en","US");
-        NumberFormat fmt= NumberFormat.getCurrencyInstance(locale);
-        int price =(Integer.parseInt(listData.get(position).getPrice()))*(Integer.parseInt(listData.get(position).getQuantity()));
-        holder.txt_price.setText(fmt.format(price));
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+
+        // Format the price with dots as the decimal separator
+        String formattedPrice = fmt.format(price);
+        formattedPrice = formattedPrice.replace(",", ".");  // Replace commas with dots
+
+        holder.txt_price.setText(formattedPrice);
         holder.txt_cart_name.setText(listData.get(position).getProductName());
-
     }
 
     @Override

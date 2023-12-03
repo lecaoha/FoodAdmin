@@ -67,6 +67,7 @@ import com.myappfood.appfood.databinding.ActivityHomeBinding;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,7 +102,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
+//        toolbar.setTitle("Menu");
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (currentHour >= 0 && currentHour < 12) {
+            toolbar.setTitle("Chào buổi sáng");
+            toolbar.setTitleTextColor(getResources().getColor(R.color.title)); // Replace "your_color" with the color you want
+
+        } else if (currentHour >= 12 && currentHour < 18) {
+            toolbar.setTitle("Chào buổi trưa");
+            toolbar.setTitleTextColor(getResources().getColor(R.color.title)); // Replace "your_color" with the color you want
+
+        } else {
+            toolbar.setTitle("Chào buổi tối");
+            toolbar.setTitleTextColor(getResources().getColor(R.color.title)); // Replace "your_color" with the color you want
+
+        }
         setSupportActionBar(toolbar);
 
         //view

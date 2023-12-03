@@ -256,7 +256,7 @@ public class Food_list extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull FoodViewHolder viewHolder, int position, @NonNull Food model) {
                 viewHolder.food_name.setText(model.getName());
-                viewHolder.food_price.setText(String.format("$ %s",model.getPrice().toString()));
+                viewHolder.food_price.setText(String.format("%s",model.getPrice().toString()));
 
                 Picasso.with(getBaseContext()).load(model.getImage())
                         .into(viewHolder.food_image);
@@ -273,7 +273,7 @@ public class Food_list extends AppCompatActivity {
                                 model.getImage()
 
                         ));
-                        Toast.makeText(Food_list.this, "Add to Cart", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Food_list.this, "Thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
 
                     }
                 });

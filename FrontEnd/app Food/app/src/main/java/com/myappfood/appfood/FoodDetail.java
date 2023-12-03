@@ -99,7 +99,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         currentfood.getImage()
 
                 ));
-                Toast.makeText(FoodDetail.this, "Add to Cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetail.this, "Thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
             }
         });
         btnCart.setCount(new Database(this).getCountCart());

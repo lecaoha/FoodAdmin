@@ -85,7 +85,7 @@ public class Cart extends AppCompatActivity {
                 if (cart.size()>0)
                showAlertDialog();
                 else
-                    Toast.makeText(Cart.this, "Your cart is empty!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Cart.this, "Giỏ của bạn trống!!", Toast.LENGTH_SHORT).show();
             }
         });
         loadListFood();
@@ -95,8 +95,8 @@ public class Cart extends AppCompatActivity {
 
     private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
-        alertDialog.setTitle("One more step!");
-        alertDialog.setMessage("Enter your address: ");
+        alertDialog.setTitle("Thêm một bước!");
+        alertDialog.setMessage("Nhập địa chỉ của bạn: ");
 
         LayoutInflater inflater= this.getLayoutInflater();
         View order_address_comment=inflater.inflate(R.layout.order_address_comment,null);
@@ -108,17 +108,18 @@ public class Cart extends AppCompatActivity {
         alertDialog.setView(order_address_comment);
         alertDialog.setIcon(R.drawable.ic_shopping);
 
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Đặt hàng", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String orderDate = dateFormat.format(new Date());
+                String totalAmount = txtTotalPrice.getText().toString().replace(".", ",");
 
                 Request request= new Request(
                         Common.currentUser .getPhoneNumber(),
                         Common.currentUser.getName(),
                         editAddress.getText().toString(),
-                        txtTotalPrice.getText().toString(),
+                        totalAmount,
                         "0",
                         orderDate,
                         editComment.getText().toString(),
@@ -129,12 +130,12 @@ public class Cart extends AppCompatActivity {
                         .setValue(request);
                 //xoa cart
                 new Database(getBaseContext()).clearnCart();
-                Toast.makeText(Cart.this, "Thank you, Order Palce", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cart.this, "Cảm ơn bạn đã đặt hàng", Toast.LENGTH_SHORT).show();
                 finish();
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Huỷ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                  dialog.dismiss();
@@ -149,14 +150,26 @@ public class Cart extends AppCompatActivity {
         adapter= new CartAdapter(cart,this);
         recyclerView.setAdapter(adapter);
 
-        //tinhs tong
-        int total =0;
-        for (Order order:cart)
-            total+=(Integer.parseInt(order.getPrice()))*(Integer.parseInt(order.getQuantity()));
-        Locale locale = new Locale("en","US");
-        NumberFormat fmt= NumberFormat.getCurrencyInstance(locale);
+//        //tinhs tong
+        int total = 0;
+        for (Order order : cart) {
+            // Remove commas from the price string before parsing
+            String priceWithoutComma = order.getPrice().replaceAll(",", "");
 
-        txtTotalPrice.setText(fmt.format(total));
+            total += Integer.parseInt(priceWithoutComma) * Integer.parseInt(order.getQuantity());
+        }
+
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+
+// Format the total with dots as the decimal separator
+        String formattedTotal = fmt.format(total);
+        formattedTotal = formattedTotal.replace("₫", ""); // Remove the currency symbol
+        formattedTotal = formattedTotal.replace(",", ".");  // Replace commas with dots
+
+        txtTotalPrice.setText(formattedTotal);
+
+
     }
 
     @Override

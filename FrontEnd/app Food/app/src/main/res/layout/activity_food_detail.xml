@@ -98,20 +98,29 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/layout_price"
                         android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_money"/>
+<!--                        <ImageView-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:src="@drawable/ic_money"/>-->
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="9"
+                            android:layout_width="wrap_content"
 
                             android:layout_height="wrap_content"
                             android:id="@+id/food_price"
                             android:text="1,000"
+                            android:layout_marginStart="15dp"
                             android:textSize="20sp"
                             android:textColor="@color/black"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_weight="3"
+                            android:layout_height="wrap_content"
+                            android:text="VNĐ"
+                            android:layout_marginStart="5dp"
+                            android:textSize="20sp"
+                            android:textColor="#F36666"
                             android:textStyle="bold"/>
 
                     </LinearLayout>
