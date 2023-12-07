@@ -34,8 +34,11 @@ $fetchdata = $database->getReference($ref_table)->getValue();
 if (!empty($fetchdata)) {
     foreach ($fetchdata as $key => $row) {
         if ($row['status'] == 2) { // Kiểm tra trạng thái đã giao thành công
-            $totalSum += str_replace(['$', ','], '', $row['total']); // Loại bỏ ký tự "$" và ","
-            $profit += str_replace(['$', ','], '', $row['total']) - ($shippingFee + $taxFee);
+            $total = str_replace(['$', ','], '', $row['total']);
+            if (is_numeric($total)) {
+                $totalSum += $total; // Loại bỏ ký tự "$" và ","
+                $profit += $total - ($shippingFee + $taxFee);
+            }
         }
         if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 1 (đơn hàng đã bán) hay không
             $totalSelling++;

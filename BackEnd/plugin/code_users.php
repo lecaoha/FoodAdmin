@@ -7,7 +7,7 @@ include('dbcon.php');
 
 if (isset($_POST['update_users'])) {
     // Retrieve data from the form
-    $phonenumber = $_POST['phoneNumber']; // Use 'phonenumber' as the key
+    $phonenumber = $_POST['phonenumber']; // Use 'phonenumber' as the key
     
     // Other form data
     $isStaff = $_POST['isStaff'];

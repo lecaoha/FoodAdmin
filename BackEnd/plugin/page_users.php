@@ -13,6 +13,7 @@ if (!isset($_SESSION['name'])) {
     $loggedInId = $_SESSION['user_id'];
     $loggedIAdmin = $_SESSION['admin'];
     $loggedisStaff = $_SESSION['isStaff'];
+
 ?>
 
 <style>
@@ -138,7 +139,7 @@ if (!isset($_SESSION['name'])) {
                                                     <td>
                                                         <?php
                                                         // Check if admin is true before displaying the edit button
-                                                        if ($loggedIAdmin === 'true') {
+                                                        if ($loggedIAdmin == 'true') {
                                                         ?>
                                                             <input type="hidden" name="id" value="<?= $key; ?>">
                                                             <a href="edit_users.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
@@ -147,9 +148,16 @@ if (!isset($_SESSION['name'])) {
                                                         ?>
                                                     </td>
                                                     <td>
+                                                    <?php
+                                                        // Check if admin is true before displaying the edit button
+                                                        if ($loggedIAdmin == 'true') {
+                                                        ?>
                                                         <form action="code_users.php" method="POST">
                                                             <button type="submit" name="delete_btn" value="<?=$key?>" class="btn btn-danger btn-sm">Xoá</button>
                                                         </form>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                                 <?php

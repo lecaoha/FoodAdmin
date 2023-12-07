@@ -47,7 +47,7 @@ $menuId = isset($_GET['menuId']) ? $_GET['menuId'] : '';
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Giá</label>
-                                <input type="number" name="price" class="form-control">
+                                <input type="text" name="price" class="form-control">
                             </div>
 
                             <div class="form-group mb-3">
