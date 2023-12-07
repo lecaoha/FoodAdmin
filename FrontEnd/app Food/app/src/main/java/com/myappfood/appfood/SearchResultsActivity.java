@@ -69,11 +69,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         backImg = findViewById(R.id.backImg);
         swipeRefreshLayout = findViewById(R.id.swipe_layout1);
         SearchView searchView = findViewById(R.id.search_view);
+        recycler_food = (RecyclerView) findViewById(R.id.recycler_search_results);
+
 
         database = FirebaseDatabase.getInstance("https://appfood-9abc2-default-rtdb.asia-southeast1.firebasedatabase.app/");
         foodList = database.getReference("Foods");
-
-        recycler_food = (RecyclerView) findViewById(R.id.recycler_search_results);
+        loadAllFoods();
         recycler_food.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recycler_food.setLayoutManager(layoutManager);
@@ -83,7 +84,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             searchFood(query);
         }
         // Load all products (Foods) into the RecyclerView
-        loadAllFoods();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -119,7 +120,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull FoodViewHolder viewHolder, int position, @NonNull Food model) {
                 // Populate the ViewHolder with data from Firebase
                 viewHolder.food_name.setText(model.getName());
-                viewHolder.food_price.setText(String.format("$ %s", model.getPrice().toString()));
+                viewHolder.food_price.setText(String.format("%s", model.getPrice().toString()));
 
                 Picasso.with(getBaseContext()).load(model.getImage())
                         .into(viewHolder.food_image);
@@ -136,7 +137,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                                 model.getImage()
 
                         ));
-                        Toast.makeText(SearchResultsActivity.this, "Add to Cart", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchResultsActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -218,7 +219,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull FoodViewHolder viewHolder, int position, @NonNull Food model) {
                 // Populate the ViewHolder with data from Firebase
                 viewHolder.food_name.setText(model.getName());
-                viewHolder.food_price.setText(String.format("$ %s", model.getPrice().toString()));
+                viewHolder.food_price.setText(String.format("%s ", model.getPrice().toString()));
 
                 Picasso.with(getBaseContext()).load(model.getImage())
                         .into(viewHolder.food_image);
@@ -260,7 +261,11 @@ public class SearchResultsActivity extends AppCompatActivity {
             }
         };
 
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
+        adapter.startListening();
+        recycler_food.setLayoutManager(gridLayoutManager);
         recycler_food.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 }

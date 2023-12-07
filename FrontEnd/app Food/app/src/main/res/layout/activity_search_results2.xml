@@ -41,7 +41,7 @@
                 android:layout_marginBottom="5dp"
                 android:background="#FBF9F9"
                 android:iconifiedByDefault="false"
-                app:queryHint="Search for food" />
+                app:queryHint="Tìm kiếm đồ ăn" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

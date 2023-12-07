@@ -27,6 +27,8 @@ import com.myappfood.appfood.ViewHolder.MenuViewHolder;
 import com.myappfood.appfood.ViewHolder.OrderViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.util.Comparator;
+
 public class OrderStatus extends AppCompatActivity {
 
     public RecyclerView recyclerView;
@@ -73,15 +75,17 @@ public class OrderStatus extends AppCompatActivity {
                 viewHolder.orderDate.setText(model.getOrderDate());
                 viewHolder.order_total.setText(String.valueOf(model.getTotal()));
 
-                if (!model.getStatus().equals("3")) {
+
+                if ("1".equals(model.getStatus())) {
                     // Enable and show the delete button
-                    viewHolder.btndeleteOrder.setEnabled(true);
+                    viewHolder.btndeleteOrder.setEnabled(false);
                     viewHolder.btndeleteOrder.setVisibility(View.VISIBLE);
-                } else {
+                } else if ("3".equals(model.getStatus())){
                     // Disable and hide the delete button
                     viewHolder.btndeleteOrder.setEnabled(false);
                     viewHolder.btndeleteOrder.setVisibility(View.VISIBLE);
                 }
+
 
                 // Set a click listener for the delete button
                 viewHolder.btndeleteOrder.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +109,8 @@ public class OrderStatus extends AppCompatActivity {
                 return new OrderViewHolder(view);
             }
         };
+
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter.startListening();
