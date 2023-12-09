@@ -1,6 +1,7 @@
 <?php
 include('include/head.php');
 session_start();
+
 // Kiểm tra xem người dùng đã đăng nhập hay chưa
 if (!isset($_SESSION['name'])) {
     // Nếu không có thông tin người dùng, bạn có thể chuyển họ đến trang đăng nhập hoặc thực hiện các hành động khác.
@@ -9,10 +10,14 @@ if (!isset($_SESSION['name'])) {
 }
 
 // Nếu có thông tin người dùng, bạn có thể sử dụng nó trong trang này.
-$loggedInUserName = $_SESSION['name'];
 $loggedInId = $_SESSION['user_id'];
+$loggedInUserName = $_SESSION['name'];
+$loggedInUserPhone = $_SESSION['phoneNumber'];
 $loggedIAdmin = $_SESSION['admin'];
 $loggedisStaff = $_SESSION['isStaff'];
+
+
+
 
 
 // Khởi tạo biến tổng
@@ -34,11 +39,8 @@ $fetchdata = $database->getReference($ref_table)->getValue();
 if (!empty($fetchdata)) {
     foreach ($fetchdata as $key => $row) {
         if ($row['status'] == 2) { // Kiểm tra trạng thái đã giao thành công
-            $total = str_replace(['$', ','], '', $row['total']);
-            if (is_numeric($total)) {
-                $totalSum += $total; // Loại bỏ ký tự "$" và ","
-                $profit += $total - ($shippingFee + $taxFee);
-            }
+            $totalSum += (float)str_replace(['$', ','], '', $row['total']); // Loại bỏ ký tự "$" và ","
+            $profit += (float)str_replace(['$', ','], '', $row['total']) - ($shippingFee + $taxFee);
         }
         if ($row['status'] == 2) { // Kiểm tra trường "status" có bằng 1 (đơn hàng đã bán) hay không
             $totalSelling++;

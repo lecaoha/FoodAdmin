@@ -480,29 +480,39 @@ foreach ($filteredOrders as $orderId => $order) {
         case "0":
             $statusLabel = "Đang xử lý";
             $statusClass = "text-primary";
+            $showCancelButton = true; // Show the cancel button
+
             break;
         case "1":
             $statusLabel = "Đang giao hàng";
             $statusClass = "text-warning";
+            $showCancelButton = false; // Hide the cancel button
+
             break;
         case "2":
             $statusLabel = "Đã giao hàng";
             $statusClass = "text-success";
+            $showCancelButton = false; // Hide the cancel button
+
             break;
         case "3":
             $statusLabel = "Đã huỷ";
             $statusClass = "text-danger";
+            $showCancelButton = false; // Hide the cancel button
+
             break;
         default:
             $statusLabel = "Không xác định";
             $statusClass = "text-secondary";
+            $showCancelButton = false; // Hide the cancel button
+
             break;
     }
     
     ?>
         <div class="order-item" data-status="<?= $status ?>">
 
-        <div class="card mb-4">
+        <div class="card mb-6">
     <div class="card-header">
         
     <div class="d-flex justify-content-between align-items-center">
@@ -520,7 +530,12 @@ foreach ($filteredOrders as $orderId => $order) {
         <p class="card-text" style="font-size: 15px;"><strong>Điện thoại: <?= $order["phone"] ?></strong></p>
         <p class="card-text" style="font-size: 15px;"><strong>Địa chỉ: <?= $order["address"] ?></strong></p>
         <h4 style="font-size: 15px;" class="card-text text-end"><strong>Tổng tiền:</strong> <?= $order["total"] ?></h4>
-
+        <?php if ($showCancelButton) { ?>
+            <form action="cancel_order.php" method="post">
+                <input type="hidden" name="orderId" value="<?= $orderId ?>">
+                <button type="submit" class="btn btn-danger cancel-button float-end">Hủy đơn hàng</button>
+            </form>
+        <?php } ?>
     </div>
     
 </div>
@@ -537,6 +552,7 @@ foreach ($filteredOrders as $orderId => $order) {
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
 <script>
     const filterItems = document.querySelectorAll('.filter-item');

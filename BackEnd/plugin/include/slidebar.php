@@ -69,36 +69,47 @@
         <li><a class="dropdown-item" href="#">Settings</a></li>
         <li><a class="dropdown-item" href="#">Profile</a></li> -->
         <!-- <li><hr class="dropdown-divider"></li> -->
-        <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
+        <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
       </ul>
     </div>
   </div>
-<script>
+
+
+  <script>
   // Lấy tất cả các mục nav-link
-const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = document.querySelectorAll('.nav-link');
 
-// Lặp qua từng mục và thêm sự kiện click
-navLinks.forEach(navLink => {
-  navLink.addEventListener('click', function () {
-    // Loại bỏ lớp active từ tất cả các mục nav-link
-    navLinks.forEach(link => link.classList.remove('active'));
-    
-    // Thêm lớp active cho mục đã chọn
-    this.classList.add('active');
-    
-    // Lưu trạng thái đã chọn vào sessionStorage
-    sessionStorage.setItem('selectedNavItem', this.getAttribute('href'));
+  // Lặp qua từng mục và thêm sự kiện click
+  navLinks.forEach(navLink => {
+    navLink.addEventListener('click', function () {
+      // Loại bỏ lớp active từ tất cả các mục nav-link
+      navLinks.forEach(link => link.classList.remove('active'));
+
+      // Thêm lớp active cho mục đã chọn
+      this.classList.add('active');
+
+      // Lưu trạng thái đã chọn vào sessionStorage
+      sessionStorage.setItem('selectedNavItem', this.getAttribute('href'));
+    });
   });
-});
 
-// Kiểm tra nếu có trạng thái đã chọn trong sessionStorage và áp dụng nó
-const selectedNavItem = sessionStorage.getItem('selectedNavItem');
-if (selectedNavItem) {
-  const selectedLink = document.querySelector(`a[href="${selectedNavItem}"]`);
-  if (selectedLink) {
-    selectedLink.classList.add('active');
+  // Kiểm tra nếu có trạng thái đã chọn trong sessionStorage và áp dụng nó
+  const selectedNavItem = sessionStorage.getItem('selectedNavItem');
+  if (selectedNavItem) {
+    const selectedLink = document.querySelector(`a[href="${selectedNavItem}"]`);
+    if (selectedLink) {
+      selectedLink.classList.add('active');
+    }
   }
-}
+
+  // Thêm sự kiện click cho link "Food" để bỏ trạng thái đã chọn
+  const foodLink = document.querySelector('.fs-4');
+  foodLink.addEventListener('click', function () {
+    navLinks.forEach(link => link.classList.remove('active'));
+    sessionStorage.removeItem('selectedNavItem');
+  });
 
 </script>
+
+
   
