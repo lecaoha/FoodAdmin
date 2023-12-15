@@ -143,12 +143,13 @@
                                                     <td><?php echo $i++; ?></td>
                                                     <td><?=$key;?></td>
                                                     <td><?=$row['name'];?></td>
-                                                    <td>********</td>                                                    <td>true</td> <!-- Hiển thị "true" -->
+                                                    <td>********</td>                                                    
+                                                    <td>true</td> <!-- Hiển thị "true" -->
                                                     <td><?=$row['admin'];?></td>
                                                     <td>
                                                         <?php
                                                         // Check if admin is true before displaying the edit button
-                                                        if ($loggedIAdmin === 'true') {
+                                                        if ($loggedIAdmin == 'true') {
                                                         ?>
                                                             <input type="hidden" name="id" value="<?= $key; ?>">
                                                             <a href="edit_employee.php?id=<?=$key;?>" class="btn btn-primary btn-sm">Sửa</a>
@@ -159,7 +160,7 @@
                                                     <td>
                                                         <?php
                                                         // Check if admin is true before displaying the edit button
-                                                        if ($loggedIAdmin === 'true') {
+                                                        if ($loggedIAdmin == 'true') {
                                                         ?>
                                                         <form action="code_employee.php" method="POST">
                                                             <button type="submit" name="delete_btn" value="<?=$key?>"class="btn btn-danger btn-sm">Xoá</button>
