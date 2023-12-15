@@ -134,8 +134,8 @@ if(isset($_POST['register_now_btn'])) {
     $password = $_POST['password'];
 
     // Define $isStaff and $admin or remove them if not needed.
-    $isStaff = false; // Example value
-    $admin = false;  // Example value
+    $isStaff = 'false'; // Example value
+    $admin = 'false';  // Example value
 
     $postData = [
         'phoneNumber' => $phonenumber, // Add 'phonenumber' here
